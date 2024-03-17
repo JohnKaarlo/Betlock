@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    form a{
+        color: black;
+        display: inline;
+    }
+    form .text-input{
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    }
+    .btn{
+        border-radius: 20px;
+        border: 2px solid #ffffff;
+        -webkit-text-stroke: .2px black;
+    }
+    .btn:hover{
+        color: black;
+        background-color: white;
+        border: 2px solid #000000;
+    }
+    hr{
+        height: 10px;
+        border: 0;
+        box-shadow: 0 10px 10px -10px black inset;
+        margin: 0;
+    }
+    .row{
+        padding-bottom: 16px;
+    }
+    .title{
+        margin-top: 12px;
+    }
+</style>
+<div class="container-fluid content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h1 class="title">Game Proposal Form</h1>
+            </div>
+        </div>
+        <form method="post" action="add-local">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-1 text-end">
+                    <label for="team_A">Team A:</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" placeholder="Team name" id="team_A" name="team_A" class="text-input" required>        
+                </div>
+                <div class="col-sm-1 text-end">
+                    <label for="team_B">Team B:</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" placeholder="Team name" id="team_B" name="team_B" class="text-input" required>        
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 text-end">
+                    <label for="info_A">Team Info:</label>
+                </div>
+                <div class="col-sm-5">
+                    <textarea id="info_A" name="info_A" rows="10" cols="50" class="text-input" required>Please write information about the team!</textarea>    
+                </div>
+                <div class="col-sm-1 text-end">
+                    <label for="info_B">Team Info:</label>
+                </div>
+                <div class="col-sm-5">
+                    <textarea id="info_B" name="info_B" rows="10" cols="50" class="text-input" required>Please write information about the team!</textarea>         
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 text-end">
+                    <label for="logo_A">Logo:</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="file" id="logo_A" name="logo_A">
+                </div>
+                <div class="col-sm-1 text-end">
+                    <label for="logo_B">Logo:</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="file" id="logo_B" name="logo_B">         
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 text-end">
+                    <label>Date:</label>
+                </div>
+                <div class="col-sm-11">
+                    <input type="datetime-local" name="date" id="date" required>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-5"></div>
+                <div class="col-sm-1 text-center">
+                    <button type="submit" class="btn">Submit</button>
+                </div>
+                <div class="col-sm-1 text-center">
+                    <a href="/lobby" class="btn">Back</a>
+                </div>
+                <div class="col-sm-5">
+                    <p>{{msg}}</p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>    
+{% endblock content %}

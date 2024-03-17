@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    p{
+        display: inline;
+    }
+    .content a{
+        color: black;
+        display: inline;
+        text-shadow: none;
+    }
+    .btn{
+        border-radius: 20px;
+        border: 2px solid #ffffff;
+        -webkit-text-stroke: .2px black;
+    }
+    .btn:hover{
+        color: black;
+        background-color: white;
+        border: 2px solid #000000;
+    }
+    .login-form{
+        margin-left: 0;
+        border-radius: 15px;
+        height: 280px;
+    }
+    hr{
+        height: 10px;
+        border: 0;
+        box-shadow: 0 10px 10px -10px black inset;
+        margin: 0;
+    }
+    .pd16{
+        padding-bottom: 16px;
+    }
+    .ml12{
+        margin-left: 12px;
+    }
+    .update{
+        margin-top: 9px;
+    }
+</style>
+<div class="container-fluid content">
+    <div class="container">
+        <br>
+        <br>
+        <div class="login-form">
+            <h2 class="white-text ml12">My Profile</h2>
+            <hr>
+            <div class="row pd16">
+                <div class="col-sm-3 text-end">
+                    <p>User ID: </p>
+                </div>
+                <div class="col-sm-9 white-text">
+                    <p>{{ request.user.id }}</p>
+                </div>
+            </div>
+            <div class="row pd16">
+                <div class="col-sm-3 text-end">
+                    <p>Username: </p>
+                </div>
+                <div class="col-sm-9 white-text">
+                    <p>{{ request.user.username }}</p>
+                </div>
+            </div>
+            <div class="row pd16">
+                <div class="col-sm-3 text-end">
+                    <p>Email: </p>
+                </div>
+                <div class="col-sm-9 white-text">
+                    <p>{{ request.user.email }}</p>
+                </div>
+            </div>
+            <div class="row pd16">
+                <div class="col-sm-3 text-end">
+                    <p>Mobile: </p>
+                </div>
+                <div class="col-sm-9 white-text">
+                    <p>{{ request.user.mobileNumber }}</p>
+                </div>
+            </div>
+            <hr>
+            <a class="btn ml12" href="/update_password" >Change Password</a>
+            <a href="/update" class="btn ml12">Update</a>
+        </div>
+                
+        <br>
+        <div class="row">
+            <div class="col-sm-8 white-text gray-background">
+                {% if request.user.is_organizer %}
+                <h2>Organized Games</h2>
+                {% else %}
+                <h2>History</h2>
+                {% endif %}
+            </div>
+            <div class="col-sm-2 gray-background larger"></div>
+        </div>
+        {% if request.user.is_organizer %}
+        <div class="row text-center">
+            <div class="col-sm-1" style="padding-top: 8px">
+                <p>Game ID</p>
+            </div>
+            <div class="col-sm-3" style="padding-top: 8px">
+                <p>Teams</p>
+            </div>
+            <div class="col-sm-2" style="padding-top: 8px">
+                <p>Winner</p>
+            </div>
+            <div class="col-sm-2" style="padding-top: 8px">
+                <p>Date</p>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+        {% for game in games %}
+        <div class="row white-text">
+            <div class="col-sm-1 text-center" style="padding-top: 8px">
+                <p>{{game.id}}</p>
+            </div>
+            <div class="col-sm-3 text-center" style="padding-top: 8px">
+                <img src="{{game.logo_A.url}}" width="30px" height="30px" />
+                <label>{{game}}</label>
+                <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+            </div>
+            <div class="col-sm-2 text-center" style="padding-top: 8px">
+                <label>{{game.winner}}</label>
+                {% if game.winner == game.team_A %}
+                <img src="{{game.logo_A.url}}" width="30px" height="30px" />
+                {% elif game.winner == game.team_B %}
+                <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+                {% endif %}
+            </div>
+            <div class="col-sm-2 text-center" style="padding-top: 8px">
+                <p>{{game.date}}</p>
+            </div>
+            <div class="col-sm-2" style="padding-top: 8px;">
+                <a href="{% url 'game' game.slug %}" class="btn">{% if game.winner == "TBD" %}Update{% else %}Check{% endif %}</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="row text-center">
+            <div class="col-sm-1" style="padding-top: 8px">
+                <p>Amount</p>
+            </div>
+            <div class="col-sm-3" style="padding-top: 8px">
+                <p>Game</p>
+            </div>
+            <div class="col-sm-2" style="padding-top: 8px">
+                <p>Team</p>
+            </div>
+            <div class="col-sm-2" style="padding-top: 8px">
+                <p>Date</p>
+            </div>
+            <div class="col-sm-2" style="padding-top: 8px">
+                <p>Status</p>
+            </div>
+        </div>
+        {% for bet in bets %}
+        <div class="row white-text">
+            <div class="col-sm-1 text-center" style="padding-top: 8px">
+                <p>{{bet.amount}}</p>
+            </div>
+            <div class="col-sm-3 text-center" style="padding-top: 8px">
+                <img src="{{bet.game.logo_A.url}}" width="30px" height="30px" />
+                <label>{{bet.game}}</label>
+                <img src="{{bet.game.logo_B.url}}" width="30px" height="30px" />
+            </div>
+            <div class="col-sm-2 text-center" style="padding-top: 8px">
+                {% if bet.team == "Team A" %}
+                <label>{{ bet.game.team_A }}</label>
+                <img src="{{bet.game.logo_A.url}}" width="30px" height="30px" />
+                {% else %}
+                <label>{{ bet.game.team_B }}</label>
+                <img src="{{bet.game.logo_B.url}}" width="30px" height="30px" />
+                {% endif %}
+            </div>
+            <div class="col-sm-2 text-center" style="padding-top: 8px">
+                <p>{{bet.date}}</p>
+            </div>
+            <div class="col-sm-2 text-center" style="padding-top: 8px">
+                <a href="{% url 'game' game.slug %}" class="btn">{{bet.status}}</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %} 
+    </div>
+    <br>
+    <hr>
+</div>
+{% endblock content %}

@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  p{
+    display: inline
+  }
+  .content p, .content img{
+    margin: 16px 6.2%;
+  }
+  .content a{
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+  }
+</style>
+<div class="container-fluid white-text content">
+  <div class="container">
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 text-center gray-background">
+        <h2>Featured Matches</h2>
+      </div>
+      <div class="col-sm-2 text-start" style="padding-top: 10px;">
+        {% if request.user.is_admin %}
+        <a href="/add-game">+ Add game</a>
+        {% endif %}
+      </div> 
+    </div>
+    <!-- for loop here -->
+    {% for game in games %}
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-2 text-end">
+        <a href="{% url 'game' game.slug %}">
+          <p>{{ game.team_A }}</p>
+          <img src="{{game.logo_A.url}}" width="30px" height="30px" />
+        </a>
+      </div>
+      <div class="col-sm-2 text-center" style="padding-top: 16px;">
+        <p>VS</p>
+      </div>
+      <div class="col-sm-2 text-start">
+        <a href="{% url 'game' game.slug %}">
+          <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+          <p>{{ game.team_B }}</p>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+    <!-- if no featured matches available -->
+    {% if not games %}
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 text-center" style="padding-top: 16px;">
+        <p>No matches available at the moment</p>
+      </div>
+    </div>
+    {% endif %}
+    <br>
+
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6">
+        <hr>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 text-center gray-background">
+        <h2>Local Matches</h2>
+      </div>
+      <div class="col-sm-2 text-start" style="padding-top: 10px;">
+        {% if request.user.is_organizer and not request.user.is_admin %}
+        <a href="/add-game">+ Add game</a>
+        {% endif %}
+      </div>  
+    </div>
+    <!-- for loop here -->
+    {% for game in local %}
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-2 text-end">
+        <a href="{% url 'game' game.slug %}">
+          <p>{{ game.team_A }}</p>
+          <img src="{{game.logo_A.url}}" width="30px" height="30px" />
+        </a>
+      </div>
+      <div class="col-sm-2 text-center" style="padding-top: 16px;">
+        <a href="{% url 'game' game.slug %}"><p>VS</p></a>
+      </div>
+      <div class="col-sm-2 text-start">
+        <a href="{% url 'game' game.slug %}">
+          <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+          <p>{{ game.team_B }}</p>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+    <!-- If no local matches available -->
+    {% if not local %}
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 text-center" style="padding-top: 16px;">
+        <p>No matches available at the moment</p>
+      </div>
+    </div>
+    {% endif %}
+    <br>
+    
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6">
+        <hr>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 text-center gray-background">
+        <h2>Recent Matches</h2>
+      </div>
+    </div>
+    {% for game in done %}
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-2 text-end">
+        <a href="{% url 'game' game.slug %}">
+          <p>{{ game.team_A }}</p>
+          <img src="{{game.logo_A.url}}" width="30px" height="30px" />
+        </a>
+      </div>
+      <div class="col-sm-2 text-center" style="padding-top: 16px;">
+        <a href="{% url 'game' game.slug %}">
+          <p>VS</p>
+        </a>
+      </div>
+      <div class="col-sm-2 text-start">
+        <a href="{% url 'game' game.slug %}">
+          <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+          <p>{{ game.team_B }}</p>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+    <!-- If no recent matches available -->
+    {% if not done %}
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6 text-center" style="padding-top: 16px;">
+        <p>No recent matches at the moment</p>
+      </div>
+    </div>
+    {% endif %}
+    <hr>
+  </div>
+</div>
+{% endblock content %}

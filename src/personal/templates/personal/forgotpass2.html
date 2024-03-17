@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .content{
+        background: gainsboro;
+    }
+    form a:hover{
+        color: black;
+    }
+    form button{
+        border-radius: 20px;
+        border: 2px solid #ffffff;
+        -webkit-text-stroke: .2px black;
+    }
+    form button:hover{
+        background-color: white;
+        border: 2px solid #000000;
+    }
+</style>
+<div class="container-fluid white-text content content-background">
+    <br><br>
+    <div class="forgot-form">
+        <div class="row">
+            <div class="col text-center">
+                <h1>Reset Password</h1>
+            </div>
+        </div>                         
+        <form id="forgot" method="post" action="/forgotpassword_otp">  
+            {% csrf_token %}  
+            <div class="row">
+                <div class="col-sm-6 text-end">
+                    <label for="otp">OTP:</label>
+                </div>
+                <div class="col-sm-6 text-start">
+                    <input type="number" placeholder="Enter OTP" id="otp" name="otp" required>        
+                </div>
+            </div>
+            <div class="row" style="margin-top: 8px;">
+                <div class="col-sm-6"></div>
+                <div class="col-sm-6 text-start">   
+                    <button type="submit">Submit</button>
+                    <label style="color: red;">{{ msg }}</label>
+                </div>
+            </div>
+        </form> 
+    </div>
+</div>
+{% endblock content %}

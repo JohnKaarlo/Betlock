@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .content{
+        background-color: gainsboro;
+    }
+    .row{
+        padding: 8px;
+    }
+    img, .card{
+        border-radius: 10px;
+        background: transparent;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+                rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+                rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+                rgba(0, 0, 0, 0.17) 0px 12px 13px, 
+                rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    }
+    .card h2{
+        color: white;
+        text-shadow: 1px 1px 2px black,
+                     0 0 1em gainsboro,
+                     0 0 0.2em gainsboro;;
+    }
+    .content a{
+        border-radius: 20px;
+        border: 2px solid #ffffff;
+        -webkit-text-stroke: .2px black;
+    }
+    .content a:hover{
+        background-color: white;
+        border: 2px solid #000000;
+    }
+</style>
+<div class="container-fluid content">
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 text-start">
+                <a href="/blog" class="btn">Back</a>
+            </div>
+            <div class="col-sm-6 text-end">
+                {% if request.user == blog.author %}
+                update url
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            {% if blog.image %}
+            <img src="{{blog.image.url}}" height="500px"/>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">{{blog.title}}</h2>
+                    <p class="card-text">{{blog.content}}</p>
+                    <p class="card-text">Author: <label class="white-text">{{blog.author}}</label></p>
+                    <p class="card-text">Date: <label class="white-text">{{blog.date_posted}}</label></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

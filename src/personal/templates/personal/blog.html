@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .row{
+        padding: 8px;
+    }
+    a{
+       text-decoration: none;
+       color: white;
+       font-size: 32px;
+       padding: 0;
+    }
+    .carousel-inner a:hover{
+        -webkit-text-stroke: .3px rgb(183, 200, 0);
+        color: blue;
+    }
+    .content .card a:hover{
+       color: black;
+    }
+    .card{
+        padding: 16px;
+        background: transparent;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+                rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+                rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+                rgba(0, 0, 0, 0.17) 0px 12px 13px, 
+                rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    }
+    .betlock{
+        color: blue;
+        -webkit-text-stroke: 1px rgb(183, 200, 0);
+    }
+</style>
+<div class="container-fluid content">
+    <br>
+    <div class="container">
+        <div class="row text-center">
+            <h1 class="white-text">Welcome to <b class="betlock">BetLock</b></h1>
+        </div>
+        <br>
+        <div id="carousel" class="carousel slide carousel-fade text-center" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                {% for blog in blogs %}
+                {% if forloop.first %}
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                {% else %}
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{forloop.counter0}}" aria-label="Slide {{forloop.counter}}"></button>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="carousel-inner">
+                {% for blog in blogs %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ blog.image.url }}" height="400px" width="900px">
+                    <div class="carousel-caption">
+                        <a href="{% url 'blog-detail' blog.slug %}">
+                            {{ blog.title }}
+                        </a>
+                        <p>{{ blog.content|truncatechars:50 }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <br>
+        <br>
+
+        {% for blog in blogposts %}
+        {% if forloop.first %}
+        <div class="row">
+        {% elif not forloop.counter|divisibleby:2 %}
+        <div class="row">
+        {% endif %}
+            <div class="col-sm-6">
+                <div class="card">
+                    <a href="{% url 'blog-detail' blog.slug %}"><h4 class="card-title white-text">{{ blog.title }}</h4></a>
+                    <p>{{ blog.content|truncatechars:200 }}</p>
+                    <p>Author: <label class="white-text">{{ blog.author }}</label></p>
+                    <p>Date: <label class="white-text">{{ blog.date_posted }}</label></p>
+                </div>
+            </div>
+        {% if forloop.counter|divisibleby:2 %}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

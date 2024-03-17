@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    h1{
+        font-size: 64px;
+        font-weight: bold;
+    }
+    a:hover{
+        -webkit-text-stroke: .3px rgb(183, 200, 0);
+        color: blue;
+    }
+    p{
+        font-size: 22px;
+    }
+    .content{
+        background-color: gainsboro;
+    }
+    a{
+        text-decoration: none;
+        color: white;
+        padding: 0;
+        font-size: 32px;
+    }
+</style>
+<div class="jumbotron text-center white-text content">
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>WELCOME</h1>
+            </div>
+        </div>
+        <div id="carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              </div>
+            <div class="carousel-inner">
+                {% for blog in blogs %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ blog.image.url }}" height="400px" width="900px">
+                    <div class="carousel-caption">
+                        <a href="{% url 'blog-detail' blog.slug %}">
+                            {{ blog.title }}
+                        </a>
+                        <p>{{ blog.content|truncatechars:50 }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock content %}

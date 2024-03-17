@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .content a{
+        color: black;
+        display: inline;
+    }
+    .btn{
+        border-radius: 20px;
+        border: 2px solid #ffffff;
+        -webkit-text-stroke: .2px black;
+    }
+    .btn:hover{
+        color: black;
+        background-color: white;
+        border: 2px solid #000000;
+    }
+    .login-form{
+        border-radius: 15px;
+        height: 435px;
+        width: 650px;
+        margin-left: 21%;
+    }
+    hr{
+        height: 10px;
+        border: 0;
+        box-shadow: 0 10px 10px -10px black inset;
+        margin: 0;
+    }
+    .row{
+        padding-bottom: 16px;
+    }
+    .submit{
+        margin-left: 165px;
+    }
+</style>
+<div class="container-fluid content">
+    <div class="container">
+        <br>
+        <a href="{% url 'game' game.slug %}" class="btn">Back</a>
+        <h1 class="text-center">Add Blog Form</h1>
+        <div class="login-form">
+            <h3 class="white-text text-center">{{ game }}</h3>
+            <hr>
+            <form method="post" action="{% url 'add-blog' game.slug %}" enctype="multipart/form-data">
+            {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-3 text-end">
+                        <label for="title">Title:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" placeholder="Add blog's title here" id="title" name="title" style="width: 448px;" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 text-end">
+                        <label for="content">Content:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <textarea id="content" name="content" rows="8" cols="53" required>Add blog's content here</textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 text-end">
+                        <label for="image">Image:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="file" accept="image/*" id="image" name="image" required>
+                    </div>
+                </div>
+                <hr>
+                <button type="submit" class="btn submit">Submit</button>
+                <label>{{msg}}</label>
+            </form>
+        </div>
+                
+    </div>
+</div>    
+{% endblock content %}

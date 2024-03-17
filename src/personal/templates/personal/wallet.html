@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    p{
+        display: inline;
+    }
+    .content a{
+        color: black;
+        display: inline;
+    }
+    .btn{
+        border-radius: 20px;
+        border: 2px solid #ffffff;
+        -webkit-text-stroke: .2px black;
+    }
+    .btn:hover{
+        color: black;
+        background-color: white;
+        border: 2px solid #000000;
+    }
+    .login-form{
+        margin-left: 0;
+        border-radius: 15px;
+        height: 280px;
+    }
+    hr{
+        height: 10px;
+        border: 0;
+        box-shadow: 0 10px 10px -10px black inset;
+        margin: 0;
+    }
+    .row{
+        padding-bottom: 16px;
+    }
+    .title{
+        margin-left: 12px;
+    }
+    .col-sm-3 p{
+        color: black;
+        text-shadow: none;
+    }
+</style>
+<div class="container-fluid content">
+    <div class="container">
+        <br>
+        <br>
+        <div class="login-form">
+            <h2 class="title white-text">My Wallet</h2>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3 text-end">
+                    <p>User ID: </p>
+                </div>
+                <div class="col-sm-9">
+                    <p class="white-text">{{ request.user.id }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 text-end">
+                    <p>Username: </p>
+                </div>
+                <div class="col-sm-9">
+                    <p class="white-text">{{ request.user.username }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 text-end">
+                    <p>Credits: </p>
+                </div>
+                <div class="col-sm-9">
+                    <p class="white-text">{{ request.user.wallet }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 text-end">
+                    <p>On hold: </p>
+                </div>
+                <div class="col-sm-9">
+                    <p class="white-text">{{ request.user.on_hold }}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="container">
+                <a class="btn" href="/withdraw">Withdraw</a>
+                {% if not request.user.is_organizer %}
+                <a class="btn title" href="/deposit" >Deposit</a>
+                <a class="btn title" href="/send">Send</a>
+                {% endif %} 
+            </div>
+        </div>    
+    </div>
+</div>
+{% endblock content %}

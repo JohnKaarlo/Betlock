@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .post{
+    text-decoration: none;
+    padding: 0;
+  }
+  .post:hover{
+    color: black;
+  }
+  p{
+    display: inline;
+  }
+  hr{
+    height: 10px;
+    border: 0;
+    box-shadow: 0 10px 10px -10px black inset;
+  }
+  .content img{
+    border: 5px solid #ffffff;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  }
+  .card{
+        padding: 16px;
+        background: transparent;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+                rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+                rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+                rgba(0, 0, 0, 0.17) 0px 12px 13px, 
+                rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  }
+  .btn{
+        border-radius: 20px;
+        border: 2px solid #ffffff;
+        -webkit-text-stroke: .2px black;
+  }
+  .btn:hover{
+    color: black;
+    background-color: white;
+    border: 2px solid #000000;
+  }
+</style>
+<div class="container-fluid content">
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="/lobby" class="btn">Back</a>
+            </div>
+            <div class="col-sm-6 text-end">
+                {% if request.user.is_organizer and game.winner == "TBD" %}
+                <a href="{% url 'add-blog-form' game.slug %}" class="btn">Add Blog</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-4">
+                <img src="{{ game.logo_A.url }}" height="200px" width="200px" />
+            </div>
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-4">
+                <img src="{{ game.logo_B.url }}" height="200px" width="200px" />
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-4">
+                <h1>{{ game.team_A }}</h1>
+            </div>
+            <div class="col-sm-2">
+                <h1>vs</h1>
+            </div>
+            <div class="col-sm-4">
+                <h1>{{ game.team_B }}</h1>
+            </div>
+        </div>
+        {% if request.user.is_organizer or not game.winner == "TBD" %}
+        <form method="post" action="{% url 'winner' game.slug %}">
+            {% csrf_token %}
+            <div class="row text-center">
+                <div class="col-sm-2">
+                    {% if request.user.is_organizer %}
+                    <p>Total bet: {{total_A}}</p>
+                    {% endif %}
+                </div>
+                <div class="col-sm-2">
+                    {% if game.winner == game.team_A and not game.winner == "TBD" %}
+                    <label class="post">Winner</label>
+                    {% elif game.winner == "TBD" %}
+                    <input type="radio" name="winner" id="team_A" value="{{game.team_A}}">
+                    <label class="post" for="team_A">Select</label>
+                    {% endif %}
+                </div>
+                <div class="col-sm-4">
+                    {% if game.winner == "TBD"%}
+                    <button type="submit" class="btn">Appoint</button>
+                    {% else %}
+                    <p>{{msg}}</p>
+                    {% endif %}
+                </div>
+                <div class="col-sm-2">
+                    {% if game.winner == game.team_B and not game.winner == "TBD" %}
+                    <label class="post">Winner</label>
+                    {% elif game.winner == "TBD" %}
+                    <input type="radio" name="winner" id="team_B" value="{{game.team_B}}">
+                    <label class="post" for="team_B">Select</label>
+                    {% endif %}
+                </div>
+                <div class="col-sm-2">
+                    {% if request.user.is_organizer %}
+                    <p  >Total bet: {{total_B}}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <div class="row text-center">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2">
+                <p class="white-text">1 : {{A}}</p>
+            </div>
+            <div class="col-sm-4">
+                <a href="{% url 'bet' game.slug %}" class="btn">Bet</a>
+            </div>
+            <div class="col-sm-2">
+                <p class="white-text">1 : {{B}}</p>
+            </div>
+        </div>
+        {% endif %}
+        <hr>
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-4 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">{{ game.info_A }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <p style="text-shadow: none; color: black;">Date: </p><p class="white-text">{{ game.date|date:"M d, Y" }}</p>
+                <br>
+                <p style="text-shadow: none; color: black;">Time: </p><p class="white-text">{{ game.date|date:"P" }}</p>
+                {% if blogs %}
+                <br>
+                <p style="text-shadow: none; color: black;">Related Blog Posts:</p>
+                {% for blog in blogs %}
+                <br>
+                <a class="post white-text" href="{% url 'blog-detail' blog.slug %}">{{ blog.title }}</a>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-sm-4 text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">{{ game.info_B }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+{% endblock content %}

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .content h2{
+        color: white;
+        text-shadow: 1px 1px 2px black,
+                     0 0 1em gainsboro,
+                     0 0 0.2em gainsboro;;
+    }
+    .login-form{
+        border-radius: 15px;
+        height: 220px;
+    }
+    .right-indent{
+        margin-left: 12px;
+    }
+    .left-indent{
+        margin-right: 12px;
+    }
+    hr{
+        height: 10px;
+        border: 0;
+        box-shadow: 0 10px 10px -10px black inset;
+        margin: 0;
+    }
+    .content a{
+        color: black;
+        display: inline;
+    }
+    .btn{
+        border-radius: 20px;
+        border: 2px solid #ffffff;
+        -webkit-text-stroke: .2px black;
+    }
+    .btn:hover{
+        color: black;
+        background-color: white;
+        border: 2px solid #000000;
+    }
+    .spacing{
+        padding-bottom: 16px;
+    }
+    .partner{
+        border-color: black;
+        border-width: 2px;
+        border-radius: 7px;
+        height: 30px;
+        width: 105px;
+    }
+    .submit{
+        margin-left: 130px;
+    }
+</style>
+<div class="container-fluid content">
+    <div class="container">
+        <br>
+        <a class="btn" href="/wallet" >Back</a>
+        <br>
+        <br>    
+        <form id="send" method="post" action="/send_user">
+            {% csrf_token %}
+            <div class="login-form">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2 class="right-indent">Send Credits</h2>
+                    </div>
+                    <div class="col-sm-6 text-end">
+                        {% if check %}
+                        <h2 class="left-indent">Credits: {{balance}}</h2>
+                        {% else %}
+                        <h2 class="left-indent">Credits: {{request.user.wallet}}</h2>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                <div class="row spacing">
+                    <div class="col-sm-3 text-end">
+                        <label for="amount">Amount:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="number" placeholder="Enter Amount" id="amount" name="amount" required> 
+                        <label class="error">{{ msg1 }}</label>
+                    </div>
+                </div>
+                <div class="row spacing">
+                    <div class="col-sm-3 text-end">
+                        <label for="userid">User ID:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="number" placeholder="Enter User ID" id="userid" name="userid" required>
+                        <label class="error">{{ msg2 }}</label>
+                    </div>
+                </div>
+                <hr>
+                <button type="submit" class="btn submit">Send</button>
+                <label class="success">{{ msg }}</label>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
