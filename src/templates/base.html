@@ -10,48 +10,60 @@
     <title>BetLock</title>
 </head>
 <body>
-    {% if request.user.is_authenticated %}
-        <nav class="navbar navbar-expand-lg static-top" style="padding: 0;">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/blog">
-                    <img src="/static/img/logo.png" alt="Logo" height="30px" width="30px" />BETLOCK
-                </a>
-                <ul class="navbar-nav" style="margin-top: 18px;margin-bottom: 18px;">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/lobby">Lobby</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/wallet">Balance: P{{ request.user.wallet }}</a>
-                    </li>
-                    <li class="nav-item">
+    <nav class="navbar navbar-expand-lg static-top" style="padding: 0;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/blog">
+                <img src="/static/img/logo.png" alt="Logo" height="30px" width="30px" />BETLOCK
+            </a>
+            {% if request.user.is_authenticated and not request.user.is_admin %}
+            <ul class="navbar-nav" style="margin-top: 8px;margin-bottom: 8px;">
+                <li class="nav-item">
+                    <a class="nav-link" href="/lobby">Lobby</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/wallet">Balance: P{{ request.user.wallet }}</a>
+                </li>
+                <li class="nav-item">
+                    
+                </li>
+                <li class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 50 50" version="1.1">
+                        <g id="surface1">
+                        <path style=" stroke:none;fill-rule:nonzero;fill:rgb(40%,40.392157%,40%);fill-opacity:1;" d="M 50 25 C 50 38.808594 38.808594 50 25 50 C 11.191406 50 0 38.808594 0 25 C 0 11.191406 11.191406 0 25 0 C 38.808594 0 50 11.191406 50 25 Z M 50 25 "/>
+                        <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 13.347656 31.128906 L 13.347656 44.207031 L 36.652344 44.207031 L 36.652344 31.128906 L 33.753906 30.207031 L 33.015625 27.707031 L 25.335938 35.441406 L 16.917969 27.707031 L 16.238281 30.039062 Z M 13.347656 31.128906 "/>
+                        <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 35.449219 17.019531 C 35.449219 9.957031 30.730469 4.234375 24.910156 4.234375 C 19.089844 4.234375 14.367188 9.957031 14.367188 17.019531 C 14.367188 24.078125 19.089844 29.804688 24.910156 29.804688 C 30.730469 29.804688 35.449219 24.078125 35.449219 17.019531 Z M 35.449219 17.019531 "/>
+                        </g>
+                        </svg>
                         
-                    </li>
-                    <li class="nav-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 50 50" version="1.1">
-                            <g id="surface1">
-                            <path style=" stroke:none;fill-rule:nonzero;fill:rgb(40%,40.392157%,40%);fill-opacity:1;" d="M 50 25 C 50 38.808594 38.808594 50 25 50 C 11.191406 50 0 38.808594 0 25 C 0 11.191406 11.191406 0 25 0 C 38.808594 0 50 11.191406 50 25 Z M 50 25 "/>
-                            <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 13.347656 31.128906 L 13.347656 44.207031 L 36.652344 44.207031 L 36.652344 31.128906 L 33.753906 30.207031 L 33.015625 27.707031 L 25.335938 35.441406 L 16.917969 27.707031 L 16.238281 30.039062 Z M 13.347656 31.128906 "/>
-                            <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 35.449219 17.019531 C 35.449219 9.957031 30.730469 4.234375 24.910156 4.234375 C 19.089844 4.234375 14.367188 9.957031 14.367188 17.019531 C 14.367188 24.078125 19.089844 29.804688 24.910156 29.804688 C 30.730469 29.804688 35.449219 24.078125 35.449219 17.019531 Z M 35.449219 17.019531 "/>
-                            </g>
-                            </svg>
-                            
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="/logout">Log out</a>
-                    </li> -->
-                </ul>
-            </div>    
-        </nav>
-    {% else %}
-        <nav class="navbar navbar-expand-lg bg-dark static-top" style="padding: 0;">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-                    <img src="/static/img/logo.png" alt="Logo" height="30px" width="30px" />BETLOCK
-                </a>
-            </div>    
-        </nav>
-    {% endif %}
-    
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log out</a>
+                </li>
+            </ul>
+            {% elif request.user.is_admin %}
+            <ul class="navbar-nav" style="margin-top: 8px;margin-bottom: 8px;">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link2</a>
+                </li>
+                <li class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 50 50" version="1.1">
+                        <g id="surface1">
+                        <path style=" stroke:none;fill-rule:nonzero;fill:rgb(40%,40.392157%,40%);fill-opacity:1;" d="M 50 25 C 50 38.808594 38.808594 50 25 50 C 11.191406 50 0 38.808594 0 25 C 0 11.191406 11.191406 0 25 0 C 38.808594 0 50 11.191406 50 25 Z M 50 25 "/>
+                        <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 13.347656 31.128906 L 13.347656 44.207031 L 36.652344 44.207031 L 36.652344 31.128906 L 33.753906 30.207031 L 33.015625 27.707031 L 25.335938 35.441406 L 16.917969 27.707031 L 16.238281 30.039062 Z M 13.347656 31.128906 "/>
+                        <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 35.449219 17.019531 C 35.449219 9.957031 30.730469 4.234375 24.910156 4.234375 C 19.089844 4.234375 14.367188 9.957031 14.367188 17.019531 C 14.367188 24.078125 19.089844 29.804688 24.910156 29.804688 C 30.730469 29.804688 35.449219 24.078125 35.449219 17.019531 Z M 35.449219 17.019531 "/>
+                        </g>
+                        </svg>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log out</a>
+                </li>
+            </ul>
+            {% endif %}
+        </div>    
+    </nav>
     {% block content %}
 
     {% endblock content %}

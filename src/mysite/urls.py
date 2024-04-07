@@ -49,6 +49,7 @@ from personal.views import (
     add_blog_view,
     add_blog,
     withdraw_user,
+    admin_view,
 )
 
 from payment.views import (
@@ -58,7 +59,7 @@ from payment.views import (
 )
 
 urlpatterns = [
-    path('admin', admin.site.urls),
+    path('admin', admin_view),
     path('', home_screen_view),
     path('login', login_view),
     path('signup', signup_view),

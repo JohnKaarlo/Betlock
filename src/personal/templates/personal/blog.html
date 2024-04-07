@@ -15,9 +15,6 @@
         -webkit-text-stroke: .3px rgb(183, 200, 0);
         color: blue;
     }
-    .content .card a:hover{
-       color: black;
-    }
     .card{
         padding: 16px;
         background: transparent;
@@ -26,6 +23,7 @@
                 rgba(0, 0, 0, 0.12) 0px 4px 6px, 
                 rgba(0, 0, 0, 0.17) 0px 12px 13px, 
                 rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        color: white;
     }
     .betlock{
         color: blue;
@@ -36,7 +34,7 @@
     <br>
     <div class="container">
         <div class="row text-center">
-            <h1 class="white-text">Welcome to <b class="betlock">BetLock</b></h1>
+            <h1>Welcome to <b class="betlock">BetLock</b></h1>
         </div>
         <br>
         <div id="carousel" class="carousel slide carousel-fade text-center" data-bs-ride="carousel">
@@ -84,8 +82,8 @@
                 <div class="card">
                     <a href="{% url 'blog-detail' blog.slug %}"><h4 class="card-title white-text">{{ blog.title }}</h4></a>
                     <p>{{ blog.content|truncatechars:200 }}</p>
-                    <p>Author: <label class="white-text">{{ blog.author }}</label></p>
-                    <p>Date: <label class="white-text">{{ blog.date_posted }}</label></p>
+                    <p>Author: <label>{{ blog.author }}</label></p>
+                    <p>Date: <label>{{ blog.date_posted }}</label></p>
                 </div>
             </div>
         {% if forloop.counter|divisibleby:2 %}

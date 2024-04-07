@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth import authenticate,get_user, login, logout, update_session_auth_hash
 from account.models import User
 from game.models import Game
 from bet.models import Bet
@@ -16,6 +16,8 @@ import random, re
 
 # Create your views here.
 def home_screen_view(request):
+    if request.user.is_authenticated:
+        return redirect("/blog")
     return render(request, "personal/login.html")
 
 def login_view(request):
@@ -28,9 +30,13 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
+            if request.user.is_admin:
+                return redirect('/admin')
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
             else:
+                print("bang1")
+                print(request)
                 return redirect("/blog") 
         else:
             context['str'] = "Invalid credentials!"
@@ -564,3 +570,9 @@ def withdraw_user(request):
         context["msg"] = "Your withdrawal request is pending"
     
     return render(request, "personal/withdraw.html", context)
+
+@login_required
+def admin_view(request):
+    if not request.user.is_admin:
+        return redirect('/blog')
+    return render(request, "personal/admin.html")

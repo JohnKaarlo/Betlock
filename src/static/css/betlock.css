@@ -116,3 +116,6 @@ hr{
     box-shadow: 0 10px 10px -10px black inset;
     margin: 0 0 16px 0;
 }
+.text-white{
+    color: white;
+}
