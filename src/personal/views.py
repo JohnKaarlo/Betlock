@@ -16,13 +16,7 @@ import random, re
 
 # Create your views here.
 def home_screen_view(request):
-    if request.user.is_authenticated:
-        return redirect("/blog")
-    context = {}
-    admin = User.objects.get(is_admin = True)
-    blogs = Blog.objects.all().filter(author=admin).order_by("date_posted")[:3]
-    context["blogs"] = blogs
-    return render(request, "personal/welcome.html", context)
+    return render(request, "personal/login.html")
 
 def login_view(request):
     context = {}
@@ -34,7 +28,10 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect("/blog") 
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect("/blog") 
         else:
             context['str'] = "Invalid credentials!"
             return render(request, "personal/login.html", context)
@@ -501,7 +498,7 @@ def bet(request, slug):
                 user.save()
                 context["msg"] = "Bet updated!"
             else:
-                context["msg"] = "Please check the amount placed and your balance!"
+                context["msg"] = "Please place a valid amount!"
         else:
             context["msg"] = "Must choose the same team!"
     else:
@@ -513,7 +510,7 @@ def bet(request, slug):
             user.save()
             context["msg"] = "Bet Placed!"
         else:
-            context["msg"] = "Please check the amount placed and your balance!"
+            context["msg"] = "Please place a valid amount!"
 
     context["game"] = game
 

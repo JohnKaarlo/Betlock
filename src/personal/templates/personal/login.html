@@ -2,8 +2,14 @@
 
 {% block content %}
 <style>
+    form a{
+        color: white;
+        text-decoration: none;
+    }
     form a:hover{
-        color: black;
+        text-shadow: 1px 1px 2px black,
+                     0 0 1em gainsboro,
+                     0 0 0.2em gainsboro;;
     }
     form button{
         border-radius: 20px;
@@ -17,49 +23,49 @@
     .error{
         text-shadow: none;
     }
+    form input{
+        border-radius: 8px;
+        width: 250px;
+    }
+    #submit{
+        background-color: gray;
+    }
+    .row{
+        padding-top: 16px;
+    }
 </style>
 <div class="container-fluid content">
-    <br><br>
-    <div class="login-form">
+    <br>
+    <div class="text-center">
         <div class="row">
-            <div class="col text-center">
-                <h1 class="white-text">Log in</h1>
+            <div class="col">
+                <img src="/static/img/avatar.jpg" height="120px" width="120px">
             </div>
         </div>                         
         <form id="login" method="post" action="/login">
             {% csrf_token %}    
             <div class="row">
-                <div class="col-sm-6 text-end">
-                    <label for="username">Username:</label>
-                </div>
-                <div class="col-sm-6">
-                    <input type="text" placeholder="Enter Username" id="username" name="username" required>        
+                <div class="col">
+                    <input type="text" placeholder="Enter Username" id="username" name="username" required>
                 </div>
             </div>
-            <div class="row" style="margin-top: 8px;">
-                <div class="col-sm-6 text-end">
-                    <label for="password">Password:</label>
-                </div>
-                <div class="col-sm-6">
+            <div class="row">
+                <div class="col">
                     <input type="password" placeholder="Enter Password" id="password" name="password" required>  
                 </div>
             </div>
-            <div class="row" style="margin-top: 8px;">
-                <div class="col-sm-6"></div>
-                <div class="col-sm-6">
-                    <button type="submit">Login</button>
+            {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}">
+            {% endif %}
+            <div class="row">
+                <div class="col">
+                    <input type="submit" id="submit" value="Login">
                     <label class="error">{{ str }}</label>
                 </div>
             </div>
-            <div class="row" style="margin-top: 8px;">
-                <div class="col-sm-6"></div>
-                <div class="col-sm-6 white-text">
-                    <a href="/forgotpassword">Forgot password?</a>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 8px;">
-                <div class="col-sm-6"></div>
-                <div class="col-sm-6 white-text">
+            <div class="row">
+                <div class="col">
+                    <a href="/forgotpassword">Forgot password?</a><br>
                     <a href="/signup">Don't have an account?</a>
                 </div>
             </div>

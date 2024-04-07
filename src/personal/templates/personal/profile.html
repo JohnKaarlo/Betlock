@@ -134,7 +134,7 @@
                 <p>{{game.date}}</p>
             </div>
             <div class="col-sm-2" style="padding-top: 8px;">
-                <a href="{% url 'game' game.slug %}" class="btn">{% if game.winner == "TBD" %}Update{% else %}Check{% endif %}</a>
+                <p>{% if game.winner == "TBD" %}Update{% else %}Check{% endif %}</p>
             </div>
         </div>
         {% endfor %}
@@ -179,7 +179,7 @@
                 <p>{{bet.date}}</p>
             </div>
             <div class="col-sm-2 text-center" style="padding-top: 8px">
-                <a href="{% url 'game' game.slug %}" class="btn">{{bet.status}}</a>
+                <p>{{bet.status}}</p>
             </div>
         </div>
         {% endfor %}

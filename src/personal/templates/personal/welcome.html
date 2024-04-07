@@ -2,19 +2,12 @@
 
 {% block content %}
 <style>
-    h1{
-        font-size: 64px;
-        font-weight: bold;
-    }
     a:hover{
         -webkit-text-stroke: .3px rgb(183, 200, 0);
         color: blue;
     }
     p{
         font-size: 22px;
-    }
-    .content{
-        background-color: gainsboro;
     }
     a{
         text-decoration: none;
@@ -41,12 +34,6 @@
                 {% for blog in blogs %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
                     <img src="{{ blog.image.url }}" height="400px" width="900px">
-                    <div class="carousel-caption">
-                        <a href="{% url 'blog-detail' blog.slug %}">
-                            {{ blog.title }}
-                        </a>
-                        <p>{{ blog.content|truncatechars:50 }}</p>
-                    </div>
                 </div>
                 {% endfor %}
             </div>

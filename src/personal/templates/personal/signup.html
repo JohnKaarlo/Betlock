@@ -3,29 +3,33 @@
 {% block content %}
 <style>
     form a:hover{
-        color: black;
+        text-shadow: 1px 1px 2px black,
+                     0 0 1em gainsboro,
+                     0 0 0.2em gainsboro;;
     }
-    form button{
-        border-radius: 20px;
-        border: 2px solid #ffffff;
-        -webkit-text-stroke: .2px black;
+    form input{
+        width: 100%;
     }
-    form button:hover{
-        background-color: white;
-        border: 2px solid #000000;
+    .signup-form .row{
+        margin-top: 12px;
     }
-    .note-form{
-        float: right;
-        font-size: 12.88px;
+    hr{
+        height: 10px;
+        border: 0;
+        box-shadow: 0 10px 10px -10px rgb(255, 255, 255) inset;
+        margin: 0;
     }
-    .help{
-        margin-top: 24px;
+    .type{
+        width: 32px;
+    }
+    #submit{
+        background-color: gray;
     }
 </style>
 <div class="container-fluid content">
-    <br><br>
+    <br>
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-12">
             <div class="signup-form">
                 <div class="row">
                     <div class="col text-center">
@@ -33,85 +37,107 @@
                     </div>
                 </div>
                 <form id="signup" method="post" action="/signup">
-                    {% csrf_token %}    
+                    {% csrf_token %}
                     <div class="row">
-                        <div class="col-sm-6 text-end">
+                        <div class="col-sm-2 text-end">
+                            <label for="firstname">Firstname: </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" name="firstname" id="firstname" placeholder="Enter Firstname" required>
+                        </div>
+                        <div class="col-sm-3 text-end">
+                            <label for="lastname">Lastname:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="lastname" placeholder="Enter Lastname" id="lastname" name="lastname" required>  
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2 text-end">
                             <label for="username">Username:</label>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <input type="text" placeholder="Enter Username" id="username" name="username" required>        
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 8px;">
-                        <div class="col-sm-6 text-end">
+                    <div class="row">
+                        <div class="col-sm-2 text-end">
                             <label for="password">Password:</label>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <input type="password" placeholder="Enter Password" id="password" name="password" required>  
                         </div>
-                    </div>
-                    <div class="row" style="margin-top: 8px;">
-                        <div class="col-sm-6 text-end">
+                        <div class="col-sm-3 text-end">
                             <label for="conpassword">Confirm Password:</label>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <input type="password" placeholder="Confirm Password" id="conpassword" name="conpassword" required>  
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 8px;">
-                        <div class="col-sm-6 text-end">
+                    <div class="row">
+                        <div class="col-sm-2 text-end">
+                            <label for="address">Address:</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" width="" placeholder="Enter Address" id="address" name="address" required>        
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2 text-end">
                             <label for="email">Email:</label>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-5">
                             <input type="email" placeholder="Enter Valid Email" id="email" name="email" required 
                                 placeholder="username@gmail.com"
                                 pattern=".+@gmail\.com"
                                 title="Please provide only Gmail corporate email address">        
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 8px;">
-                        <div class="col-sm-6 text-end">
+                    <div class="row">
+                        <div class="col-sm-2 text-end">
                             <label for="mobileNumber">Mobile Number:</label>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <input type="number" placeholder="Enter Mobile Number" id="mobileNumber" name="mobileNumber" required>        
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 8px;">
-                        <div class="col-sm-6 text-end">
+                    <div class="row">
+                        <div class="col-sm-2 text-end">
+                            <label>Date of birth:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="date" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2 text-end">
                             <label for="type">Account Type:</label>
                         </div>
-                        <div class="col-sm-6 white-text">
-                            <input type="radio" id="bettor" name="type" value="bettor" checked>
-                            <label for="bettor" style="margin-right: 8px;">Bettor</label>        
-                            <input type="radio" id="organizer" name="type" value="organizer">
+                        <div class="col-sm-10">
+                            <input type="radio" id="bettor" class="type" name="type" value="bettor" checked>
+                            <label for="bettor">Bettor</label>        
+                            <input type="radio" id="organizer" class="type" name="type" value="organizer">
                             <label for="organizer">Organizer</label>
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 8px;">
-                        <div class="col-sm-6"></div>
-                        <div class="col-sm-6">
-                            <button type="submit">Signup</button>
-                            <label class="error">{{ msg }}</label>
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-3">
+                            <input type="submit" id="submit" value="Signup">
+                            {% if msg %}
+                                <label class="error">{{ msg }}</label>
+                            {% endif %}
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 8px;">
-                        <div class="col-sm-6"></div>
-                        <div class="col-sm-6 white-text">
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-6">
                             <a href="/login">Already have an account?</a>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="col-sm-3 help">
-            <h1 class="white-text">Note:</h1>
-            <div class="note-form" style="margin-top: 8px;">
-                <label class="{% if error %}error{% else %}success{% endif %}">{{ helpTxt }}</label>
-            </div>
-        </div>
     </div>
-    
-    
 </div>
 {% endblock content %}
