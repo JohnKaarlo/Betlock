@@ -20,7 +20,6 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from personal.views import (
-    home_screen_view,
     login_view,
     signup_view,
     forget_view,
@@ -60,8 +59,7 @@ from payment.views import (
 
 urlpatterns = [
     path('admin', admin_view),
-    path('', home_screen_view),
-    path('login', login_view),
+    path('', login_view),
     path('signup', signup_view),
     path('forgotpassword', forget_view),
     path('forgotpassword_otp', forget_otp),

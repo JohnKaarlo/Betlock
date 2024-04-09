@@ -76,7 +76,7 @@ AUTH_USER_MODEL = 'account.User'
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-LOGIN_URL = "/login"
+LOGIN_URL = "/"
 
 # EMAIL BACKEND
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

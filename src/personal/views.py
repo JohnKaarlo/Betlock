@@ -15,11 +15,6 @@ from django.core.exceptions import ValidationError
 import random, re
 
 # Create your views here.
-def home_screen_view(request):
-    if request.user.is_authenticated:
-        return redirect("/blog")
-    return render(request, "personal/login.html")
-
 def login_view(request):
     context = {}
     if request.user.is_authenticated:

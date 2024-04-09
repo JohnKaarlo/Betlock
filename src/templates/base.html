@@ -12,7 +12,7 @@
 <body>
     <nav class="navbar navbar-expand-lg static-top" style="padding: 0;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/blog">
+            <a class="navbar-brand" href="{% if request.user.is_admin %}/admin{% else %}/blog{% endif %}">
                 <img src="/static/img/logo.png" alt="Logo" height="30px" width="30px" />BETLOCK
             </a>
             {% if request.user.is_authenticated and not request.user.is_admin %}
