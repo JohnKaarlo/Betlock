@@ -2,7 +2,7 @@
 
 {% block content %}
 <style>
-    #search{
+    #search, table{
         width: 100%;
     }
 </style>
@@ -16,5 +16,26 @@
             <input type="submit" value="search">
         </div>
     </div>
+    <br>
+    <table>
+        <tr class="gray-background">
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Request Type</th>
+            <th>Amount</th>
+            <th>Date Requested</th>
+            <th>Date Approved</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>Test</td>
+            <td>Test</td>
+            <td>Test</td>
+            <td>Test</td>
+            <td>Test</td>
+            <td>Test</td>
+            <td><input type="button" value="Check"></td>
+        </tr>
+    </table>
 </div>
 {% endblock content %}
