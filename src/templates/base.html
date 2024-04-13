@@ -14,10 +14,15 @@
 <body>
     <nav class="navbar navbar-expand-lg static-top" style="padding: 0;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% if request.user.is_admin %}/admin{% else %}/lobby{% endif %}" style="padding: 8px 0;">
+            <a class="navbar-brand" href="{% if request.user.is_admin %}/admin{% elif not request.user.is_authenticated %}/{% else %}/lobby{% endif %}" style="padding: 8px 0;">
                 <img src="/static/img/logo.png" alt="Logo" height="30px" width="30px" />BETLOCK
             </a>
             <ul class="navbar-nav mr-auto">
+            {% if request.user.is_admin %}
+                <li class="nav-item">
+                    <a class="nav-link link" href="{% url 'add_game' %}">Add Game</a>
+                </li>
+            {% endif %}
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link link" href="{% if request.user.is_admin %}/admin{% else %}/lobby{% endif %}">Lobby</a>
@@ -40,13 +45,6 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logout">Log out</a>
                     </div>
-                </li>
-            {% elif request.user.is_admin %}
-                <li class="nav-item">
-                    <a class="nav-link link" href="{% url 'add_game' %}">Add Game</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link" href="#">Link2</a>
                 </li>
             {% endif %}
             </ul>
