@@ -9,7 +9,6 @@
 .navbar a{
     color: white;
     font-size: 15px;
-    margin: 0;
 }
 .navbar a:hover{
     color: blue;
@@ -36,8 +35,8 @@
                      0 0 1em gainsboro,
                      0 0 0.2em gainsboro;;
 }
-.gray-background{
-    background-color: rgb(72, 71, 71);
+.table-background{
+    background-color: #fd5001;
 }
 .border{
     border: 1px solid #fd5001;

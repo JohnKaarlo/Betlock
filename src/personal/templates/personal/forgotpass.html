@@ -13,7 +13,9 @@
     }
 </style>
 <div class="container-fluid content">
-    <br><br>
+    <br>
+    <a class="btn btn-secondary" href="/">Back</a>
+    <br>
     <div class="forgot-form">
         <div class="row">
             <div class="col text-center">
@@ -23,19 +25,18 @@
         <form id="forgot" method="post" action="/forgotpassword">
             {% csrf_token %}   
             <div class="row">
-                <div class="col-sm-6 text-end">
+                <div class="col-sm-4 text-end">
                     <label for="email">Email:</label>
                 </div>
-                <div class="col-sm-6 text-start">
+                <div class="col-sm-4 text-start">
                     <input type="email" placeholder="Enter Email" id="email" name="email" required>        
                 </div>
             </div>
             <div class="row" style="margin-top: 8px;">
-                <div class="col-sm-6"></div>
-                <div class="col-sm-6 text-start">   
-                    <input type="submit" value="Next" id="submit">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4 text-start">   
+                    <input class="btn btn-secondary" type="submit" value="Next" id="submit"></input>
                     <p class="error">{{ msg }}</p>
-                    <a href="/">Back</a>
                 </div>
             </div>
         </form> 

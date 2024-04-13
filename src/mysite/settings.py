@@ -94,10 +94,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'betlock',
-        'USER': 'admin',
-        'PASSWORD': '1234',
+        'USER': 'root',
+        'PASSWORD': 'betlock',
         'HOST': 'localhost',
-        'PORT': '3307',
+        'PORT': '3306',
     }
 }
 

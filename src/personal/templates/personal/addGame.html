@@ -7,40 +7,27 @@
         display: inline;
     }
     form .text-input{
-        border-radius: 10px;
-        box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+        border-radius: 8px;
     }
     .btn{
-        border-radius: 20px;
-        border: 2px solid #ffffff;
-        -webkit-text-stroke: .2px black;
+        border-radius: 8px;
+        color: black;
     }
     .btn:hover{
-        color: black;
-        background-color: white;
-        border: 2px solid #000000;
-    }
-    hr{
-        height: 10px;
-        border: 0;
-        box-shadow: 0 10px 10px -10px black inset;
-        margin: 0;
+        color: white;
     }
     .row{
         padding-bottom: 16px;
-    }
-    .title{
-        margin-top: 12px;
     }
 </style>
 <div class="container-fluid content">
     <div class="container">
         <div class="row">
             <div class="col-sm-12 text-center">
-                <h1 class="title">Game Proposal Form</h1>
+                <h1>Game Proposal Form</h1>
             </div>
         </div>
-        <form method="post" action="add-local">
+        <form method="post" action="{% url 'add_game' %}">
             {% csrf_token %}
             <div class="row">
                 <div class="col-sm-1 text-end">
@@ -92,14 +79,13 @@
                     <input type="datetime-local" name="date" id="date" required>
                 </div>
             </div>
-            <hr>
             <div class="row">
                 <div class="col-sm-5"></div>
                 <div class="col-sm-1 text-center">
-                    <button type="submit" class="btn">Submit</button>
+                    <input type="submit" class="btn btn-secondary" value="Submit"></input>
                 </div>
                 <div class="col-sm-1 text-center">
-                    <a href="/lobby" class="btn">Back</a>
+                    <a href="/admin" class="btn btn-secondary">Back</a>
                 </div>
                 <div class="col-sm-5">
                     <p>{{msg}}</p>

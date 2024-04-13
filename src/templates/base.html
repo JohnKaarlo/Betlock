@@ -25,7 +25,7 @@
                 </li>
             {% elif request.user.is_admin %}
                 <li class="nav-item link">
-                    <a class="nav-link" href="#">Link1</a>
+                    <a class="nav-link" href="{% url 'add_game' %}">Add Game</a>
                 </li>
                 <li class="nav-item link">
                     <a class="nav-link" href="#">Link2</a>

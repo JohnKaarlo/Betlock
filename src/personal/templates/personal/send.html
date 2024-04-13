@@ -46,7 +46,11 @@
     .submit{
         margin-left: 130px;
     }
-    
+    .border{
+        width: 600px;
+        height: 300px;
+        padding: 30px;
+    }
 
 </style>
 <div class="container-fluid content">
@@ -57,7 +61,7 @@
         <br>    
         <form id="send" method="post" action="/send_user">
             {% csrf_token %}
-            <div class="login-form">
+            <div class="border">
                 <div class="row">
                     <div class="col-sm-6">
                         <h2 class="right-indent">Send Credits</h2>

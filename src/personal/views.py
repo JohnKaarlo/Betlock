@@ -53,7 +53,6 @@ def signup_view(request):
         address = request.POST['address']
         birthdate = request.POST['birthdate']
         isOrganizer = False
-
         if User.objects.filter(username=username).exists() == True:
             context["msg"] = "Username already taken!"
             return render(request,"personal/signup.html", context)
@@ -81,7 +80,7 @@ def signup_view(request):
                 else:
                     if password == password2:
                         password = make_password(password)
-                        user = User(username=username,password=password,email=email,mobileNumber=mobileNumber,is_organizer=isOrganizer, address =address, birthdate = birthdate )
+                        user = User(username=username,password=password,email=email,mobileNumber=mobileNumber,is_organizer=isOrganizer,address=address,birthdate=birthdate)
                         user.save()
                         login(request,user)
                         return redirect("/profile")
@@ -425,11 +424,9 @@ def winner(request, slug):
     return render(request, "personal/game.html", context)
 
 @login_required()
-def add_local(request):
-    return render(request, "personal/addGame.html")
-
-@login_required()
 def add_game(request):
+    if not request.POST:
+        return render(request, "personal/addGame.html")
     context = {}
 
     team_A = request.POST["team_A"]

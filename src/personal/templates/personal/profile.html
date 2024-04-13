@@ -10,16 +10,22 @@
         display: inline;
         text-shadow: none;
     }
-    .pd16{
+    .row{
         padding-bottom: 16px;
     }
     .update{
         margin-top: 9px;
     }
     .border{
-        width: 600px;
-        height: 300px;
+        width: 800px;
+        height: 270px;
         padding: 30px;
+    }
+    table{
+        width: 83%;
+    }
+    td{
+        padding-top: 10px;
     }
 </style>
 <div class="container-fluid content">
@@ -27,140 +33,117 @@
         <br>
         <div class="border">
             <h2 class="ml12">My Profile</h2>
-            <div class="row pd16">
+            <div class="row">
                 <div class="col-sm-2 text-end">
                     <p>User ID: </p>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                     <p>{{ request.user.id }}</p>
                 </div>
-            </div>
-            <div class="row pd16">
                 <div class="col-sm-2 text-end">
                     <p>Username: </p>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                     <p>{{ request.user.username }}</p>
                 </div>
             </div>
-            <div class="row pd16">
+            <div class="row">
                 <div class="col-sm-2 text-end">
-                    <p>Email: </p>
+                    <p>Birthdate: </p>
                 </div>
-                <div class="col-sm-10">
-                    <p>{{ request.user.email }}</p>
+                <div class="col-sm-4">
+                    <p>{{ request.user.birthdate }}</p>
+                </div>
+                <div class="col-sm-2 text-end">
+                    <p>Address: </p>
+                </div>
+                <div class="col-sm-4">
+                    <p>{{ request.user.address }}</p>
                 </div>
             </div>
-            <div class="row pd16">
+            <div class="row">
                 <div class="col-sm-2 text-end">
                     <p>Mobile: </p>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                     <p>{{ request.user.mobileNumber }}</p>
                 </div>
+                <div class="col-sm-2 text-end">
+                    <p>Email: </p>
+                </div>
+                <div class="col-sm-4">
+                    <p>{{ request.user.email }}</p>
+                </div>
             </div>
-            <a class="btn btn-secondary" href="/update_password" >Change Password</a>
-            <a href="/update" class="btn btn-secondary">Update</a>
-        </div>
-                
+            <div class="container">
+                <a class="btn btn-secondary" href="/update_password" >Change Password</a>
+                <a href="/update" class="btn btn-secondary">Update</a>
+            </div>
+        </div>  
         <br>
         <div class="row">
-            <div class="col-sm-8 white-text gray-background">
+            <div class="col-sm-8 table-background">
                 {% if request.user.is_organizer %}
                 <h2>Organized Games</h2>
                 {% else %}
                 <h2>History</h2>
                 {% endif %}
             </div>
-            <div class="col-sm-2 gray-background larger"></div>
+            <div class="col-sm-2 table-background"></div>
         </div>
         {% if request.user.is_organizer %}
-        <div class="row text-center">
-            <div class="col-sm-1" style="padding-top: 8px">
-                <p>Game ID</p>
-            </div>
-            <div class="col-sm-3" style="padding-top: 8px">
-                <p>Teams</p>
-            </div>
-            <div class="col-sm-2" style="padding-top: 8px">
-                <p>Winner</p>
-            </div>
-            <div class="col-sm-2" style="padding-top: 8px">
-                <p>Date</p>
-            </div>
-            <div class="col-sm-2"></div>
-        </div>
-        {% for game in games %}
-        <div class="row white-text">
-            <div class="col-sm-1 text-center" style="padding-top: 8px">
-                <p>{{game.id}}</p>
-            </div>
-            <div class="col-sm-3 text-center" style="padding-top: 8px">
-                <img src="{{game.logo_A.url}}" width="30px" height="30px" />
-                <label>{{game}}</label>
-                <img src="{{game.logo_B.url}}" width="30px" height="30px" />
-            </div>
-            <div class="col-sm-2 text-center" style="padding-top: 8px">
-                <label>{{game.winner}}</label>
-                {% if game.winner == game.team_A %}
-                <img src="{{game.logo_A.url}}" width="30px" height="30px" />
-                {% elif game.winner == game.team_B %}
-                <img src="{{game.logo_B.url}}" width="30px" height="30px" />
-                {% endif %}
-            </div>
-            <div class="col-sm-2 text-center" style="padding-top: 8px">
-                <p>{{game.date}}</p>
-            </div>
-            <div class="col-sm-2" style="padding-top: 8px;">
-                <p>{% if game.winner == "TBD" %}Update{% else %}Check{% endif %}</p>
-            </div>
-        </div>
-        {% endfor %}
+        <table class="text-center">
+            <tr>
+                <th>Game ID</th>
+                <th>Teams</th>
+                <th>Winner</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            {% for game in games %}
+            <tr>
+                <td>{{game.id}}</td>
+                <td>
+                    <img src="{{game.logo_A.url}}" width="30px" height="30px" />
+                    <label>{{game}}</label>
+                    <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+                </td>
+                <td>{{game.winner}}</td>
+                <td>{{game.date}}</td>
+                <td><input type="button" value="{% if game.winner == 'TBD' %}Update{% else %}Check{% endif %}"></td>
+            </tr>
+            {% endfor %}
+        </table>
         {% else %}
-        <div class="row text-center">
-            <div class="col-sm-1" style="padding-top: 8px">
-                <p>Amount</p>
-            </div>
-            <div class="col-sm-3" style="padding-top: 8px">
-                <p>Game</p>
-            </div>
-            <div class="col-sm-2" style="padding-top: 8px">
-                <p>Team</p>
-            </div>
-            <div class="col-sm-2" style="padding-top: 8px">
-                <p>Date</p>
-            </div>
-            <div class="col-sm-2" style="padding-top: 8px">
-                <p>Status</p>
-            </div>
-        </div>
+        <table class="text-center">
+            <tr>
+                <th>Amount</th>
+                <th>Game</th>
+                <th>Team</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
         {% for bet in bets %}
-        <div class="row white-text">
-            <div class="col-sm-1 text-center" style="padding-top: 8px">
-                <p>{{bet.amount}}</p>
-            </div>
-            <div class="col-sm-3 text-center" style="padding-top: 8px">
-                <img src="{{bet.game.logo_A.url}}" width="30px" height="30px" />
-                <label>{{bet.game}}</label>
-                <img src="{{bet.game.logo_B.url}}" width="30px" height="30px" />
-            </div>
-            <div class="col-sm-2 text-center" style="padding-top: 8px">
-                {% if bet.team == "Team A" %}
-                <label>{{ bet.game.team_A }}</label>
-                <img src="{{bet.game.logo_A.url}}" width="30px" height="30px" />
-                {% else %}
-                <label>{{ bet.game.team_B }}</label>
-                <img src="{{bet.game.logo_B.url}}" width="30px" height="30px" />
-                {% endif %}
-            </div>
-            <div class="col-sm-2 text-center" style="padding-top: 8px">
-                <p>{{bet.date}}</p>
-            </div>
-            <div class="col-sm-2 text-center" style="padding-top: 8px">
-                <p>{{bet.status}}</p>
-            </div>
-        </div>
-        {% endfor %}
+            <tr>
+                <td>{{bet.amount}}</td>
+                <td>
+                    <img src="{{bet.game.logo_A.url}}" width="30px" height="30px" />
+                    <label>{{bet.game}}</label>
+                    <img src="{{bet.game.logo_B.url}}" width="30px" height="30px" />
+                </td>
+                <td>{% if bet.team == "Team A" %}
+                    <label>{{ bet.game.team_A }}</label>
+                    <img src="{{bet.game.logo_A.url}}" width="30px" height="30px" />
+                    {% else %}
+                    <label>{{ bet.game.team_B }}</label>
+                    <img src="{{bet.game.logo_B.url}}" width="30px" height="30px" />
+                    {% endif %}
+                </td>
+                <td>{{bet.date}}</td>
+                <td>{{bet.status}}</td>
+            </tr>
+            {% endfor %}
+        </table>
         {% endif %} 
     </div>
 </div>
