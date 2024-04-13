@@ -1,15 +1,5 @@
 {% block content %}
 <style>
-    .content h2{
-        color: white;
-        text-shadow: 1px 1px 2px black,
-                     0 0 1em gainsboro,
-                     0 0 0.2em gainsboro;;
-    }
-    .login-form{
-        border-radius: 15px;
-        height: 220px;
-    }
     .right-indent{
         margin-left: 12px;
     }
@@ -26,11 +16,6 @@
         color: black;
         display: inline;
     }
-    .btn{
-        border-radius: 20px;
-        border: 2px solid #ffffff;
-        -webkit-text-stroke: .2px white;
-    }
     .spacing{
         padding-bottom: 16px;
     }
@@ -44,16 +29,12 @@
     .submit{
         margin-left: 130px;
     }
-    .border{
-        width: 600px;
-        height: 300px;
-        padding: 30px;
-    }
 
 </style>
         <form id="send" method="post" action="/send_user">
             {% csrf_token %}
             <div>
+                <h2 class="title">Transfer</h2>
                 <hr>
                 <div class="row spacing">
                     <div class="col-sm-3 text-end">

@@ -1,32 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+.content button{
+   width: 100%;
+   border-radius: 8px;
+   color: black;
+   background-color: #fd9801;
+   margin-bottom: 10%;
+}
+.content button:hover{
+   color: white;
+   background-color: #fd9801;
+}
+</style>
 <section class="bg-primary" >
    <div class="container-fluid content">
     <br>
     <br>
-    <br>
-      <div class="container border"style="width: 750px;height:500px;" >
+      <div class="container border"style="width:60vw;height:50vh;" >
          <div class="row">
-            <div class="col-md-6" id="buttonsColumn" >
-               <div style="margin-top: 5%;">
-                  <div class="container">
-                     <ul class="nav nav-pills flex-column">
-                        <li class="nav-item">
-                           <button class="nav-link btn btn-secondary" onclick="loadContent('/withdraw')">Withdraw</button>
-                        </li>
-                        {% if not request.user.is_organizer %}
-                        <li class="nav-item">
-                           <button class="nav-link btn btn-secondary" onclick="loadContent('/deposit')">Deposit</button>
-                        </li>
-                        <li class="nav-item">
-                           <button class="nav-link btn btn-secondary" onclick="loadContent('/send')">Transfer</button>
-                        </li>
-                        {% endif %}
-                     </ul>
-                  </div>
+            <div class="col-md-5" id="buttonsColumn">
+               <div class="container" style="margin: 15% 0 0 5%;">
+                  <ul class="nav nav-pills flex-column">
+                     <li class="nav-item">
+                        <button class="nav-link btn btn-secondary" onclick="loadContent('/withdraw')">Withdraw</button>
+                     </li>
+                     {% if not request.user.is_organizer %}
+                     <li class="nav-item">
+                        <button class="nav-link btn btn-secondary" onclick="loadContent('/deposit')">Deposit</button>
+                     </li>
+                     <li class="nav-item">
+                        <button class="nav-link btn btn-secondary" onclick="loadContent('/send')">Transfer</button>
+                     </li>
+                     {% endif %}
+                  </ul>
                </div>
             </div>
-            <div class="col-md-6" id="contentColumn" style="width: 350px; margin-top: 5%;">
+            <div class="col-md-7" id="contentColumn" style="width: 350px; margin-top: 5%;">
                <div id="contentContainer">
                   <!-- Content will be loaded here -->
                </div>
