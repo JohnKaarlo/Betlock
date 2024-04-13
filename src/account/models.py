@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, username, email, mobileNumber, password=None):
+    def create_user(self, username, email, mobileNumber,address, birthdate, password=None):
         if not username:
             raise ValueError("Users must have a username!")
         if not email:
@@ -14,23 +14,31 @@ class MyUserManager(BaseUserManager):
             username = username,
             email = self.normalize_email(email),
             mobileNumber = mobileNumber,
+            address = address,
+            birthdate = birthdate
         )
 
         user.set_password(password)
+        user.address = address
+        user.birthdate = birthdate
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, username, email, mobileNumber, password):
+    def create_superuser(self, username, email, mobileNumber, password, address, birthdate):
         user = self.create_user(
             username = username,
             password = password,
             email = self.normalize_email(email),
             mobileNumber = mobileNumber,
+            address = address,
+            birthdate = birthdate
         )
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
         user.is_organizer = True
+        user.address = address
+        user.birthdate = birthdate
         user.save(using=self._db)
         return user
 
@@ -42,11 +50,14 @@ class User(AbstractBaseUser):
     on_hold = models.FloatField(verbose_name="on_hold", default=0)
     date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
     last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
+    address = models.CharField(max_length=350, default='')
+    birthdate = models.CharField(max_length=100, default='')
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_organizer = models.BooleanField(default=False)
+    
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'mobileNumber',]

@@ -50,11 +50,9 @@ def signup_view(request):
         password2 = request.POST['conpassword']
         email = request.POST['email']
         mobileNumber = request.POST['mobileNumber']
-        type = request.POST['type']
-        if type == "organizer":
-            isOrganizer = True
-        else:
-            isOrganizer = False
+        address = request.POST['address']
+        birthdate = request.POST['birthdate']
+        isOrganizer = False
 
         if User.objects.filter(username=username).exists() == True:
             context["msg"] = "Username already taken!"
@@ -83,7 +81,7 @@ def signup_view(request):
                 else:
                     if password == password2:
                         password = make_password(password)
-                        user = User(username=username,password=password,email=email,mobileNumber=mobileNumber,is_organizer=isOrganizer)
+                        user = User(username=username,password=password,email=email,mobileNumber=mobileNumber,is_organizer=isOrganizer, address =address, birthdate = birthdate )
                         user.save()
                         login(request,user)
                         return redirect("/profile")
