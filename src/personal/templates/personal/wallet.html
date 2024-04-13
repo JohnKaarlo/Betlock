@@ -1,38 +1,51 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <style>
-.content button{
+.content button {
    width: 100%;
    border-radius: 8px;
    color: black;
    background-color: #fd9801;
    margin-bottom: 30%;
 }
-.content button:hover{
+.content button:hover {
    color: white;
    background-color: #fd9801;
 }
-.row{
-      padding-bottom: 16px;
+.row {
+   padding-bottom: 16px;
+}
+/* Highlighting the active button */
+.nav-pills .nav-item .nav-link.active {
+   background-color: orange !important;
+   color: red !important;
+}
+#modalContainer {
+    position: fixed; /* Position the modal container fixed to the viewport */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Ensure the modal appears on top of other elements */
 }
 </style>
-<section class="bg-primary" >
+<section class="bg-primary">
    <div class="container-fluid content">
-    <br>
-    <br>
-      <div class="container border"style="width:60vw;height:50vh;" >
-         <div class="row">
+      <br>
+      <br>
+      <div class="container" style="width:60vw; height:50vh; background-color: rgba(70, 49, 49, 0.233);">
+         <div class="row ">
             <div class="col-md-5" id="buttonsColumn">
-               <div class="container" style="margin: 20% 0 0 10%;">
+               <div class="container " style="margin: 20% 0 0 10%;">
                   <ul class="nav nav-pills flex-column">
                      <li class="nav-item">
-                        <button class="nav-link" onclick="loadContent('/withdraw')">Withdraw</button>
+                        <button class="nav-link" onclick="highlightButton(this, 'withdrawContent')">Withdraw</button>
                      </li>
                      <li class="nav-item">
-                        <button class="nav-link" onclick="loadContent('/deposit')">Deposit</button>
+                        <button class="nav-link" onclick="highlightButton(this, 'depositContent')">Deposit</button>
                      </li>
                      <li class="nav-item">
-                        <button class="nav-link" onclick="loadContent('/send')">Transfer</button>
+                        <button class="nav-link" onclick="highlightButton(this, 'transferContent')">Transfer</button>
                      </li>
                   </ul>
                </div>
@@ -48,13 +61,40 @@
 </section>
 
 <script>
-   function loadContent(url) {
-       fetch(url)
-           .then(response => response.text())
-           .then(data => {
-               document.getElementById('contentContainer').innerHTML = data;
-           })
-           .catch(error => console.error('Error:', error));
-   }
+function highlightButton(button, contentId) {
+    var buttons = document.querySelectorAll('.nav-link');
+    buttons.forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+
+    button.classList.add('active');
+
+    var content = document.getElementById(contentId);
+    document.getElementById('contentContainer').innerHTML = content.innerHTML;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    highlightButton(document.querySelector('.nav-link'), 'depositContent');
+});
 </script>
+
+<div id="withdrawContent" style="display: none;">
+    {% include 'personal/withdraw.html' %}
+</div>
+
+<div id="depositContent" style="display: none;">
+    {% include 'personal/deposit.html' %}
+</div>
+
+<div id="transferContent" style="display: none;">
+    {% include 'personal/send.html' %}
+</div>
+
+</div> <!-- Close the container with the border -->
+
+</div> <!-- Close the container-fluid content -->
+
+<div id="modalContainer">
+    {% include 'ModalPopup.html' %}
+</div>
 {% endblock content %}

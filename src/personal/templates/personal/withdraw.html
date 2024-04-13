@@ -14,42 +14,51 @@
         width: 100%;
     }
 </style>
-    <form action="/withdraw">
-        {% csrf_token %}
-        <div>
-            <h2 style="margin-left: 50%;">Withdraw</h2>
-            <div class="row">
-                <div class="col-sm-4 text-end">
-                    <label>Amount:</label>
-                </div>
-                <div class="col-sm-8 text-start">
-                    <input type="number" id="amount" name="amount" min="100" max="5000.0" required>
-                </div>
+    <div>
+        <h2 style="margin-left: 50%;">Withdraw</h2>
+        <div class="row">
+            <div class="col-sm-4 text-end">
+                <label>Amount:</label>
             </div>
-            <div class="row">
-                <div class="col-sm-4 text-end">
-                    <label for="partner">Select Partner:</label>
-                </div>
-                <div class="col-sm-8 text-start">
-                    <select name="partner" class="partner">
-                        <option value="paypal">Paypal</option>
-                        <option value="gcash" disabled>Gcash</option>
-                        <option value="maya" disabled>Maya</option>
-                    </select>
-                </div>
+            <div class="col-sm-8 text-start">
+                <input type="number" id="amount" name="amount" min="100" max="5000.0" required>
             </div>
-            <div class="row">
-                <div class="col-sm-4"></div>
-                <div class="col-sm-8">
-                    <button class="btn" type="submit">Withdraw</button>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 text-end">
+                <label for="partner">Select Partner:</label>
             </div>
-            <label class="error title">{{ err }}</label>
-        </div>      
-    </form>
-{% if msg %}
+            <div class="col-sm-8 text-start">
+                <select name="partner" class="partner">
+                    <option value="paypal">Paypal</option>
+                    <option value="gcash" disabled>Gcash</option>
+                    <option value="maya" disabled>Maya</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-8">
+                <button class="btn" id="withdrawFromPage" onclick="withdrawFunction()">Withdraw</button>
+            </div>
+        </div>
+        <label class="error title">{{ err }}</label>
+    </div>      
+
 <script>
-    alert('{{ msg }}');
+    function withdrawFunction() {
+        $('#myModal #message').text('Do you want to continue with the withdrawal?');
+        $('#myModal').modal('show');
+    }
 </script>
-{% endif %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('withdrawFromPage').addEventListener('click', function(event) {
+            event.preventDefault(); 
+        });
+    });
+
+
+</script>
+{% include 'ModalPopup.html' %}
 {% endblock content %}

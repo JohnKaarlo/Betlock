@@ -7,8 +7,6 @@
         width: 100%;
     }
 </style>
-        <form id="send" method="post" action="/send_user">
-            {% csrf_token %}
             <div>
                 <h2 style="margin-left: 50%;">Transfer</h2>
                 <div class="row spacing">
@@ -32,10 +30,17 @@
                 <div class="row">
                     <div class="col-sm-4"></div>
                     <div class="col-sm-8">
-                        <button type="submit" class="btn submit">Transfer</button>
+                        <button class="btn submit"  onclick="transferFunction()">Transfer</button>
                     </div>
                 </div>
                 <label class="success">{{ msg }}</label>
             </div>
-        </form>
+
+
+        <script>
+            function transferFunction() {
+                $('#myModal #message').text('Do you want to continue with the withdrawal?');
+                $('#myModal').modal('show');
+            }
+        </script>
 {% endblock content %}

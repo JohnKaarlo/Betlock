@@ -41,8 +41,16 @@
             <div class="row">
                 <div class="col-sm-4"></div>
                 <div class="col-sm-8">
-                    <button class="btn" type="submit">Deposit</button>
+                    <button class="btn" onclick="depositFunction()">Deposit</button>
                 </div>
             </div>
         </div>
+        <script>
+            function depositFunction() {
+                $('#myModal #message').text('Do you want to continue with the withdrawal?');
+                $('#myModal').modal('show');
+            }
+        </script>
+
+{% include 'ModalPopup.html' %}
 {% endblock content %}

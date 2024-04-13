@@ -19,6 +19,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
+from Services.Cashiers.cashiers import create_transaction
 from personal.views import (
     login_view,
     signup_view,
@@ -88,6 +89,7 @@ urlpatterns = [
     path('<slug>-bet', bet_view, name = "bet"),
     path('<slug>-winner', winner, name="winner"),
     path('<slug>', game_view, name="game"),
+    path('cashiers/create_transaction/', create_transaction, name='create_transaction'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
