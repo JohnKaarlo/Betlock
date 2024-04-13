@@ -80,26 +80,96 @@
       </div>  
     </div>
     <!-- for loop here -->
-    {% for game in local %}
-    <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-2 text-end">
-        <a href="{% url 'game' game.slug %}">
-          <p>{{ game.team_A }}</p>
-          <img src="{{game.logo_A.url}}" width="30px" height="30px" />
-        </a>
+    <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for game in local %}
+          {% if forloop.counter0 < 5 %} {# Limiting to 5 items #}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+              <div class="row justify-content-center">
+                <div class="col-sm-3 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <img src="{{game.logo_A.url}}" width="300px" height="300px" />
+                  </a>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <h2>VS</h2>
+                  </a>
+                </div>
+                <div class="col-sm-3 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <img src="{{game.logo_B.url}}" width="300px" height="300px" />
+                  </a>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-sm-3 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <h5>{{ game.team_A }}</h5>
+                  </a>
+                </div>
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <h5>{{ game.team_B }}</h5>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
       </div>
-      <div class="col-sm-2 text-center" style="padding-top: 16px;">
-        <a href="{% url 'game' game.slug %}"><p>VS</p></a>
-      </div>
-      <div class="col-sm-2 text-start">
-        <a href="{% url 'game' game.slug %}">
-          <img src="{{game.logo_B.url}}" width="30px" height="30px" />
-          <p>{{ game.team_B }}</p>
-        </a>
-      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true" style="font-size: 2rem; color: white;"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true" style="font-size: 2rem; color: white;"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-    {% endfor %}
+    
+    <div id="normalView" style="display: none;">
+      {% for game in local %}
+        <div class="row">
+          <div class="col-sm-3"></div>
+          <div class="col-sm-2 text-end">
+            <a href="{% url 'game' game.slug %}">
+              <p>{{ game.team_A }}</p>
+              <img src="{{game.logo_A.url}}" width="30px" height="30px" />
+            </a>
+          </div>
+          <div class="col-sm-2 text-center" style="padding-top: 16px;">
+            <a href="{% url 'game' game.slug %}"><p>VS</p></a>
+          </div>
+          <div class="col-sm-2 text-start">
+            <a href="{% url 'game' game.slug %}">
+              <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+              <p>{{ game.team_B }}</p>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="text-center">
+      <button style="background-color: #fd9801; color: white; padding: 10px 20px; font-size: 18px;" onclick="toggleView()">Switch to Carousel View</button>
+  </div>
+  
+<script>
+  function toggleView() {
+    var carouselView = document.getElementById("teamCarousel");
+    var normalView = document.getElementById("normalView");
+    if (carouselView.style.display === "none") {
+      carouselView.style.display = "block";
+      normalView.style.display = "none";
+    } else {
+      carouselView.style.display = "none";
+      normalView.style.display = "block";
+    }
+  }
+</script>
+    
+    
     <!-- If no local matches available -->
     {% if not local %}
     <div class="row">
@@ -157,4 +227,11 @@
     {% endif %}
   </div>
 </div>
+<style>
+  .carousel-control-next-icon {
+    color: white !important;
+}
+
+
+</style>
 {% endblock content %}
