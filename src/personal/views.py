@@ -47,6 +47,8 @@ def signup_view(request):
     elif request.POST:
         username = request.POST['username']
         password = request.POST['password']
+        lastname = request.POST['lastname']
+        firstname = request.POST['firstname']
         password2 = request.POST['conpassword']
         email = request.POST['email']
         mobileNumber = request.POST['mobileNumber']
@@ -80,10 +82,11 @@ def signup_view(request):
                 else:
                     if password == password2:
                         password = make_password(password)
-                        user = User(username=username,password=password,email=email,mobileNumber=mobileNumber,is_organizer=isOrganizer,address=address,birthdate=birthdate)
+                        user = User(username=username,password=password,email=email,mobileNumber=mobileNumber,is_organizer=isOrganizer,address=address,birthdate=birthdate, lastname = lastname, firstname = firstname)
                         user.save()
                         login(request,user)
-                        return redirect("/profile")
+                        context["msg"] = firstname +" "+ lastname+ " "+ "User added successfully"
+                        return render(request,"personal/signup.html", context)
                     else:
                         context["msg"] = "Recheck password!"
                         return render(request,"personal/signup.html", context)

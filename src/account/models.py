@@ -52,6 +52,8 @@ class User(AbstractBaseUser):
     last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
     address = models.CharField(max_length=350, default='')
     birthdate = models.CharField(max_length=100, default='')
+    lastname = models.CharField(max_length=150, default='')
+    firstname = models.CharField(max_length=150, default='')
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

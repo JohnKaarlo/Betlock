@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <style>
     form a:hover{
@@ -115,6 +114,12 @@
                             <input type="submit" id="submit" value="Signup">
                             {% if msg %}
                                 <label class="error">{{ msg }}</label>
+                                <script>
+                                    $(document).ready(function(){
+                                        $('#myModal #message').text('{{ msg }}');
+                                        $('#myModal').modal('show');
+                                    });
+                                </script>
                             {% endif %}
                         </div>
                     </div>
@@ -124,9 +129,49 @@
                             <a href="/">Already have an account?</a>
                         </div>
                     </div>
+
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 1050;">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Sign Up</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="color: black;" id="message">Modal Message Here</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="okayButton" class="btn btn-primary" data-dismiss="modal">Okay</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </form>
             </div>
         </div>
     </div>
 </div>
+<style>
+    .modal-backdrop {
+    z-index: -100; 
+}
+</style>
+<script>
+    $(document).ready(function(){
+        $('.close').click(function(){
+            $('#myModal').modal('hide');
+        });
+
+        $('#okayButton').click(function(){
+            {% if msg and "success" in msg %}
+                window.location.href = '/profile';
+            {% else %}
+                $('#myModal').modal('hide');
+            {% endif %}
+        });
+    });
+</script>
 {% endblock content %}
