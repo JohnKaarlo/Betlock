@@ -21,8 +21,21 @@
     .type{
         width: 32px;
     }
-    #submit{
-        background-color: gray;
+    .modal-header{
+        background-color: #fd5001;
+    }
+    .btn{
+        background-color: #fd9801;
+    }
+    .btn:hover{
+        background-color: #fd9801;
+    }
+    .close{
+        background-color: #fd9801;
+        border-color: black;
+        border-width: 1px;
+        border-radius: 7px;
+        padding: 0 7px 0 7px;
     }
 </style>
 <div class="container-fluid content">
@@ -111,9 +124,8 @@
                     <div class="row">
                         <div class="col-sm-2"></div>
                         <div class="col-sm-3">
-                            <input type="submit" id="submit" value="Signup">
+                            <input class="btn" type="submit" value="Signup">
                             {% if msg %}
-                                <label class="error">{{ msg }}</label>
                                 <script>
                                     $(document).ready(function(){
                                         $('#myModal #message').text('{{ msg }}');
@@ -136,14 +148,14 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Sign Up</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
+                                        <span aria-hidden="true">X</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
                                     <p style="color: black;" id="message">Modal Message Here</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" id="okayButton" class="btn btn-primary" data-dismiss="modal">Okay</button>
+                                    <button type="button" id="okayButton" class="btn" data-dismiss="modal">Okay</button>
                                 </div>
                             </div>
                         </div>

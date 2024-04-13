@@ -9,12 +9,10 @@
         color: black;
         display: inline;
         text-shadow: none;
+        margin-right: 36px;
     }
     .row{
         padding-bottom: 16px;
-    }
-    .update{
-        margin-top: 9px;
     }
     .border{
         width: 800px;
@@ -33,12 +31,15 @@
     .btn:hover{
         background-color: #fd9801;
     }
+    table input{
+        width: 100%;
+    }
 </style>
 <div class="container-fluid content">
     <div class="container">
         <br>
         <div class="border">
-            <h2 class="ml12">My Profile</h2>
+            <h2>My Profile</h2>
             <div class="row">
                 <div class="col-sm-2 ">
                     <p>User ID: </p>
@@ -130,7 +131,7 @@
                 </td>
                 <td>{{game.winner}}</td>
                 <td>{{game.date}}</td>
-                <td><input type="button" value="{% if game.winner == 'TBD' %}Update{% else %}Check{% endif %}"></td>
+                <td><input type="button" class="btn" value="{% if game.winner == 'TBD' %}Update{% else %}Check{% endif %}"></td>
             </tr>
             {% endfor %}
         </table>

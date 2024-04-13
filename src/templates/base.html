@@ -9,22 +9,21 @@
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <title>BetLock</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg static-top" style="padding: 0;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% if request.user.is_admin %}/admin{% else %}/blog{% endif %}">
+            <a class="navbar-brand" href="{% if request.user.is_admin %}/admin{% else %}/lobby{% endif %}" style="padding: 8px 0;">
                 <img src="/static/img/logo.png" alt="Logo" height="30px" width="30px" />BETLOCK
             </a>
             <ul class="navbar-nav mr-auto">
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% if request.user.is_admin %}/admin{% else %}/lobby{% endif %}">Lobby</a>
+                    <a class="nav-link link" href="{% if request.user.is_admin %}/admin{% else %}/lobby{% endif %}">Lobby</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/wallet">Balance: P{{ request.user.wallet }}</a>
+                    <a class="nav-link link" href="/wallet">Balance: P{{ request.user.wallet }}</a>
                 </li>
                 <li class="nav-item dropdown" id="profileDropdown">
                     <a class="nav-link" href="#">
@@ -44,10 +43,10 @@
                 </li>
             {% elif request.user.is_admin %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'add_game' %}">Add Game</a>
+                    <a class="nav-link link" href="{% url 'add_game' %}">Add Game</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link2</a>
+                    <a class="nav-link link" href="#">Link2</a>
                 </li>
             {% endif %}
             </ul>

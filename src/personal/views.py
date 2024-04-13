@@ -18,7 +18,7 @@ import random, re
 def login_view(request):
     context = {}
     if request.user.is_authenticated:
-        return redirect("/blog")
+        return redirect("/lobby")
     elif request.POST:
         username = request.POST['username']
         password = request.POST['password']
@@ -32,7 +32,7 @@ def login_view(request):
             else:
                 print("bang1")
                 print(request)
-                return redirect("/blog") 
+                return redirect("/lobby") 
         else:
             context['str'] = "Invalid credentials!"
             return render(request, "personal/login.html", context)
@@ -41,7 +41,6 @@ def login_view(request):
 
 def signup_view(request):
     context = {}
-    context["helpTxt"] = password_validators_help_text_html
     if request.user.is_authenticated:
         return redirect("/blog")
     elif request.POST:
@@ -428,6 +427,8 @@ def winner(request, slug):
 
 @login_required()
 def add_game(request):
+    if not request.user.is_admin:
+        return redirect("/lobby")
     if not request.POST:
         return render(request, "personal/addGame.html")
     context = {}

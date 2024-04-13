@@ -21,6 +21,12 @@
     .row{
         padding-top: 16px;
     }
+    .btn{
+        background-color: #fd9801;
+    }
+    .btn:hover{
+        background-color: #fd9801;
+    }
 </style>
 <div class="container-fluid content">
     <br>
@@ -47,7 +53,7 @@
             {% endif %}
             <div class="row">
                 <div class="col">
-                    <input type="submit" id="submit" value="Login">
+                    <input type="submit" class="btn" value="Login">
                     <p class="error">{{ str }}</p>
                 </div>
             </div>

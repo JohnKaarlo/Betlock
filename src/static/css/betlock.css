@@ -15,7 +15,7 @@
     -webkit-text-stroke: .2px rgb(183, 200, 0);
 }
 .navbar-nav{
-    padding: 4px 0;
+    padding: 0;
 }
 .nav-item{
     padding-right: 24px;
@@ -23,7 +23,7 @@
 .content{
     margin: 0px;
     padding: 0px;
-    min-height: 91vh;
+    min-height: 92.46vh;
     color: white;
     background-image: url("/static/img/BG.jpg");
     background-repeat: no-repeat;
