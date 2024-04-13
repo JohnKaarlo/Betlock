@@ -1,19 +1,5 @@
 {% block content %}
 <style>
-    .title{
-        color: white;
-        margin-left: 12px;
-    }
-    hr{
-        height: 10px;
-        border: 0;
-        box-shadow: 0 10px 10px -10px black inset;
-        margin: 0;
-    }
-    .content a{
-        color: black;
-        display: inline;
-    }
     .row{
         padding-bottom: 16px;
     }
@@ -21,32 +7,30 @@
         border-color: black;
         border-width: 2px;
         border-radius: 7px;
-        height: 30px;
-        width: 105px;
+        height: 35px;
+        width: 100%;
     }
-    .submit{
-        margin-left: 130px;
+    .content input{
+        width: 100%;
     }
-    
 </style>
         
         {% csrf_token %}
         <div>
-            <h2 class="title">Deposit</h2>
-            <hr>
+            <h2 style="margin-left: 50%;">Deposit</h2>
             <div class="row">
-                <div class="col-sm-3 text-end">
+                <div class="col-sm-4 text-end">
                     <label>Amount:</label>
                 </div>
-                <div class="col-sm-9 text-start">
+                <div class="col-sm-8">
                     <input type="number" id="amount" name="amount" min="100" max="5000.0" required>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-3 text-end">
+                <div class="col-sm-4 text-end">
                     <label for="partner">Select Partner:</label>
                 </div>
-                <div class="col-sm-9 text-start">
+                <div class="col-sm-8">
                     <select name="partner" class="partner">
                         <option value="paypal">Paypal</option>
                         <option value="gcash" disabled>Gcash</option>
@@ -54,7 +38,11 @@
                     </select>
                 </div>
             </div>
-            <hr>
-            <button class="btn submit" type="submit">Deposit</button>
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-8">
+                    <button class="btn" type="submit">Deposit</button>
+                </div>
+            </div>
         </div>
 {% endblock content %}

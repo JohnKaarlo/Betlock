@@ -1,61 +1,40 @@
 {% block content %}
 <style>
-    .right-indent{
-        margin-left: 12px;
-    }
-    .left-indent{
-        margin-right: 12px;
-    }
-    hr{
-        height: 10px;
-        border: 0;
-        box-shadow: 0 10px 10px -10px black inset;
-        margin: 0;
-    }
-    .content a{
-        color: black;
-        display: inline;
-    }
-    .spacing{
+    .row{
         padding-bottom: 16px;
     }
-    .partner{
-        border-color: black;
-        border-width: 2px;
-        border-radius: 7px;
-        height: 30px;
-        width: 105px;
+    .content input{
+        width: 100%;
     }
-    .submit{
-        margin-left: 130px;
-    }
-
 </style>
         <form id="send" method="post" action="/send_user">
             {% csrf_token %}
             <div>
-                <h2 class="title">Transfer</h2>
-                <hr>
+                <h2 style="margin-left: 50%;">Transfer</h2>
                 <div class="row spacing">
-                    <div class="col-sm-3 text-end">
+                    <div class="col-sm-4 text-end">
                         <label for="amount">Amount:</label>
                     </div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-8">
                         <input type="number" placeholder="Enter Amount" id="amount" name="amount" required> 
-                        <label class="error">{{ msg1 }}</label>
+                        <label class="error" {% if not msg1 %}style="display: none;"{% endif %}>{{ msg1 }}</label>
                     </div>
                 </div>
                 <div class="row spacing">
-                    <div class="col-sm-3 text-end">
+                    <div class="col-sm-4 text-end">
                         <label for="userid">User ID:</label>
                     </div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-8">
                         <input type="number" placeholder="Enter User ID" id="userid" name="userid" required>
-                        <label class="error">{{ msg2 }}</label>
+                        <label class="error" {% if not msg2 %}style="display: none;"{% endif %}>{{ msg2 }}</label>
                     </div>
                 </div>
-                <hr>
-                <button type="submit" class="btn submit">Send</button>
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-8">
+                        <button type="submit" class="btn submit">Transfer</button>
+                    </div>
+                </div>
                 <label class="success">{{ msg }}</label>
             </div>
         </form>

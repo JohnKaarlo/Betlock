@@ -6,11 +6,14 @@
    border-radius: 8px;
    color: black;
    background-color: #fd9801;
-   margin-bottom: 10%;
+   margin-bottom: 30%;
 }
 .content button:hover{
    color: white;
    background-color: #fd9801;
+}
+.row{
+      padding-bottom: 16px;
 }
 </style>
 <section class="bg-primary" >
@@ -20,23 +23,21 @@
       <div class="container border"style="width:60vw;height:50vh;" >
          <div class="row">
             <div class="col-md-5" id="buttonsColumn">
-               <div class="container" style="margin: 15% 0 0 5%;">
+               <div class="container" style="margin: 20% 0 0 10%;">
                   <ul class="nav nav-pills flex-column">
                      <li class="nav-item">
-                        <button class="nav-link btn btn-secondary" onclick="loadContent('/withdraw')">Withdraw</button>
-                     </li>
-                     {% if not request.user.is_organizer %}
-                     <li class="nav-item">
-                        <button class="nav-link btn btn-secondary" onclick="loadContent('/deposit')">Deposit</button>
+                        <button class="nav-link" onclick="loadContent('/withdraw')">Withdraw</button>
                      </li>
                      <li class="nav-item">
-                        <button class="nav-link btn btn-secondary" onclick="loadContent('/send')">Transfer</button>
+                        <button class="nav-link" onclick="loadContent('/deposit')">Deposit</button>
                      </li>
-                     {% endif %}
+                     <li class="nav-item">
+                        <button class="nav-link" onclick="loadContent('/send')">Transfer</button>
+                     </li>
                   </ul>
                </div>
             </div>
-            <div class="col-md-7" id="contentColumn" style="width: 350px; margin-top: 5%;">
+            <div class="col-md-7" id="contentColumn" style="width: 55%; margin-top: 5%;">
                <div id="contentContainer">
                   <!-- Content will be loaded here -->
                </div>
