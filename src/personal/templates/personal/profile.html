@@ -10,79 +10,57 @@
         display: inline;
         text-shadow: none;
     }
-    .btn{
-        border-radius: 20px;
-        border: 2px solid #ffffff;
-        -webkit-text-stroke: .2px black;
-    }
-    .btn:hover{
-        color: black;
-        background-color: white;
-        border: 2px solid #000000;
-    }
-    .login-form{
-        margin-left: 0;
-        border-radius: 15px;
-        height: 280px;
-    }
-    hr{
-        height: 10px;
-        border: 0;
-        box-shadow: 0 10px 10px -10px black inset;
-        margin: 0;
-    }
     .pd16{
         padding-bottom: 16px;
     }
-    .ml12{
-        margin-left: 12px;
-    }
     .update{
         margin-top: 9px;
+    }
+    .border{
+        width: 600px;
+        height: 300px;
+        padding: 30px;
     }
 </style>
 <div class="container-fluid content">
     <div class="container">
         <br>
-        <br>
-        <div class="login-form">
-            <h2 class="white-text ml12">My Profile</h2>
-            <hr>
+        <div class="border">
+            <h2 class="ml12">My Profile</h2>
             <div class="row pd16">
-                <div class="col-sm-3 text-end">
+                <div class="col-sm-2 text-end">
                     <p>User ID: </p>
                 </div>
-                <div class="col-sm-9 white-text">
+                <div class="col-sm-10">
                     <p>{{ request.user.id }}</p>
                 </div>
             </div>
             <div class="row pd16">
-                <div class="col-sm-3 text-end">
+                <div class="col-sm-2 text-end">
                     <p>Username: </p>
                 </div>
-                <div class="col-sm-9 white-text">
+                <div class="col-sm-10">
                     <p>{{ request.user.username }}</p>
                 </div>
             </div>
             <div class="row pd16">
-                <div class="col-sm-3 text-end">
+                <div class="col-sm-2 text-end">
                     <p>Email: </p>
                 </div>
-                <div class="col-sm-9 white-text">
+                <div class="col-sm-10">
                     <p>{{ request.user.email }}</p>
                 </div>
             </div>
             <div class="row pd16">
-                <div class="col-sm-3 text-end">
+                <div class="col-sm-2 text-end">
                     <p>Mobile: </p>
                 </div>
-                <div class="col-sm-9 white-text">
+                <div class="col-sm-10">
                     <p>{{ request.user.mobileNumber }}</p>
                 </div>
             </div>
-            <hr>
-            <a class="btn ml12" href="/update_password" >Change Password</a>
-            <a href="/update" class="btn ml12">Update</a>
+            <a class="btn btn-secondary" href="/update_password" >Change Password</a>
+            <a href="/update" class="btn btn-secondary">Update</a>
         </div>
                 
         <br>
@@ -185,7 +163,5 @@
         {% endfor %}
         {% endif %} 
     </div>
-    <br>
-    <hr>
 </div>
 {% endblock content %}

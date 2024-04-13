@@ -2,20 +2,14 @@
 
 {% block content %}
 <style>
-    .content{
-        background: gainsboro;
+    form a{
+        text-decoration: none;
+        color: white;
     }
     form a:hover{
-        color: black;
-    }
-    form button{
-        border-radius: 20px;
-        border: 2px solid #ffffff;
-        -webkit-text-stroke: .2px black;
-    }
-    form button:hover{
-        background-color: white;
-        border: 2px solid #000000;
+        text-shadow: 1px 1px 2px black,
+                     0 0 1em gainsboro,
+                     0 0 0.2em gainsboro;;
     }
 </style>
 <div class="container-fluid content">
@@ -39,8 +33,9 @@
             <div class="row" style="margin-top: 8px;">
                 <div class="col-sm-6"></div>
                 <div class="col-sm-6 text-start">   
-                    <button type="submit">Next</button>
-                    <label class="error">{{ msg }}</label>
+                    <input type="submit" value="Next" id="submit">
+                    <p class="error">{{ msg }}</p>
+                    <a href="/">Back</a>
                 </div>
             </div>
         </form> 

@@ -501,7 +501,15 @@ def bet(request, slug):
             else:
                 context["msg"] = "Please place a valid amount!"
         else:
-            context["msg"] = "Must choose the same team!"
+            if request.user.wallet >= amount and amount > 0:
+                bet = Bet(amount=amount,bettor=request.user,game=game,team=team)
+                user = User.objects.get(id=request.user.id)
+                user.wallet = user.wallet - amount
+                bet.save()
+                user.save()
+                context["msg"] = "Bet Placed!"
+            else:
+                context["msg"] = "Please place a valid amount!"
     else:
         if request.user.wallet >= amount and amount > 0:
             bet = Bet(amount=amount,bettor=request.user,game=game,team=team)

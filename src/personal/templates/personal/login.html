@@ -11,24 +11,12 @@
                      0 0 1em gainsboro,
                      0 0 0.2em gainsboro;;
     }
-    form button{
-        border-radius: 20px;
-        border: 2px solid #ffffff;
-        -webkit-text-stroke: .2px black;
-    }
-    form button:hover{
-        background-color: white;
-        border: 2px solid #000000;
-    }
     .error{
         text-shadow: none;
     }
     form input{
         border-radius: 8px;
         width: 250px;
-    }
-    #submit{
-        background-color: gray;
     }
     .row{
         padding-top: 16px;
@@ -63,7 +51,7 @@
                     <p class="error">{{ str }}</p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="padding-top: 0;">
                 <div class="col">
                     <a href="/forgotpassword">Forgot password?</a><br>
                     <a href="/signup">Don't have an account?</a>

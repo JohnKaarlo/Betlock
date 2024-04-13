@@ -22,12 +22,12 @@
         margin: 0;
     }
     .content a{
-        color: black;
+        color: white;
         display: inline;
     }
     .btn{
         border-radius: 20px;
-        border: 2px solid #ffffff;
+        border: 1px solid #ffffff;
         -webkit-text-stroke: .2px white;
     }
     .row{
@@ -43,7 +43,11 @@
     .submit{
         margin-left: 130px;
     }
-    
+    .border{
+        width: 600px;
+        height: 250px;
+        padding: 30px;
+    }
 </style>
 <div class="container-fluid content">
     <div class="container">
@@ -53,7 +57,7 @@
         <br>
         <form method="post" action="/withdraw_user">
         {% csrf_token %}
-        <div class="login-form">
+        <div class="border">
             <h2 class="title">Withdraw</h2>
             <hr>
             <div class="row">
