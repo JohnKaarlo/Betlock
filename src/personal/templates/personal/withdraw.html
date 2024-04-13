@@ -1,5 +1,3 @@
-{% extends 'base.html' %}
-
 {% block content %}
 <style>
     .login-form{
@@ -35,15 +33,9 @@
         padding: 30px;
     }
 </style>
-<div class="container-fluid content">
-    <div class="container">
-        <br>
-        <a class="btn btn-secondary" href="/wallet" >Back</a>
-        <br>
-        <br>
-        <form method="post" action="/withdraw_user">
+
         {% csrf_token %}
-        <div class="border">
+        <div>
             <h2>Withdraw</h2>
             <hr>
             <div class="row">
@@ -70,9 +62,7 @@
             <input class="btn btn-secondary" type="submit" value="Withdraw"></input>
             <label class="error title">{{ err }}</label>
         </div>      
-        </form>
-    </div>
-</div>
+
 {% if msg %}
 <script>
     alert('{{ msg }}');

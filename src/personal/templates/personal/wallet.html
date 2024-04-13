@@ -1,67 +1,49 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<style>
-    p{
-        display: inline;
-    }
-    .content a{
-        color: black;
-    }
-    .row{
-        padding-bottom: 16px;
-    }
-    .border{
-        width: 600px;
-        height: 300px;
-        padding: 30px;
-    }
-</style>
-<div class="container-fluid content">
-    <div class="container">
-        <br>
-        <div class="border">
-            <h2 class="white-text">My Wallet</h2>
-            <div class="row">
-                <div class="col-sm-2 text-end">
-                    <p>User ID: </p>
-                </div>
-                <div class="col-sm-10">
-                    <p class="white-text">{{ request.user.id }}</p>
-                </div>
+<section class="bg-primary" >
+   <div class="container-fluid content">
+    <br>
+    <br>
+    <br>
+      <div class="container border"style="width: 750px;height:500px;" >
+         <div class="row">
+            <div class="col-md-6" id="buttonsColumn" >
+               <div style="margin-top: 5%;">
+                  <div class="container">
+                     <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                           <button class="nav-link btn btn-secondary" onclick="loadContent('/withdraw')">Withdraw</button>
+                        </li>
+                        {% if not request.user.is_organizer %}
+                        <li class="nav-item">
+                           <button class="nav-link btn btn-secondary" onclick="loadContent('/deposit')">Deposit</button>
+                        </li>
+                        <li class="nav-item">
+                           <button class="nav-link btn btn-secondary" onclick="loadContent('/send')">Transfer</button>
+                        </li>
+                        {% endif %}
+                     </ul>
+                  </div>
+               </div>
             </div>
-            <div class="row">
-                <div class="col-sm-2 text-end">
-                    <p>Username: </p>
-                </div>
-                <div class="col-sm-10">
-                    <p class="white-text">{{ request.user.username }}</p>
-                </div>
+            <div class="col-md-6" id="contentColumn" style="width: 350px; margin-top: 5%;">
+               <div id="contentContainer">
+                  <!-- Content will be loaded here -->
+               </div>
             </div>
-            <div class="row">
-                <div class="col-sm-2 text-end">
-                    <p>Credits: </p>
-                </div>
-                <div class="col-sm-10">
-                    <p class="white-text">{{ request.user.wallet }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 text-end">
-                    <p>On hold: </p>
-                </div>
-                <div class="col-sm-10">
-                    <p class="white-text">{{ request.user.on_hold }}</p>
-                </div>
-            </div>
-            <div class="container">
-                <a class="btn btn-secondary" href="/withdraw">Withdraw</a>
-                {% if not request.user.is_organizer %}
-                <a class="btn btn-secondary" href="/deposit" >Deposit</a>
-                <a class="btn btn-secondary" href="/send">Send</a>
-                {% endif %} 
-            </div>
-        </div>    
-    </div>
-</div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<script>
+   function loadContent(url) {
+       fetch(url)
+           .then(response => response.text())
+           .then(data => {
+               document.getElementById('contentContainer').innerHTML = data;
+           })
+           .catch(error => console.error('Error:', error));
+   }
+</script>
 {% endblock content %}
