@@ -6,7 +6,10 @@
     {% load static %}
     <link href="{% static 'css/betlock.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <title>BetLock</title>
 </head>
 <body>
@@ -15,40 +18,88 @@
             <a class="navbar-brand" href="{% if request.user.is_admin %}/admin{% else %}/blog{% endif %}">
                 <img src="/static/img/logo.png" alt="Logo" height="30px" width="30px" />BETLOCK
             </a>
-            <ul class="navbar-nav">
-            {% if request.user.is_authenticated and not request.user.is_admin %}
-                <li class="nav-item link">
-                    <a class="nav-link" href="/lobby">Lobby</a>
+            <ul class="navbar-nav mr-auto">
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% if request.user.is_admin %}/admin{% else %}/lobby{% endif %}">Lobby</a>
                 </li>
-                <li class="nav-item link">
+                <li class="nav-item">
                     <a class="nav-link" href="/wallet">Balance: P{{ request.user.wallet }}</a>
                 </li>
+                <li class="nav-item dropdown" id="profileDropdown">
+                    <a class="nav-link" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 50 50" version="1.1">
+                            <g id="surface1">
+                                <path style=" stroke:none;fill-rule:nonzero;fill:rgb(40%,40.392157%,40%);fill-opacity:1;" d="M 50 25 C 50 38.808594 38.808594 50 25 50 C 11.191406 50 0 38.808594 0 25 C 0 11.191406 11.191406 0 25 0 C 38.808594 0 50 11.191406 50 25 Z M 50 25 "/>
+                                <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 13.347656 31.128906 L 13.347656 44.207031 L 36.652344 44.207031 L 36.652344 31.128906 L 33.753906 30.207031 L 33.015625 27.707031 L 25.335938 35.441406 L 16.917969 27.707031 L 16.238281 30.039062 Z M 13.347656 31.128906 "/>
+                                <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 35.449219 17.019531 C 35.449219 9.957031 30.730469 4.234375 24.910156 4.234375 C 19.089844 4.234375 14.367188 9.957031 14.367188 17.019531 C 14.367188 24.078125 19.089844 29.804688 24.910156 29.804688 C 30.730469 29.804688 35.449219 24.078125 35.449219 17.019531 Z M 35.449219 17.019531 "/>
+                            </g>
+                        </svg>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="profileDropdown" style="left:-98px; margin-top: 5px;">
+                        <a class="dropdown-item" href="/profile">Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">Log out</a>
+                    </div>
+                </li>
             {% elif request.user.is_admin %}
-                <li class="nav-item link">
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'add_game' %}">Add Game</a>
                 </li>
-                <li class="nav-item link">
+                <li class="nav-item">
                     <a class="nav-link" href="#">Link2</a>
                 </li>
             {% endif %}
-                <li class="nav-item" {% if not request.user.is_authenticated %} style="visibility: hidden;" {% endif %}>
-                    <a href="/profile">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px" viewBox="0 0 50 50" version="1.1">
-                            <g id="surface1">
-                            <path style=" stroke:none;fill-rule:nonzero;fill:rgb(40%,40.392157%,40%);fill-opacity:1;" d="M 50 25 C 50 38.808594 38.808594 50 25 50 C 11.191406 50 0 38.808594 0 25 C 0 11.191406 11.191406 0 25 0 C 38.808594 0 50 11.191406 50 25 Z M 50 25 "/>
-                            <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 13.347656 31.128906 L 13.347656 44.207031 L 36.652344 44.207031 L 36.652344 31.128906 L 33.753906 30.207031 L 33.015625 27.707031 L 25.335938 35.441406 L 16.917969 27.707031 L 16.238281 30.039062 Z M 13.347656 31.128906 "/>
-                            <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;" d="M 35.449219 17.019531 C 35.449219 9.957031 30.730469 4.234375 24.910156 4.234375 C 19.089844 4.234375 14.367188 9.957031 14.367188 17.019531 C 14.367188 24.078125 19.089844 29.804688 24.910156 29.804688 C 30.730469 29.804688 35.449219 24.078125 35.449219 17.019531 Z M 35.449219 17.019531 "/>
-                            </g>
-                        </svg>
-                    </a> 
-                </li>
-                <li class="nav-item" {% if not request.user.is_authenticated %} style="visibility: hidden;" {% endif %}>
-                    <a class="nav-link" href="/logout">Log out</a>
-                </li>
             </ul>
         </div>    
     </nav>
     {% block content %}
 
     {% endblock content %}
+
+    <script>
+        $(document).ready(function(){
+            $("#profileDropdown").on('click', function(event){
+                $(this).toggleClass('show');
+                $(this).find('.dropdown-menu').toggleClass('show');
+            });
+            $(document).on('click', function(event){
+                if (!$(event.target).closest('#profileDropdown').length) {
+                    $(".dropdown-menu").removeClass('show');
+                }
+            });
+        });
+    </script>
+    <style>
+       .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 100;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+    opacity: 1;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
+    width: 10rem; 
+    max-height: calc(100vh - 100px); 
+    overflow-y: auto;
+}
+
+
+    </style>
+</body>
 </html>
