@@ -13,6 +13,9 @@
     color: white;
     font-size: 16px;
   }
+  #switch_view{
+    background-color: #fd5001;
+  }
 </style>
 <div class="container-fluid content">
   <div class="container">
@@ -31,7 +34,7 @@
         
       </style>
       
-      <div class="container">
+      <div class="container text-center">
         <div class="row">
           <div class="col-md-4">
             <a href="#featured"> <!-- Link to the 'featured' section -->
@@ -48,41 +51,41 @@
           
           
 
-<!-- Local Matches Card -->
-<div class="col-md-4">
-  <a href="#local"> <!-- Link to the 'featured' section -->
-    <div>
-      <img class="card-img-top" src="/static/img/local.png" alt="Featured Matches Image">
-      <div class="card-body">
-        <h5 class="card-title">Local Matches</h5>
-        <p class="card-text">Discover the local matches of the season.</p>
+        <!-- Local Matches Card -->
+        <div class="col-md-4">
+          <a href="#local"> <!-- Link to the 'featured' section -->
+            <div>
+              <img class="card-img-top" src="/static/img/local.png" alt="Featured Matches Image">
+              <div class="card-body">
+                <h5 class="card-title">Local Matches</h5>
+                <p class="card-text">Discover the local matches of the season.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Recent Matches Card -->
+        <div class="col-md-4">
+          <a href="#recent"> <!-- Link to the 'featured' section -->
+            <div>
+              <img class="card-img-top" src="/static/img/recent.png" alt="Featured Matches Image">
+              <div class="card-body">
+                <h5 class="card-title">Recent Matches Matches</h5>
+                <p class="card-text">Discover the recent matches of the season.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+
       </div>
     </div>
-  </a>
-</div>
-
-<!-- Recent Matches Card -->
-  <div class="col-md-4">
-    <a href="#recent"> <!-- Link to the 'featured' section -->
-      <div>
-        <img class="card-img-top" src="/static/img/recent.png" alt="Featured Matches Image">
-        <div class="card-body">
-          <h5 class="card-title">Recent Matches Matches</h5>
-          <p class="card-text">Discover the recent matches of the season.</p>
-        </div>
-      </div>
-    </a>
-  </div>
-
-        </div>
-      </div>
       
       <br><br>
       <br>
     </div>
     <div class="row" id="featured">
       <div class="col-sm-3"></div>
-      <div class="col-sm-6 text-center table-background">
+      <div class="col-sm-6 text-center">
         <h2>Featured Matches</h2>
       </div>
       <div class="col-sm-2 text-start" style="padding-top: 10px;">
@@ -132,17 +135,17 @@
 
     <div class="row" id="local">
       <div class="col-sm-3"></div>
-      <div class="col-sm-6 text-center table-background">
+      <div class="col-sm-6 text-center">
         <h2>Local Matches</h2>
       </div>
       <div class="text-center">
-        <button style="background-color: #fd9801; color: white; padding: 10px 20px; font-size: 18px;" onclick="toggleView()">Switch to Carousel View</button>
+        <button class="btn" id="switch_view" onclick="toggleView()">Switch View</button>
     </div>
       <div class="col-sm-2 text-start" style="padding-top: 10px;">
         {% if request.user.is_organizer and not request.user.is_admin %}
         <a href="/add-game">+ Add game</a>
         {% endif %}
-      </div>  
+      </div>
     </div>
     <!-- for loop here -->
     <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -253,7 +256,7 @@
 
     <div class="row"  id="recent">
       <div class="col-sm-3"></div>
-      <div class="col-sm-6 text-center table-background">
+      <div class="col-sm-6 text-center">
         <h2>Recent Matches</h2>
       </div>
     </div>

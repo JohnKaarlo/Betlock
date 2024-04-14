@@ -2,27 +2,14 @@
 
 {% block content %}
 <style>
-  .post{
-    text-decoration: none;
-    padding: 0;
-  }
-  .post:hover{
-    color: black;
-  }
-  p{
-    display: inline;
-  }
-  hr{
-    height: 10px;
-    border: 0;
-    box-shadow: 0 10px 10px -10px black inset;
-  }
-  .content img{
-    border: 5px solid #ffffff;
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-  }
-  .card{
+    p{
+        display: inline;
+    }
+    .content img{
+        border: 1px solid #ffffff;
+        border-radius: 20px;
+    }
+    .card{
         padding: 16px;
         background: transparent;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
@@ -30,17 +17,17 @@
                 rgba(0, 0, 0, 0.12) 0px 4px 6px, 
                 rgba(0, 0, 0, 0.17) 0px 12px 13px, 
                 rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  }
-  .btn{
-        border-radius: 20px;
-        border: 2px solid #ffffff;
-        -webkit-text-stroke: .2px black;
-  }
-  .btn:hover{
-    color: black;
-    background-color: white;
-    border: 2px solid #000000;
-  }
+    }
+    .card{
+        color: white;
+    }
+    .btn{
+        border-radius: 8px;
+        background-color: #fd9801;
+    }
+    .btn:hover{
+        background-color: #fd9801;
+    }
 </style>
 <div class="container-fluid content">
     <div class="container">
@@ -121,40 +108,32 @@
         <div class="row text-center">
             <div class="col-sm-2"></div>
             <div class="col-sm-2">
-                <p class="white-text">1 : {{A}}</p>
+                <p>1 : {{A}}</p>
             </div>
             <div class="col-sm-4">
                 <a href="{% url 'bet' game.slug %}" class="btn">Bet</a>
             </div>
             <div class="col-sm-2">
-                <p class="white-text">1 : {{B}}</p>
+                <p>1 : {{B}}</p>
             </div>
         </div>
         {% endif %}
         <hr>
         <div class="row">
             <div class="col-sm-1"></div>
-            <div class="col-sm-4 text-center">
+            <div class="col-sm-4 text-center border">
                 <div class="card">
                     <div class="card-body">
                         <p class="card-text">{{ game.info_A }}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-2">
-                <p style="text-shadow: none; color: black;">Date: </p><p class="white-text">{{ game.date|date:"M d, Y" }}</p>
+            <div class="col-sm-2 text-center">
+                <p>Date: </p><p>{{ game.date|date:"M d, Y" }}</p>
                 <br>
-                <p style="text-shadow: none; color: black;">Time: </p><p class="white-text">{{ game.date|date:"P" }}</p>
-                {% if blogs %}
-                <br>
-                <p style="text-shadow: none; color: black;">Related Blog Posts:</p>
-                {% for blog in blogs %}
-                <br>
-                <a class="post white-text" href="{% url 'blog-detail' blog.slug %}">{{ blog.title }}</a>
-                {% endfor %}
-                {% endif %}
+                <p>Time: </p><p>{{ game.date|date:"P" }}</p>
             </div>
-            <div class="col-sm-4 text-center">
+            <div class="col-sm-4 text-center border">
                 <div class="card">
                     <div class="card-body">
                         <p class="card-text">{{ game.info_B }}</p>
