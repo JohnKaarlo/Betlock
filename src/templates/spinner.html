@@ -7,9 +7,9 @@
 <style>
     .spinner {
         display: inline-block;
-        width: 50px;
-        height: 50px;
-        border: 3px solid rgba(0, 0, 0, 0.3);
+        width: 100px; /* Increased size */
+        height: 100px; /* Increased size */
+        border: 5px solid rgba(0, 0, 0, 0.3); /* Increased border thickness */
         border-radius: 50%;
         border-top-color: #333;
         animation: spin 1s ease-in-out infinite;
@@ -21,19 +21,35 @@
     }
     .modal-spinner {
         background: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%); /* Center the modal */
+        height: 80vh;
     }
-    
 </style>
 </head>
 <body>
 <div class="modal fade" id="spinner_modal" tabindex="-1" role="dialog" aria-labelledby="waitModalCenterTitle" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content text-center modal-spinner">
-         <div class="modal-body" id="waitbody">
+         <div class="modal-body" style="align-content: center;" id="waitbody">
             <span class="spinner"></span>
          </div>
       </div>
    </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).on('click', '#SaveButton', function() {
+        $('#spinner_modal').modal('show');
+        setTimeout(function() {
+            $('#spinner_modal').modal('hide');
+        }, 2000);
+    });
+</script>
+
 </body>
 </html>
