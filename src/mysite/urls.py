@@ -49,6 +49,8 @@ from personal.views import (
     add_blog,
     withdraw_user,
     admin_view,
+    organizer_signup,
+    admin_signup,
 )
 
 from payment.views import (
@@ -61,6 +63,8 @@ urlpatterns = [
     path('admin', admin_view),
     path('', login_view),
     path('signup', signup_view),
+    path('organizer_signup', organizer_signup, name="organizer/signup"),
+    path('admin_signup', admin_signup, name="admin/signup"),
     path('forgotpassword', forget_view),
     path('forgotpassword_otp', forget_otp),
     path('forgotpassword_setnew', forget_set_pass),

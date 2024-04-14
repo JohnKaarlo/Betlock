@@ -16,6 +16,9 @@
   #switch_view{
     background-color: #fd5001;
   }
+  #vs{
+    margin-top: 75%;
+  }
 </style>
 <div class="container-fluid content">
   <div class="container">
@@ -154,30 +157,32 @@
           {% if forloop.counter0 < 5 %} {# Limiting to 5 items #}
             <div class="carousel-item {% if forloop.first %}active{% endif %}">
               <div class="row justify-content-center">
-                <div class="col-sm-3 text-center">
+                <div class="col-sm-5 text-center">
                   <a href="{% url 'game' game.slug %}">
                     <img src="{{game.logo_A.url}}" width="300px" height="300px" />
                   </a>
                 </div>
-                <div class="col-sm-3 text-center">
+                <div class="col-sm-2 text-center">
                   <a href="{% url 'game' game.slug %}">
-                    <h2>VS</h2>
+                    <h1 id="vs">VS</h1>
                   </a>
                 </div>
-                <div class="col-sm-3 text-center">
+                <div class="col-sm-5 text-center">
                   <a href="{% url 'game' game.slug %}">
                     <img src="{{game.logo_B.url}}" width="300px" height="300px" />
                   </a>
                 </div>
               </div>
               <div class="row justify-content-center">
-                <div class="col-sm-3 text-center">
+                <div class="col-sm-5 text-center">
                   <a href="{% url 'game' game.slug %}">
                     <h5>{{ game.team_A }}</h5>
                   </a>
                 </div>
-                <div class="col-sm-3"></div>
-                <div class="col-sm-3 text-center">
+                <div class="col-sm-2">
+                  </a>
+                </div>
+                <div class="col-sm-5 text-center">
                   <a href="{% url 'game' game.slug %}">
                     <h5>{{ game.team_B }}</h5>
                   </a>

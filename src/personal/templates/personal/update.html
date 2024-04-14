@@ -6,20 +6,12 @@
         color: black;
         display: inline;
     }
-    .white-text{
-        text-shadow: 1px 1px 2px black,
-                     0 0 1em gainsboro,
-                     0 0 0.2em gainsboro;;
-    }
     .btn{
-        border-radius: 20px;
-        border: 2px solid #ffffff;
-        -webkit-text-stroke: .2px black;
+        border-radius: 8px;
+        background-color: #fd9801;
     }
     .btn:hover{
-        color: black;
-        background-color: white;
-        border: 2px solid #000000;
+        background-color: #fd9801;
     }
     .login-form{
         border-radius: 15px;
@@ -40,6 +32,11 @@
     .submit{
         margin-left: 130px;
     }
+    .border{
+        height: 350px;
+        width: 650px;
+        padding: 60px;
+    }
 </style>
 <div class="container-fluid content">
     <div class="container">
@@ -47,8 +44,8 @@
         <a class="btn" href="/profile">Back</a>
         <br>
         <br>
-        <div class="login-form">
-            <h2 class="white-text ml12">Update Profile</h2>
+        <div class="container border">
+            <h2 class="white-text ml12 ">Update Profile</h2>
             <hr>
             <form id="signup" method="post" action="/update_user">
             {% csrf_token %}

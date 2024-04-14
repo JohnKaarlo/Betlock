@@ -578,3 +578,15 @@ def admin_view(request):
     if not request.user.is_admin:
         return redirect('/blog')
     return render(request, "personal/admin.html")
+
+@login_required
+def organizer_signup(request):
+    if not request.user.is_admin:
+        return redirect('/lobby')
+    return render(request, "personal/organizer_signup.html", {})
+
+@login_required
+def admin_signup(request):
+    if not request.user.is_admin:
+        return redirect('/lobby')
+    return render(request, "personal/admin_signup.html", {})

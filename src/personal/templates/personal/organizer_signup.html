@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    form a:hover{
+        text-shadow: 1px 1px 2px black,
+                     0 0 1em gainsboro,
+                     0 0 0.2em gainsboro;;
+    }
+    form input{
+        width: 100%;
+    }
+    .signup-form .row{
+        margin-top: 12px;
+    }
+    hr{
+        height: 10px;
+        border: 0;
+        box-shadow: 0 10px 10px -10px rgb(255, 255, 255) inset;
+        margin: 0;
+    }
+    .type{
+        width: 32px;
+    }
+    .modal-header{
+        background-color: #fd5001;
+    }
+    .btn{
+        background-color: #fd9801;
+    }
+    .btn:hover{
+        background-color: #fd9801;
+    }
+    .close{
+        background-color: #fd9801;
+        border-color: black;
+        border-width: 1px;
+        border-radius: 7px;
+        padding: 0 7px 0 7px;
+    }
+    label{
+        margin-left: 30%;
+    }
+    .signup-form{
+        height: 75vh;
+    }
+</style>
+<div class="container-fluid content">
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="signup-form">
+                <div class="row">
+                    <div class="col text-center">
+                        <h1 class="white-text">Organizer Registration</h1>
+                    </div>
+                </div>
+                <form id="signup" method="post" action="/signup">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="firstname">Firstname: </label>
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" name="firstname" id="firstname" placeholder="Enter Firstname" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="lastname">Lastname:</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="lastname" placeholder="Enter Lastname" id="lastname" name="lastname" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="address">Address:</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <textarea rows="2" cols="52%" placeholder="Enter Address" required></textarea>      
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="email">Email:</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="email" placeholder="Enter Valid Email" id="email" name="email" required 
+                                placeholder="username@gmail.com"
+                                pattern=".+@gmail\.com"
+                                title="Please provide only Gmail corporate email address">        
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label for="mobileNumber">Mobile Number:</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <input type="text" placeholder="Enter Mobile Number" id="mobileNumber" name="mobileNumber" required>        
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Date of birth:</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="date" placeholder="Birth Date" id="birthdate" name="birthdate">        
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3">
+                            <input class="btn" type="submit" value="Signup">
+                            {% if msg %}
+                                <script>
+                                    $(document).ready(function(){
+                                        $('#myModal #message').text('{{ msg }}');
+                                        $('#myModal').modal('show');
+                                    });
+                                </script>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 1050;">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="color: black;">Sign Up</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">X</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="color: black;" id="message">Modal Message Here</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="okayButton" class="btn" data-dismiss="modal">Okay</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .modal-backdrop {
+    z-index: -100; 
+}
+</style>
+<script>
+    $(document).ready(function(){
+        $('.close').click(function(){
+            $('#myModal').modal('hide');
+        });
+
+        $('#okayButton').click(function(){
+            {% if msg and "success" in msg %}
+                window.location.href = '/profile';
+            {% else %}
+                $('#myModal').modal('hide');
+            {% endif %}
+        });
+    });
+</script>
+{% endblock content %}
