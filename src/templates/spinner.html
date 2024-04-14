@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spinner Example</title>
+<style>
+    .spinner {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+        border-top-color: #333;
+        animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    .modal-spinner {
+        background: rgba(0, 0, 0, 0.5);
+    }
+    
+</style>
+</head>
+<body>
+<div class="modal fade" id="spinner_modal" tabindex="-1" role="dialog" aria-labelledby="waitModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content text-center modal-spinner">
+         <div class="modal-body" id="waitbody">
+            <span class="spinner"></span>
+         </div>
+      </div>
+   </div>
+</div>
+</body>
+</html>
