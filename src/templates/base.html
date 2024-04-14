@@ -33,12 +33,13 @@
                         <a class="nav-link link" href="#">
                             Users
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="usersDropdown" style="left:-98px; margin-top: 5px;">
+                        <div class="dropdown-menu-user" aria-labelledby="usersDropdown" style="left:-98px; margin-top: 5px;">
                             <a class="dropdown-item" href="{% url 'organizer/signup' %}">Organizer</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'admin/signup' %}">Admin</a>
                         </div>
                     </li>
+                    
                     {% else %}
                     <a class="nav-link link" href="/wallet">Balance: P{{ request.user.wallet }}</a>
                     {% endif %}
@@ -74,10 +75,21 @@
                 $(this).find('.dropdown-menu').toggleClass('show');
             });
             $(document).on('click', function(event){
+                
                 if (!$(event.target).closest('#profileDropdown').length) {
                     $(".dropdown-menu").removeClass('show');
                 }
+                if (!$(event.target).closest('#usersDropdown').length) {
+                    $(".dropdown-menu-user").removeClass('show');
+                }
             });
+
+            $("#usersDropdown").on('click', function(event){
+                $("#usersDropdown").toggleClass('show');
+                $("#usersDropdown").find('.dropdown-menu-user').toggleClass('show');
+            });
+
+           
         });
     </script>
     <style>
@@ -109,7 +121,33 @@
     overflow-y: auto;
 }
 
-
+.dropdown-menu-user {
+    position: absolute;
+    top: 100%;
+    left: 100;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+    opacity: 1;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
+    width: 10rem; 
+    max-height: calc(100vh - 100px); 
+    overflow-y: auto;
+}
     </style>
 </body>
 </html>
