@@ -18,7 +18,69 @@
   <div class="container">
     <br>
     <br>
-    <div class="row">
+    <div>
+      <style>
+        .card {
+          height: 400px;
+        }
+        .card-img-top {
+          max-width: 100%;
+          height: 70vh;
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+      </style>
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="#featured"> <!-- Link to the 'featured' section -->
+              <div>
+                <img class="card-img-top" src="/static/img/featured.png" alt="Featured Matches Image">
+                <div class="card-body">
+                  <h5 class="card-title">Featured Matches</h5>
+                  <p class="card-text">Discover the top matches of the season.</p>
+                </div>
+              </div>
+            </a>
+          </div>
+          
+          
+          
+
+<!-- Local Matches Card -->
+<div class="col-md-4">
+  <a href="#local"> <!-- Link to the 'featured' section -->
+    <div>
+      <img class="card-img-top" src="/static/img/local.png" alt="Featured Matches Image">
+      <div class="card-body">
+        <h5 class="card-title">Local Matches</h5>
+        <p class="card-text">Discover the local matches of the season.</p>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- Recent Matches Card -->
+  <div class="col-md-4">
+    <a href="#recent"> <!-- Link to the 'featured' section -->
+      <div>
+        <img class="card-img-top" src="/static/img/recent.png" alt="Featured Matches Image">
+        <div class="card-body">
+          <h5 class="card-title">Recent Matches Matches</h5>
+          <p class="card-text">Discover the recent matches of the season.</p>
+        </div>
+      </div>
+    </a>
+  </div>
+
+        </div>
+      </div>
+      
+      <br><br>
+      <br>
+    </div>
+    <div class="row" id="featured">
       <div class="col-sm-3"></div>
       <div class="col-sm-6 text-center table-background">
         <h2>Featured Matches</h2>
@@ -61,18 +123,21 @@
     {% endif %}
     <br>
 
-    <div class="row">
+    <div class="row"  >
       <div class="col-sm-3"></div>
       <div class="col-sm-6">
         <hr>
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="local">
       <div class="col-sm-3"></div>
       <div class="col-sm-6 text-center table-background">
         <h2>Local Matches</h2>
       </div>
+      <div class="text-center">
+        <button style="background-color: #fd9801; color: white; padding: 10px 20px; font-size: 18px;" onclick="toggleView()">Switch to Carousel View</button>
+    </div>
       <div class="col-sm-2 text-start" style="padding-top: 10px;">
         {% if request.user.is_organizer and not request.user.is_admin %}
         <a href="/add-game">+ Add game</a>
@@ -151,9 +216,7 @@
         </div>
       {% endfor %}
     </div>
-    <div class="text-center">
-      <button style="background-color: #fd9801; color: white; padding: 10px 20px; font-size: 18px;" onclick="toggleView()">Switch to Carousel View</button>
-  </div>
+    
   
 <script>
   function toggleView() {
@@ -188,7 +251,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row"  id="recent">
       <div class="col-sm-3"></div>
       <div class="col-sm-6 text-center table-background">
         <h2>Recent Matches</h2>
