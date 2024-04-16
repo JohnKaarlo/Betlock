@@ -14,52 +14,52 @@
         width: 100%;
     }
 </style>
-    <div>
-        <h2 style="margin-left: 50%;">Withdraw</h2>
-        <div class="row">
-            <div class="col-sm-4 text-end">
-                <label>Amount:</label>
-            </div>
-            <div class="col-sm-8 text-start">
-                <input type="number" id="amount" name="amount" min="100" max="5000.0" required>
-            </div>
+<div>
+    <h2 style="margin-left: 50%;">Withdraw</h2>
+    <div class="row">
+        <div class="col-sm-4 text-end">
+            <label>Amount:</label>
         </div>
-        <div class="row">
-            <div class="col-sm-4 text-end">
-                <label for="partner">Select Partner:</label>
-            </div>
-            <div class="col-sm-8 text-start">
-                <select name="partner" class="partner">
-                    <option value="paypal">Paypal</option>
-                    <option value="gcash" disabled>Gcash</option>
-                    <option value="maya" disabled>Maya</option>
-                </select>
-            </div>
+        <div class="col-sm-8 text-start">
+            <input type="number" id="amount" name="amount" min="100" max="5000.0" required>
         </div>
-        <div class="row">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-8">
-                <button class="btn" id="withdrawFromPage" onclick="withdrawFunction()">Withdraw</button>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 text-end">
+            <label for="partner">Select Partner:</label>
         </div>
-        <label class="error title">{{ err }}</label>
-    </div>      
+        <div class="col-sm-8 text-start">
+            <select name="partner" class="partner">
+                <option value="cash">Cash</option>
+                <option value="paypal" disabled>Paypal</option>
+                <option value="gcash" disabled>Gcash</option>
+                <option value="maya" disabled>Maya</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+            <button class="btn" onclick="withdrawFunction()" id="withdrawFromPage">Withdraw</button>
+        </div>
+    </div>
+    <label class="error title">{{ err }}</label>
+</div>      
 
 <script>
-    function withdrawFunction() {
-        $('#myModal #message').text('Do you want to continue with the withdrawal?');
-        $('#myModal').modal('show');
-    }
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('withdrawFromPage').addEventListener('click', function(event) {
-            event.preventDefault(); 
-        });
-    });
 
-
+        function withdrawFunction() {
+            var selectedPartner = $('#partner').val();
+            $('#myModal #partnername').val('CASH');
+            $('#myModal #amount').val($('#amount').val());
+            $('#myModal #type').text('Withdrawal');
+            $('#partnername').text('Do you want to continue with the withdrawal?');
+            $('#myModal').modal('show');
+        }
+            
 </script>
+
+{% include 'GeneratedCodeModal.html' %}
 {% include 'ModalPopup.html' %}
 {% include 'spinner.html' %}
 {% endblock content %}

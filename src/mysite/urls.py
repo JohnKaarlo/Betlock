@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from Services.Cashiers.cashiers import create_transaction
+from Services.Cashiers.cashiers import create_transaction, get_transactions, update_transaction_status  
 from personal.views import (
     login_view,
     signup_view,
@@ -85,15 +85,18 @@ urlpatterns = [
     path('update_password', update_password_view),
     path('update_password_user', update_password),
     path('blog', blog_view),
-    path('blog-<slug>', blog_detail, name = "blog-detail"),
-    path('<slug>-add-blog-form', add_blog_view, name = "add-blog-form"),
-    path('<slug>-add-blog', add_blog, name = "add-blog"),
+    path('blog-<slug>', blog_detail, name="blog-detail"),
+    path('<slug>-add-blog-form', add_blog_view, name="add-blog-form"),
+    path('<slug>-add-blog', add_blog, name="add-blog"),
     path('add_game', add_game, name='add_game'),
-    path('<slug>-bet-placed', bet, name = "bet-placed"),
-    path('<slug>-bet', bet_view, name = "bet"),
+    path('<slug>-bet-placed', bet, name="bet-placed"),
+    path('<slug>-bet', bet_view, name="bet"),
     path('<slug>-winner', winner, name="winner"),
     path('<slug>', game_view, name="game"),
     path('cashiers/create_transaction/', create_transaction, name='create_transaction'),
+    path('cashiers/get_transactions/', get_transactions, name='get_transactions'), 
+    path('cashiers/update_status/', update_transaction_status, name='update_transaction_status'),
+    
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

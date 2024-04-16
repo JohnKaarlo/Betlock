@@ -32,7 +32,8 @@
                 </div>
                 <div class="col-sm-8">
                     <select name="partner" class="partner">
-                        <option value="paypal">Paypal</option>
+                        <option value="cash">Cash</option>
+                        <option value="paypal" disabled>Paypal</option>
                         <option value="gcash" disabled>Gcash</option>
                         <option value="maya" disabled>Maya</option>
                     </select>
@@ -46,11 +47,17 @@
             </div>
         </div>
         <script>
-            function depositFunction() {
-                $('#myModal #message').text('Do you want to continue with the withdrawal?');
-                $('#myModal').modal('show');
+           function depositFunction() {
+                var selectedPartner = $('#partner').val();
+                $('#depositModal #depositpartnername').val('CASH');
+                $('#depositModal #depositamount').val($('#amount').val());
+                $('#depositModal #deposittype').text('Deposit');
+                $('#depositpartnername').text('Do you want to continue with the withdrawal?');
+                $('#depositModal').modal('show');
             }
         </script>
 
-{% include 'ModalPopup.html' %}
+{% include 'GeneratedCodeModal.html' %}
+{% include 'ModalPopupdeposit.html' %}
+{% include 'spinner.html' %}
 {% endblock content %}

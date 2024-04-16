@@ -15,13 +15,17 @@ class Transaction(models.Model):
         ('cancelled', 'Cancelled'),
     )
 
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
+    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name="transactions")
     type = models.CharField(max_length=45, choices=TRANSACTION_TYPE_CHOICES)
     status = models.CharField(max_length=45, choices=TRANSACTION_STATUS_CHOICES, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=5, null=True, blank=True)
-    update_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  # Corrected field name
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     currency = models.CharField(max_length=45, null=True, blank=True)
+    code = models.CharField(max_length=45)
+
+    class Meta:
+        db_table = 'transactions' 
 
     def __str__(self):
         return f"{self.player.username} - {self.type} - {self.amount}"

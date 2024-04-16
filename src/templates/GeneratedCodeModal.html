@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetLock</title>
+    <style>
+        .close{
+            background-color: #fd9801;
+            border-color: black;
+            border-width: 1px;
+            border-radius: 7px;
+            padding: 0 7px 0 7px;
+        }
+        .modal-header{
+            background-color: #fd5001;
+        }
+        .modal-footer button{
+            color: black;
+            background-color: #fd9801;
+        }
+        .modal-dialog {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; 
+            width: 90%; 
+            max-width: 80vh; 
+        }
+
+        .modal-content {
+            width: 100%; 
+        }
+
+        .modal-body label {
+            text-align: right;
+            margin-right: 10px;
+        }
+        .modal-body p{
+            text-align: center;
+        }
+     
+    </style>
+</head>
+<body>
+    <div class="modal fade show" id="generatedCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="text-align: center;" id="exampleModalLabel">Code Generated</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body"  style="padding: 10vh;">
+                    <p style="color: black; font-size: 20px; ">You have succesfully generated a code.</p>
+                    <p style="color: black; font-size: 20px; ">Please use this code on your nearest admin for the approval.</p>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="generatedcode" style="color: black;">Code:</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" placeholder="code" id="generatedcode" name="generatedcode" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4" >
+                            <label for="generatedamount"  style="color: black;">Amount:</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <input type="text" placeholder="Amount" id="generatedamount" name="generatedamount" readonly>        
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn" onclick="closeFunction()" id="CloseButton">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#generatedCodeModal" id="modalButton" style="display: none;"></button>
+
+    <script>
+         function closeFunction() {
+            location.reload(); 
+        }
+
+    </script>
+</body>
+</html>

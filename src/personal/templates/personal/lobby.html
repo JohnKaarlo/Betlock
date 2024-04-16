@@ -181,9 +181,7 @@
 
     <div class="row"  >
       <div class="col-sm-3"></div>
-      <div class="col-sm-6">
-        <hr>
-      </div>
+      
     </div>
     <div class="section-separator"></div>
     <div class="row" id="local">
@@ -274,29 +272,7 @@
     </div>
     
   
-<script>
-  function toggleView() {
-    var carouselView = document.getElementById("teamCarousel");
-    var normalView = document.getElementById("normalView");
-    if (carouselView.style.display === "none") {
-      carouselView.style.display = "block";
-      normalView.style.display = "none";
-    } else {
-      carouselView.style.display = "none";
-      normalView.style.display = "block";
-    }
 
-    var carouselView = document.getElementById("teamCarouselFeatured");
-    var normalView = document.getElementById("normalViewFeatured");
-    if (carouselView.style.display === "none") {
-      carouselView.style.display = "block";
-      normalView.style.display = "none";
-    } else {
-      carouselView.style.display = "none";
-      normalView.style.display = "block";
-    }
-  }
-</script>
     
     
     <!-- If no local matches available -->
@@ -312,9 +288,7 @@
     
     <div class="row">
       <div class="col-sm-3"></div>
-      <div class="col-sm-6">
-        <hr>
-      </div>
+      
     </div>
     <div class="section-separator"></div>
     <div class="row"  id="recent">
@@ -323,28 +297,118 @@
         <h2>Recent Matches</h2>
       </div>
     </div>
-    {% for game in done %}
-    <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-2 text-end">
-        <a href="{% url 'game' game.slug %}">
-          <p>{{ game.team_A }}</p>
-          <img src="{{game.logo_A.url}}" width="30px" height="30px" />
-        </a>
+
+
+    <div id="teamCarouselDone" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for game in done %}
+          {% if forloop.counter0 < 5 %} {# Limiting to 5 items #}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+              <div class="row justify-content-center">
+                <div class="col-sm-5 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <img src="{{game.logo_A.url}}" width="300px" height="300px" />
+                  </a>
+                </div>
+                <div class="col-sm-2 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <h1 id="vs">VS</h1>
+                  </a>
+                </div>
+                <div class="col-sm-5 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <img src="{{game.logo_B.url}}" width="300px" height="300px" />
+                  </a>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-sm-5 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <h5>{{ game.team_A }}</h5>
+                  </a>
+                </div>
+                <div class="col-sm-2">
+                  </a>
+                </div>
+                <div class="col-sm-5 text-center">
+                  <a href="{% url 'game' game.slug %}">
+                    <h5>{{ game.team_B }}</h5>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
       </div>
-      <div class="col-sm-2 text-center" style="padding-top: 16px;">
-        <a href="{% url 'game' game.slug %}">
-          <p>VS</p>
-        </a>
-      </div>
-      <div class="col-sm-2 text-start">
-        <a href="{% url 'game' game.slug %}">
-          <img src="{{game.logo_B.url}}" width="30px" height="30px" />
-          <p>{{ game.team_B }}</p>
-        </a>
-      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#teamCarouselDone" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true" style="font-size: 2rem; color: white;"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#teamCarouselDone" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true" style="font-size: 2rem; color: white;"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-    {% endfor %}
+    
+    <div id="normalViewDone" style="display: none;">
+      {% for game in done %}
+        <div class="row">
+          <div class="col-sm-3"></div>
+          <div class="col-sm-2 text-end">
+            <a href="{% url 'game' game.slug %}">
+              <p>{{ game.team_A }}</p>
+              <img src="{{game.logo_A.url}}" width="30px" height="30px" />
+            </a>
+          </div>
+          <div class="col-sm-2 text-center" style="padding-top: 16px;">
+            <a href="{% url 'game' game.slug %}"><p>VS</p></a>
+          </div>
+          <div class="col-sm-2 text-start">
+            <a href="{% url 'game' game.slug %}">
+              <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+              <p>{{ game.team_B }}</p>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <script>
+      function toggleView() {
+        var carouselView = document.getElementById("teamCarousel");
+        var normalView = document.getElementById("normalView");
+        if (carouselView.style.display === "none") {
+          carouselView.style.display = "block";
+          normalView.style.display = "none";
+        } else {
+          carouselView.style.display = "none";
+          normalView.style.display = "block";
+        }
+    
+        var carouselView = document.getElementById("teamCarouselFeatured");
+        var normalView = document.getElementById("normalViewFeatured");
+        if (carouselView.style.display === "none") {
+          carouselView.style.display = "block";
+          normalView.style.display = "none";
+        } else {
+          carouselView.style.display = "none";
+          normalView.style.display = "block";
+        }
+
+        var carouselView = document.getElementById("teamCarouselDone");
+        var normalView = document.getElementById("normalViewDone");
+        if (carouselView.style.display === "none") {
+          carouselView.style.display = "block";
+          normalView.style.display = "none";
+        } else {
+          carouselView.style.display = "none";
+          normalView.style.display = "block";
+        }
+        
+      }
+    </script>
+
+    
     <!-- If no recent matches available -->
     {% if not done %}
     <div class="row">

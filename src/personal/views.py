@@ -30,8 +30,6 @@ def login_view(request):
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
             else:
-                print("bang1")
-                print(request)
                 return redirect("/lobby") 
         else:
             context['str'] = "Invalid credentials!"
