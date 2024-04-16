@@ -12,9 +12,12 @@
     .btn{
         border-radius: 8px;
         color: black;
+        background-color: #fd5001;
+        width: 100%;
     }
     .btn:hover{
         color: white;
+        background-color: #fd5001;
     }
     .row{
         padding-bottom: 16px;
@@ -73,6 +76,28 @@
             </div>
             <div class="row">
                 <div class="col-sm-1 text-end">
+                    <label for="min_bet">Minimum Bet:</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" placeholder="Add minimum bet" id="min_bet" name="min_bet" class="text-input" required>        
+                </div>
+                <div class="col-sm-1 text-end">
+                    <label for="max_bet">Maximum Bet:</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" placeholder="Add maximum bet" id="max_bet" name="max_bet" class="text-input" required>        
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 text-end">
+                    <label for="fee">Fee:</label>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" placeholder="Add fee" id="fee" name="fee" class="text-input" required>        
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 text-end">
                     <label>Date:</label>
                 </div>
                 <div class="col-sm-11">
@@ -80,14 +105,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-5"></div>
-                <div class="col-sm-1 text-center">
-                    <input type="submit" class="btn btn-secondary" value="Submit"></input>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-2 text-center">
+                    <input type="submit" class="btn" value="Submit"></input>
                 </div>
-                <div class="col-sm-1 text-center">
-                    <input type="button" class="btn btn-secondary" href="/admin" value="Back">
+                <div class="col-sm-2 text-center">
+                    <input type="button" class="btn" href="/admin" value="Back">
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <p>{{msg}}</p>
                 </div>
             </div>

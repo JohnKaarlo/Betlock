@@ -2,19 +2,23 @@
 
 {% block content %}
 <style>
-    form a{
-        text-decoration: none;
-        color: white;
+    .btn{
+        color: black;
+        background-color: #fd9801;
     }
-    form a:hover{
-        text-shadow: 1px 1px 2px black,
-                     0 0 1em gainsboro,
-                     0 0 0.2em gainsboro;;
+    .btn:hover{
+        background-color: #fd9801;
+    }
+    #email{
+        width: 100%;
+    }
+    .row{
+        margin-top: 16px;
     }
 </style>
 <div class="container-fluid content">
     <br>
-    <a class="btn btn-secondary" href="/">Back</a>
+    <a class="btn" href="/" style="margin-left: 16px;">Back</a>
     <br>
     <div class="forgot-form">
         <div class="row">
@@ -25,17 +29,17 @@
         <form id="forgot" method="post" action="/forgotpassword">
             {% csrf_token %}   
             <div class="row">
-                <div class="col-sm-4 text-end">
+                <div class="col-sm-3 text-end">
                     <label for="email">Email:</label>
                 </div>
-                <div class="col-sm-4 text-start">
+                <div class="col-sm-7 text-start">
                     <input type="email" placeholder="Enter Email" id="email" name="email" required>        
                 </div>
             </div>
             <div class="row" style="margin-top: 8px;">
-                <div class="col-sm-4"></div>
+                <div class="col-sm-3"></div>
                 <div class="col-sm-4 text-start">   
-                    <input class="btn btn-secondary" type="submit" value="Next" id="submit"></input>
+                    <input class="btn" type="submit" value="Next">
                     <p class="error">{{ msg }}</p>
                 </div>
             </div>
