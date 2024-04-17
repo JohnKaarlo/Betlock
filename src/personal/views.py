@@ -506,9 +506,9 @@ def bet(request, slug):
         user = User.objects.get(id=request.user.id)
         user.wallet = user.wallet - amount
         user.save()
-        context["msg"] = "Bet Placed!"
+        context["msg"] = f"You have successfully bet on the {team} team, securing your victory and potential rewards"
     else:
-        context["msg"] = "Please place a valid amount!"
+        context["msg"] = "Unfortunately, your bet did not succeed this time. Better luck next time"
 
     context["game"] = game
 
