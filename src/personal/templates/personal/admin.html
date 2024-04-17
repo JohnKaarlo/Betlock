@@ -82,10 +82,10 @@
                             <td>${transaction.created_at}</td>
                             <td>${transaction.updated_at}</td>
                             <td>
-                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'completed')" style="background-color:green;" type="button" class="btn" value="${transaction.status === 'pending' ? 'Approve' : transaction.status}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
+                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'completed','${transaction.type}',${transaction.amount})" style="background-color:green;" type="button" class="btn" value="${transaction.status === 'pending' ? 'Approve' : transaction.status}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
                             </td>
                             <td>
-                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'cancelled')" style="background-color:red;" type="button" class="btn" value="${transaction.status === 'pending' ? 'Cancel' : 'Cancelled'}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
+                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'cancelled','${transaction.type}',${transaction.amount})" style="background-color:red;" type="button" class="btn" value="${transaction.status === 'pending' ? 'Cancel' : 'Cancelled'}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
                             </td>
 
                         `;
@@ -107,9 +107,7 @@
 
 
 <script>
-    function updateTransactionStatus(id, code, status) {
-        console.log(id)
-        console.log(code)
+    function updateTransactionStatus(id, code, status, transaction, amount) {
         var status = status === 'completed' ? 'completed' : 'cancelled';
 
         var requestData = {
@@ -125,6 +123,9 @@
             contentType: 'application/json',
             success: function(response) {
                 if (response.success) {
+                    if (status === 'completed') {
+                        insertStats(id, code, status, transaction,amount);
+                    }
                     $('#globalModal').modal('show');
                 } else {
                     alert('Error: ' + response.message);
@@ -132,6 +133,30 @@
             },
             error: function(xhr, status, error) {
                 alert('Error: ' + error);
+            }
+        });
+    }
+
+    function insertStats(id, code, status, transaction,amount) {
+        var requestData = {
+            'id': id,
+            'code': code,
+            'type': transaction, 
+            'amount': amount, 
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/cashiers/create_stats/',
+            data: JSON.stringify(requestData),
+            contentType: 'application/json',
+            success: function(response) {
+                if (!response.success) {
+                    console.error('Error inserting stats:', response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error inserting stats:', error);
             }
         });
     }

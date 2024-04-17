@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate,get_user, login, logout, update_session_auth_hash
+from Services.Cashiers.models import Stats
 from account.models import User
 from game.models import Game
 from bet.models import Bet
@@ -13,6 +14,8 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.core.exceptions import ValidationError
 import random, re
+from django.db.models import Sum
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def login_view(request):
@@ -30,12 +33,21 @@ def login_view(request):
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
             else:
+                update_user_wallet(user)
                 return redirect("/lobby") 
         else:
             context['str'] = "Invalid credentials!"
             return render(request, "personal/login.html", context)
     else:
         return render(request, "personal/login.html", {})
+    
+@csrf_exempt
+def update_user_wallet(user):
+    deposit_sum = Stats.objects.filter(player=user, type='Deposit').aggregate(total_deposit=Sum('pot'))['total_deposit'] or 0
+    withdrawal_sum = Stats.objects.filter(player=user, type='Withdrawal').aggregate(total_withdrawal=Sum('pot'))['total_withdrawal'] or 0
+    total_pot = deposit_sum - withdrawal_sum
+    user.wallet = total_pot
+    user.save()
 
 def signup_view(request):
     context = {}

@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from Services.Cashiers.cashiers import create_transaction, get_transactions, update_transaction_status  
+from Services.Cashiers.cashiers import create_stats, create_transaction, get_transactions, update_transaction_status  
 from personal.views import (
     login_view,
     signup_view,
@@ -96,6 +96,7 @@ urlpatterns = [
     path('cashiers/create_transaction/', create_transaction, name='create_transaction'),
     path('cashiers/get_transactions/', get_transactions, name='get_transactions'), 
     path('cashiers/update_status/', update_transaction_status, name='update_transaction_status'),
+    path('cashiers/create_stats/', create_stats, name='create_stats'),
     
 ]
 

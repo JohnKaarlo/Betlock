@@ -29,3 +29,22 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.player.username} - {self.type} - {self.amount}"
+
+class Stats(models.Model):
+    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name="stats")
+    type = models.CharField(max_length=45)
+    pot = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0)
+    bet = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0)
+    fee = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0)
+    winpot = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0)
+    gameid = models.IntegerField(null=True)
+    game_stat = models.CharField(max_length=45)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+   
+
+    class Meta:
+        db_table = 'stats' 
+
+    def __str__(self):
+        return f"{self.player.username} - {self.type} - {self.pot}"

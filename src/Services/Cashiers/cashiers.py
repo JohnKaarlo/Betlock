@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
-from Services.Cashiers.models import Transaction  
+from Services.Cashiers.models import Stats, Transaction  
 from account.models import User 
 
 User = get_user_model()
@@ -99,6 +99,31 @@ def update_transaction_status(request):
         try:
             transaction.save()
             return JsonResponse({'success': True, 'message': 'Transaction status updated successfully.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'success': False, 'message': 'Only POST requests are allowed.'}, status=405)
+
+@csrf_exempt
+def create_stats(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        
+        player_id = data.get('id')
+        if player_id:
+            try:
+                player = User.objects.get(pk=player_id)
+            except User.DoesNotExist:
+                return JsonResponse({'success': False, 'message': 'Player not found.'}, status=400)
+        else:
+            return JsonResponse({'success': False, 'message': 'Player ID is required.'}, status=400)
+        
+        transaction_type = data.get('type')
+        amount = data.get('amount')
+
+        try:
+            Stats.objects.create(player=player, type=transaction_type, pot=amount)
+            return JsonResponse({'success': True, 'message': 'Stats created successfully.'})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)}, status=500)
     else:
