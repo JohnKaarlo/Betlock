@@ -352,12 +352,6 @@ def game_view(request, slug):
     total_A = 0
     total_B = 0
 
-    for bets in bets_A:
-        total_A = total_A + bets.amount
-    
-    for bets in bets_B:
-        total_B = total_B + bets.amount
-    
     context["total_A"] = total_A
     context["total_B"] = total_B
 
@@ -487,7 +481,6 @@ def bet_view(request, slug):
 @login_required()
 def bet(request, slug):
     context = {}
-
     game = get_object_or_404(Game, slug = slug)
 
     amount = int(request.POST["amount"])
@@ -498,40 +491,24 @@ def bet(request, slug):
     else:
         team = "Team B"
 
-    check = Bet.objects.filter(bettor=request.user,game=game).exists()
-
-    if check:
-        bet = Bet.objects.get(bettor=request.user,game=game)
-        if bet.team == team:
-            if request.user.wallet >= amount and amount > 0:
-                bet.amount = bet.amount + amount
-                bet.save()
-                user = User.objects.get(id=request.user.id)
-                user.wallet = user.wallet - amount
-                user.save()
-                context["msg"] = "Bet updated!"
-            else:
-                context["msg"] = "Please place a valid amount!"
-        else:
-            if request.user.wallet >= amount and amount > 0:
-                bet = Bet(amount=amount,bettor=request.user,game=game,team=team)
-                user = User.objects.get(id=request.user.id)
-                user.wallet = user.wallet - amount
-                bet.save()
-                user.save()
-                context["msg"] = "Bet Placed!"
-            else:
-                context["msg"] = "Please place a valid amount!"
+    if request.user.id:
+        try:
+            player = User.objects.get(pk=request.user.id)
+        except User.DoesNotExist:
+            context["msg"] = "Player not found."
+            return
     else:
-        if request.user.wallet >= amount and amount > 0:
-            bet = Bet(amount=amount,bettor=request.user,game=game,team=team)
-            user = User.objects.get(id=request.user.id)
-            user.wallet = user.wallet - amount
-            bet.save()
-            user.save()
-            context["msg"] = "Bet Placed!"
-        else:
-            context["msg"] = "Please place a valid amount!"
+        context["msg"] = "Player ID is required."
+        return
+    if  amount > 0:
+        Stats.objects.create(player=player, type="bet",bet=amount, gameid = game.id)
+        Bet.objects.create(bettor=request.user,game=game,team=team)
+        user = User.objects.get(id=request.user.id)
+        user.wallet = user.wallet - amount
+        user.save()
+        context["msg"] = "Bet Placed!"
+    else:
+        context["msg"] = "Please place a valid amount!"
 
     context["game"] = game
 
