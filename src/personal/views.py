@@ -450,19 +450,22 @@ def add_game(request):
     logo_A = request.POST["logo_A"]
     logo_B = request.POST["logo_B"]
     date = request.POST["date"]
+    max_bet = request.POST["max_bet"]
+    min_bet = request.POST["min_bet"]
+    fee = request.POST["fee"]
 
     if team_A == team_B:
         context["msg"] = "That's two the same team!"
     else:
         if request.user.is_admin:
-            game = Game(team_A=team_A,team_B=team_B,info_A=info_A,info_B=info_B,date=date,is_local=False,organizer=request.user)
+            game = Game(team_A=team_A,team_B=team_B,info_A=info_A,info_B=info_B,date=date,is_local=False,organizer=request.user, max_bet = max_bet, min_bet=min_bet, fee=fee)
             if logo_A:
                 game.logo_A = logo_A
             if logo_B:
                 game.logo_B = logo_B
             game.save()
         else:
-            game = Game(team_A=team_A,team_B=team_B,info_A=info_A,info_B=info_B,date=date,is_local=True,organizer=request.user)
+            game = Game(team_A=team_A,team_B=team_B,info_A=info_A,info_B=info_B,date=date,is_local=True,organizer=request.user,max_bet = max_bet, min_bet=min_bet, fee=fee)
             if logo_A:
                 game.logo_A = logo_A
             if logo_B:

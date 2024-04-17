@@ -33,6 +33,9 @@ class Game(models.Model):
         ("Best of 7", "Best of 7"),
     )
     series_type = models.TextField(max_length=10, choices=series_options, default="Best of 1")
+    max_bet = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    min_bet = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    fee = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.team_A + ' vs ' + self.team_B
