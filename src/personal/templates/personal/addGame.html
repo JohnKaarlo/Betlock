@@ -8,6 +8,7 @@
     }
     form .text-input{
         border-radius: 8px;
+        width: 100%;
     }
     .btn{
         border-radius: 8px;
@@ -33,74 +34,76 @@
         <form method="post" action="{% url 'add_game' %}">
             {% csrf_token %}
             <div class="row">
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-2">
                     <label for="team_A">Team A:</label>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <input type="text" placeholder="Team name" id="team_A" name="team_A" class="text-input" required>        
                 </div>
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-2">
                     <label for="team_B">Team B:</label>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <input type="text" placeholder="Team name" id="team_B" name="team_B" class="text-input" required>        
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-2">
                     <label for="info_A">Team Info:</label>
                 </div>
-                <div class="col-sm-5">
-                    <textarea id="info_A" name="info_A" rows="10" cols="50" class="text-input" required>Please write information about the team!</textarea>    
+                <div class="col-sm-4">
+                    <textarea id="info_A" name="info_A" rows="8" class="text-input" required>Please write information about the team!</textarea>    
                 </div>
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-2">
                     <label for="info_B">Team Info:</label>
                 </div>
-                <div class="col-sm-5">
-                    <textarea id="info_B" name="info_B" rows="10" cols="50" class="text-input" required>Please write information about the team!</textarea>         
+                <div class="col-sm-4">
+                    <textarea id="info_B" name="info_B" rows="8" class="text-input" required>Please write information about the team!</textarea>         
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-2">
                     <label for="logo_A">Logo:</label>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <input type="file" id="logo_A" name="logo_A">
                 </div>
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-2">
                     <label for="logo_B">Logo:</label>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <input type="file" id="logo_B" name="logo_B">         
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-2">
                     <label for="min_bet">Minimum Bet:</label>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <input type="text" placeholder="Add minimum bet" id="min_bet" name="min_bet" class="text-input" required>        
                 </div>
-                <div class="col-sm-1 text-end">
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
                     <label for="max_bet">Maximum Bet:</label>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <input type="text" placeholder="Add maximum bet" id="max_bet" name="max_bet" class="text-input" required>        
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-2">
                     <label for="fee">Fee:</label>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <input type="text" placeholder="Add fee" id="fee" name="fee" class="text-input" required>        
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-1 text-end">
+                <div class="col-sm-2">
                     <label>Date:</label>
                 </div>
-                <div class="col-sm-11">
+                <div class="col-sm-10">
                     <input type="datetime-local" name="date" id="date" required>
                 </div>
             </div>

@@ -25,16 +25,32 @@
         top: 0;
         background-color: #fd5001;
     }
-   
+    .date{
+        width: 65%;
+    }
+    .search{
+        width: 100%;
+    }
+    label{
+        font-size: 12px;
+    }
 </style>
 <div class="container-fluid content">
     <br>
     <div class="row" >
-        <div class="col-sm-5">
-            <input type="text" id="search">
+        <div class="col-sm-4">
+            <input type="text" id="search" class="search" placeholder="Search here">
         </div>
         <div class="col-sm-2">
-            <input type="submit" value="search">
+            <label>Date From:</label>
+            <input type="date" name="date_from" class="date">
+        </div>
+        <div class="col-sm-2">
+            <label>Date To:</label>
+            <input type="date" name="date_to" class="date">
+        </div>
+        <div class="col-sm-1">
+            <input type="submit" value="Search" class="search">
         </div>
     </div>
     <br>
@@ -82,10 +98,10 @@
                             <td>${transaction.created_at}</td>
                             <td>${transaction.updated_at}</td>
                             <td>
-                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'completed','${transaction.type}',${transaction.amount})" style="background-color:green;" type="button" class="btn" value="${transaction.status === 'pending' ? 'Approve' : transaction.status}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
+                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'completed','${transaction.type}',${transaction.amount})" style="background-color:green; display:${transaction.status === 'cancelled' ? 'none' : 'block'}" type="button" class="btn" value="${transaction.status === 'pending' ? 'Approve' : transaction.status}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
                             </td>
                             <td>
-                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'cancelled','${transaction.type}',${transaction.amount})" style="background-color:red;" type="button" class="btn" value="${transaction.status === 'pending' ? 'Cancel' : 'Cancelled'}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
+                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'cancelled','${transaction.type}',${transaction.amount})" style="background-color:red;  display:${transaction.status === 'completed' ? 'none' : 'block'}" type="button" class="btn" value="${transaction.status === 'pending' ? 'Cancel' : 'Cancelled'}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
                             </td>
 
                         `;
