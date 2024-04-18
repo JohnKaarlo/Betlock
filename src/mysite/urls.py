@@ -51,6 +51,7 @@ from personal.views import (
     admin_view,
     organizer_signup,
     admin_signup,
+    my_games,
 )
 
 from payment.views import (
@@ -89,6 +90,7 @@ urlpatterns = [
     path('<slug>-add-blog-form', add_blog_view, name="add-blog-form"),
     path('<slug>-add-blog', add_blog, name="add-blog"),
     path('add_game', add_game, name='add_game'),
+    path('my_games', my_games, name='my_games'),
     path('<slug>-bet-placed', bet, name="bet-placed"),
     path('<slug>-bet', bet_view, name="bet"),
     path('<slug>-winner', winner, name="winner"),

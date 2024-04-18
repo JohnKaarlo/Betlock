@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    p{
+        display: inline;
+    }
+    .content a{
+        color: black;
+        display: inline;
+        text-shadow: none;
+        margin-right: 36px;
+    }
+    .row{
+        padding-bottom: 16px;
+    }
+    table{
+        width: 100%;
+    }
+    td{
+        padding-top: 10px;
+    }
+    .btn{
+        background-color: #fd9801;
+    }
+    .btn:hover{
+        background-color: #fd9801;
+    }
+    table input{
+        width: 100%;
+    }
+</style>
+<div class="container-fluid content">
+    <div class="container-fluid">
+        <br>
+        <div class="row">
+            <div class="col-sm-12">
+                {% if request.user.is_organizer %}
+                <table class="text-center">
+                    <tr class="table-background">
+                        <th>Game ID</th>
+                        <th>Teams</th>
+                        <th>Winner</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                    {% for game in games %}
+                    <tr>
+                        <td>{{game.id}}</td>
+                        <td>
+                            <img src="{{game.logo_A.url}}" width="30px" height="30px" />
+                            <label>{{game}}</label>
+                            <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+                        </td>
+                        <td>{{game.winner}}</td>
+                        <td>{{game.date}}</td>
+                        <td><input type="button" class="btn" value="{% if game.winner == 'TBD' %}Update{% else %}Check{% endif %}"></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <table class="text-center">
+                    <tr class="table-background">
+                        <th>Total Amount</th>
+                        <th>Amount</th>
+                        <th>Fee</th>
+                        <th>Game</th>
+                        <th>Team</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                {% for bet in bets %}
+                    <tr>
+                        <td>total</td>
+                        <td>{{bet.amount}}</td>
+                        <td>fee</td>
+                        <td>
+                            <img src="{{bet.game.logo_A.url}}" width="30px" height="30px" />
+                            <label>{{bet.game}}</label>
+                            <img src="{{bet.game.logo_B.url}}" width="30px" height="30px" />
+                        </td>
+                        <td>{% if bet.team == "Team A" %}
+                            <label>{{ bet.game.team_A }}</label>
+                            {% else %}
+                            <label>{{ bet.game.team_B }}</label>
+                            {% endif %}
+                        </td>
+                        <td>{{bet.date}}</td>
+                        <td>{{bet.status}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

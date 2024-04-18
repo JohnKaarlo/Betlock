@@ -171,16 +171,7 @@ def forget_set_pass(request):
 
 @login_required()
 def profile_view(request):
-    context = {}
-    
-    if request.user.is_organizer:
-        games = Game.objects.all().filter(organizer=request.user).order_by("date")
-        context["games"] = games
-    else:
-        bet = Bet.objects.all().filter(bettor=request.user).order_by("date")
-        context["bets"] = bet
-
-    return render(request, "personal/profile.html", context)
+    return render(request, "personal/profile.html", {})
     
 def logout_user(request):
     logout(request)
@@ -502,7 +493,6 @@ def bet(request, slug):
         return
     if  amount > 0:
         Stats.objects.create(player=player, type="bet",bet=amount, gameid = game.id)
-        Bet.objects.create(bettor=request.user,game=game,team=team)
         user = User.objects.get(id=request.user.id)
         user.wallet = user.wallet - amount
         user.save()
@@ -580,3 +570,19 @@ def admin_signup(request):
     if not request.user.is_admin:
         return redirect('/lobby')
     return render(request, "personal/admin_signup.html", {})
+
+@login_required
+def my_games(request):
+    if request.user.is_admin:
+        return redirect('/admin')
+    
+    context = {}
+    
+    if request.user.is_organizer:
+        games = Game.objects.all().filter(organizer=request.user).order_by("date")
+        context["games"] = games
+    else:
+        bet = Bet.objects.all().filter(bettor=request.user).order_by("date")
+        context["bets"] = bet
+
+    return render(request, "personal/mygames.html", context)

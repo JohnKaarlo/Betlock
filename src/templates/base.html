@@ -22,6 +22,10 @@
                 <li class="nav-item">
                     <a class="nav-link link" href="{% url 'add_game' %}">Add Game</a>
                 </li>
+            {% elif request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link link" href="{% url 'my_games' %}">My Games</a>
+                </li>
             {% endif %}
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
