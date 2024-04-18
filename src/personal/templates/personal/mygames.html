@@ -46,14 +46,14 @@
                     </tr>
                     {% for game in games %}
                     <tr>
-                        <td>{{game.id}}</td>
+                        <td>{{ game.id }}</td>
                         <td>
-                            <img src="{{game.logo_A.url}}" width="30px" height="30px" />
-                            <label>{{game}}</label>
-                            <img src="{{game.logo_B.url}}" width="30px" height="30px" />
+                            <img src="{{ game.logo_A.url }}" width="30px" height="30px" />
+                            <label>{{ game }}</label>
+                            <img src="{{ game.logo_B.url }}" width="30px" height="30px" />
                         </td>
-                        <td>{{game.winner}}</td>
-                        <td>{{game.date}}</td>
+                        <td>{{ game.winner }}</td>
+                        <td>{{ game.date }}</td>
                         <td><input type="button" class="btn" value="{% if game.winner == 'TBD' %}Update{% else %}Check{% endif %}"></td>
                     </tr>
                     {% endfor %}
@@ -69,15 +69,15 @@
                         <th>Date</th>
                         <th>Status</th>
                     </tr>
-                {% for bet in bets %}
+                    {% for bet in bets %}
                     <tr>
-                        <td>total</td>
-                        <td>{{bet.amount}}</td>
-                        <td>fee</td>
+                        <td>{{ bet.total_amount }}</td>
+                        <td>{{ bet.bet }}</td>
+                        <td>{{ bet.fee }}</td>
                         <td>
-                            <img src="{{bet.game.logo_A.url}}" width="30px" height="30px" />
-                            <label>{{bet.game}}</label>
-                            <img src="{{bet.game.logo_B.url}}" width="30px" height="30px" />
+                            <img src="{{ bet.game.logo_A.url }}" width="30px" height="30px" />
+                            <label>{{ bet.game }}</label>
+                            <img src="{{ bet.game.logo_B.url }}" width="30px" height="30px" />
                         </td>
                         <td>{% if bet.team == "Team A" %}
                             <label>{{ bet.game.team_A }}</label>
@@ -85,8 +85,8 @@
                             <label>{{ bet.game.team_B }}</label>
                             {% endif %}
                         </td>
-                        <td>{{bet.date}}</td>
-                        <td>{{bet.status}}</td>
+                        <td>{{ bet.date  }}</td>
+                        <td>{{ bet.status }}</td>
                     </tr>
                     {% endfor %}
                 </table>

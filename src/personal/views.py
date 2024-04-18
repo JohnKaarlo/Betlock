@@ -16,6 +16,10 @@ from django.core.exceptions import ValidationError
 import random, re
 from django.db.models import Sum
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models.functions import Cast
+from django.db.models.functions import Trunc
+from django.db.models import DateTimeField
+from django.db.models import F, ExpressionWrapper, DecimalField
 
 # Create your views here.
 def login_view(request):
@@ -579,10 +583,40 @@ def my_games(request):
     context = {}
     
     if request.user.is_organizer:
-        games = Game.objects.all().filter(organizer=request.user).order_by("date")
+        games = Game.objects.filter(organizer=request.user).order_by("date")
         context["games"] = games
     else:
-        bet = Bet.objects.all().filter(bettor=request.user).order_by("date")
-        context["bets"] = bet
+        bets = Bet.objects.filter(bettor=request.user).annotate(
+            datetime=Trunc('date', 'second', output_field=DateTimeField())
+        ).order_by("date")
+                
+        stats = Stats.objects.filter(
+                    gameid__in=bets.values('game_id'),
+                    player_id=request.user.id
+                ).annotate(
+                    datetime=Trunc('created_at', 'second', output_field=DateTimeField())
+                )
+
+        
+        merged_data = []
+        for bet in bets:
+            for stat in stats:
+                if bet.game_id == stat.gameid:
+
+                    merged_data.append({
+                        "gameid": bet.game_id,
+                        "player_id": bet.bettor_id,
+                        "date": bet.datetime,
+                        "datetime": bet.datetime,
+                        "bet": stat.bet,
+                        "fee": stat.fee,
+                        "game": bet.game,
+                        "team" : bet.game,
+                        "status" : bet.status,
+                        "total_amount" : stat.bet
+                    })
+                    break
+        
+        context["bets"] = merged_data
 
     return render(request, "personal/mygames.html", context)
