@@ -1,290 +1,370 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <style>
-    #search, table {
-        width: 100%;
-        color: white;
-    }
-    table input {
-        width: 100%;
-    }
-    .btn {
-        background-color: #fd9801;
-    }
-    .btn:hover {
-        background-color: #fd9801;
-    }
-    td {
-        padding-top: 8px;
-    }
-    tr:hover {
-        background-color: rgba(253, 152, 1, 0.5); 
-    }
-    #transaction-table th {
-        position: sticky;
-        top: 0;
-        background-color: #fd5001;
-    }
-    .date{
-        width: 65%;
-    }
-    .search{
-        width: 100%;
-    }
-    label{
-        font-size: 12px;
-    }
-    #search_button{
-    background-color: #fd5001;
-    width: 150px;
-    color: white;
-    height: 32px;
-  }
-  #clear_button{
-    background-color: #fd5001;
-    color: white;
-    width: 150px;
-    height: 32px;
-  }
+   #search, table {
+   width: 100%;
+   color: white;
+   }
+   table input {
+   width: 100%;
+   }
+   .btn {
+   background-color: #fd9801;
+   }
+   .btn:hover {
+   background-color: #fd9801;
+   }
+   td {
+   padding-top: 8px;
+   }
+   tr:hover {
+   background-color: rgba(253, 152, 1, 0.5); 
+   }
+   #transaction-table th {
+   position: sticky;
+   top: 0;
+   background-color: #fd5001;
+   }
+   .date{
+   width: 65%;
+   }
+   .search{
+   width: 100%;
+   }
+   label{
+   font-size: 12px;
+   }
+   #search_button{
+   background-color: #fd5001;
+   width: 150px;
+   color: white;
+   height: 32px;
+   }
+   #clear_button{
+   background-color: #fd5001;
+   color: white;
+   width: 150px;
+   height: 32px;
+   }
 </style>
 <div class="container-fluid content">
-    <br>
-    <div class="row" >
-        <div class="col-sm-2">
-            <input type="text" id="search" class="form-control search" placeholder="Search here">
-        </div>
-        <div class="col-sm-2">
-            <input type="date" name="date_from" class="form-control date" style="width: 100%;">
-        </div>
-        <div class="col-sm-2">
-            <input type="date" name="date_to" class="form-control date" style="width: 100%;">
-        </div>
-        <div class="col-sm-2">
-            <select name="status" class="form-control status">
-                <option value="" disabled selected>Select Status</option>
-                <option value="done">Done</option>
-                <option value="ongoing">Ongoing</option>
-                <option value="done">Show All</option>
-            </select>
-        </div>
-        <div class="col-sm-1">
-            <input type="submit" id="search_button" value="Search" class="btn"  style="height: 35px;"> 
-           
-        </div>
-        <div class="col-sm-1">
-        <input type="submit" id="clear_button" value="Clear filter" class="btn" style="height: 35px;">
-    </div>
-    </div>
-    <br>
-    <div style=" height: 80vh;
-    overflow: auto;">
-        <table class="text-center" id="transaction-table">
-            <tr class="table-background">
-                <th>User ID</th>
-                <th>Request Type</th>
-                <th>Amount</th>
-                <th>Date Requested</th>
-                <th>Date Approved</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </table>
-    </div>
+   <br>
+   <div class="row" >
+      <div class="col-sm-2">
+         <input type="text" id="search" class="form-control search" placeholder="Search here">
+      </div>
+      <div class="col-sm-2">
+         <input type="date" name="date_from" class="form-control date" style="width: 100%;">
+      </div>
+      <div class="col-sm-2">
+         <input type="date" name="date_to" class="form-control date" style="width: 100%;">
+      </div>
+      <div class="col-sm-2">
+         <select name="status" class="form-control status">
+            <option value="" disabled selected>Select Status</option>
+            <option value="done">Done</option>
+            <option value="ongoing">Ongoing</option>
+            <option value="done">Show All</option>
+         </select>
+      </div>
+      <div class="col-sm-1">
+         <input type="submit" id="search_button" value="Search" class="btn"  style="height: 35px;"> 
+      </div>
+      <div class="col-sm-1">
+         <input type="submit" id="clear_button" value="Clear filter" class="btn" style="height: 35px;">
+      </div>
+   </div>
+   <br>
+   <div style=" height: 80vh;
+      overflow: auto;">
+      <table class="text-center" id="transaction-table">
+         <tr class="table-background">
+            <th>User ID</th>
+            <th>Request Type</th>
+            <th>Amount</th>
+            <th>Date Requested</th>
+            <th>Date Approved</th>
+            <th></th>
+            <th></th>
+         </tr>
+      </table>
+   </div>
+</div>
+<div class="modal fade" id="winnerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+         <div class="modal-header" style="background-color: #fd5001;">
+            <h5 class="modal-title" id="exampleModalLabel">Update Game</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <div class="container text-center">
+               <br>
+               <div class="row">
+                  <div>
+                     <span style="font-size: 18px;">Please select the victorious team by clicking on their name</span>
+                  </div>
+               </div>
+               <br>
+               <br>
+               <div class="row">
+                  <div class="col-md-5" style="height: 250px;">
+                     <a onclick="selectTeam('teamA')">
+                        <div id="teamACard" class="card" style="max-height: 250px;">
+                            <img class="card-img-top" id="logoA" alt="Card image cap" style="max-height: 150px;">
+                           <div class="card-body" style="max-height: 50px;">
+                              <h5 class="card-title" id="teamAName">Featured Matches</h5>
+                              <p class="card-text" id="teamAinfo">Discover the top matches of the season.</p>
+                           </div>
+                        </div>
+                     </a>
+                  </div>
+                  <div class="col-md-2 text-center align-self-center">
+                     <span style="font-size: 24px;">VS</span>
+                  </div>
+                  <div class="col-md-5" style="height: 250px;">
+                     <a  onclick="selectTeam('teamB')">
+                        <div id="teamBCard" class="card" style="max-height: 250px;">
+                            <img class="card-img-top" id="logoB"  alt="Card image cap" style="max-height: 150px;">
+                           <div class="card-body" style="max-height: 50px;">
+                              <h5 class="card-title" id="teamBName">Team</h5>
+                              <p class="card-text" id="teamBinfo">Discover the top matches of the season.</p>
+                           </div>
+                        </div>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <br>
+         <br>
+         <div class="modal-footer justify-content-center" >
+            <button class="btn form-control" onclick="updateFunction()" id="UpdateButton" style="width: 50%;">Update</button>
+            <button class="btn form-control" onclick="closeFunction()" id="CloseButton" style="width: 50%;">Close</button>
+         </div>
+      </div>
+   </div>
 </div>
 
-<div class="modal fade" id="winnerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top: 8%;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Update Game</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="container text-center">
-                <div class="row">
-                    <div class="col-md-6">
-                        <a href="#featured">
-                            <div class="card bg-primary"> 
-                                <div class="card-body">
-                                    <h5 class="card-title" id="teamAName">Featured Matches</h5>
-                                    <p class="card-text" id="teamAinfo">Discover the top matches of the season.</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    
-                  
-                    <div class="col-md-6">
-                        <a href="#featured">
-                            <div class="card bg-danger"> 
-                                <div class="card-body">
-                                    <h5 class="card-title" id="teamBName">Team</h5>
-                                    <p class="card-text" id="teamBinfo">Discover the top matches of the season.</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-        
-              </div>
+<div class="modal fade" id="ConfirmUpdateGamesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 9999999;margin-top: 5%;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"> 
+            <div class="modal-header" style="background-color: #fd5001;">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: black;text-align: center;">Winner Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="color: black;" id="message">Do you want to continue with updating the winners?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="okayButton" class="btn" data-dismiss="modal">Okay</button>
+                <button type="button" id="okayButton" class="btn" data-dismiss="modal">Cancel</button>
             </div>
         </div>
-        <div class="modal-footer">
-          <button class="btn" onclick="closeFunction()" id="CloseButton">Close</button>
-          <button class="btn" onclick="closeFunction()" id="CloseButton">Update</button>
-      </div>
-      </div>
     </div>
-  </div>
-
+</div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var tableBody = document.getElementById('transaction-table');
-        
-        function fetchTransactions(dateFrom, dateTo, code) {
-            console.log("click1");
-            fetch('/game/get_games/', {
-                method: 'POST',
-                data: JSON.stringify({
-                }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'  
-                },
-                body: JSON.stringify({
-                }) 
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                if (data.success) {
-                    tableBody.innerHTML = '<tr class="table-background"><th>Team A</th><th>Team B</th><th>Date Created</th><th>Date</th><th>Series Type</th><th>Max Bet</th><th>Min Bet</th><th>Fee</th><th></th></tr>';
-                    
-                    data.games.forEach(game => {
-                        var row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${game.team_A}</td>
-                            <td>${game.team_B}</td>
-                            <td>${game.date_created}</td>
-                            <td>${game.date}</td>
-                            <td>${game.series_type}</td>
-                            <td>${game.max_bet}</td>
-                            <td>${game.min_bet}</td>
-                            <td>${game.fee}</td>
-                            
-                            <td>
-                                <input onclick="updateGameStatus('${game.team_A}','${game.info_A}','${game.team_B}','${game.info_B}','${game.id}')" value="Update" class="btn" style="background-color:green;color:white;width:250px;">
-                            </td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-                } else {
-                    console.log("click2");
-                    // Handle error or display a message
-                    console.error(data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
-        fetchTransactions();
-
-        document.getElementById('search_button').addEventListener('click', function() {
-
-            setTimeout(function() {
-                        $('#spinner_modal').modal('hide');
-                    }, 2000); 
-            var dateFrom = document.querySelector('input[name="date_from"]').value;
-            var dateTo = document.querySelector('input[name="date_to"]').value;
-            var code = document.querySelector('#search').value;
-            console.log(dateFrom, dateTo, code)
-            fetchTransactions(dateFrom, dateTo, code);
-          
+     $(document).ready(function(){
+        $('.close').click(function(){
+            $('#ConfirmUpdateGamesModal').modal('hide');
         });
 
-        document.getElementById('clear_button').addEventListener('click', function() {
-            location.reload();
+        $('#okayButton').click(function(){
+            {% if msg and "success" in msg %}
+                window.location.href = '/gamelist';
+            {% else %}
+                $('#ConfirmUpdateGamesModal').modal('hide');
+            {% endif %}
         });
-
-        clear_button
     });
 </script>
-
-
 <script>
-      
     
-    function updateTransactionStatus(id, code, status, transaction, amount) {
-        var status = status === 'completed' ? 'completed' : 'cancelled';
-
-        var requestData = {
-            'id': id,
-            'status': status,
-            'code': code,
-        };
-
-        $.ajax({
-            type: 'POST',
-            url: '/cashiers/update_status/',
-            data: JSON.stringify(requestData),
-            contentType: 'application/json',
-            success: function(response) {
-                if (response.success) {
-                    if (status === 'completed') {
-                        insertStats(id, code, status, transaction,amount);
-                    }
-                    $('#globalModal').modal('show');
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('Error: ' + error);
-            }
-        });
+   function updateFunction()
+   {
+    $('#ConfirmUpdateGamesModal').modal('show');
+   }
+   var selectedTeam = '';
+   function selectTeam(team) {
+       if (selectedTeam === team) {
+           document.getElementById(team + 'Card').classList.remove('selected');
+           selectedTeam = '';
+       } else {
+           if (selectedTeam !== '') {
+               document.getElementById(selectedTeam + 'Card').classList.remove('selected');
+           }
+           document.getElementById(team + 'Card').classList.add('selected');
+           selectedTeam = team;
+       }
+   
+       updateButton.onclick = function() {
+           if (selectedTeam !== '') {
+               console.log('Selected Team: ' + document.getElementById(selectedTeam + 'Name').innerText);
+           } else {
+               console.log('Please select a team first.');
+           }
+       };
+   }
+   document.addEventListener('DOMContentLoaded', function () {
+   var tableBody = document.getElementById('transaction-table');
+   
+   function fetchTransactions(dateFrom, dateTo, code) {
+       console.log("click1");
+       fetch('/game/get_games/', {
+           method: 'POST',
+           data: JSON.stringify({
+           }),
+           headers: {
+               'Content-Type': 'application/json',
+               'X-CSRFToken': '{{ csrf_token }}'  
+           },
+           body: JSON.stringify({
+           }) 
+       })
+       .then(response => response.json())
+       .then(data => {
+           console.log(data);
+           if (data.success) {
+               tableBody.innerHTML = '<tr class="table-background"><th>Team A</th><th>Team B</th><th>Date Created</th><th>Date</th><th>Series Type</th><th>Max Bet</th><th>Min Bet</th><th>Fee</th><th></th></tr>';
+               
+               data.games.forEach(game => {
+                   var row = document.createElement('tr');
+                   row.innerHTML = `
+                       <td>${game.team_A}</td>
+                       <td>${game.team_B}</td>
+                       <td>${game.date_created}</td>
+                       <td>${game.date}</td>
+                       <td>${game.series_type}</td>
+                       <td>${game.max_bet}</td>
+                       <td>${game.min_bet}</td>
+                       <td>${game.fee}</td>
+                       
+                       
+                       <td>
+                           <input onclick="updateGameStatus('${game.team_A}','${game.info_A}','${game.logo_A}','${game.team_B}','${game.info_B}','${game.logo_B}','${game.id}')" value="Update" class="btn" style="background-color:green;color:white;width:250px;">
+                       </td>
+                   `;
+                   tableBody.appendChild(row);
+               });
+           } else {
+               console.log("click2");
+               // Handle error or display a message
+               console.error(data.message);
+           }
+       })
+       .catch(error => {
+           console.error('Error:', error);
+       });
+   }
+   
+   fetchTransactions();
+   
+   document.getElementById('search_button').addEventListener('click', function() {
+   
+       setTimeout(function() {
+                   $('#spinner_modal').modal('hide');
+               }, 2000); 
+       var dateFrom = document.querySelector('input[name="date_from"]').value;
+       var dateTo = document.querySelector('input[name="date_to"]').value;
+       var code = document.querySelector('#search').value;
+       console.log(dateFrom, dateTo, code)
+       fetchTransactions(dateFrom, dateTo, code);
+     
+   });
+   
+   document.getElementById('clear_button').addEventListener('click', function() {
+       location.reload();
+   });
+   
+   clear_button
+   });
+</script>
+<script>
+   function updateTransactionStatus(id, code, status, transaction, amount) {
+       var status = status === 'completed' ? 'completed' : 'cancelled';
+   
+       var requestData = {
+           'id': id,
+           'status': status,
+           'code': code,
+       };
+   
+       $.ajax({
+           type: 'POST',
+           url: '/cashiers/update_status/',
+           data: JSON.stringify(requestData),
+           contentType: 'application/json',
+           success: function(response) {
+               if (response.success) {
+                   if (status === 'completed') {
+                       insertStats(id, code, status, transaction,amount);
+                   }
+                   $('#globalModal').modal('show');
+               } else {
+                   alert('Error: ' + response.message);
+               }
+           },
+           error: function(xhr, status, error) {
+               alert('Error: ' + error);
+           }
+       });
+   }
+   
+   function insertStats(id, code, status, transaction,amount) {
+       var requestData = {
+           'id': id,
+           'code': code,
+           'type': transaction, 
+           'amount': amount, 
+       };
+   
+       $.ajax({
+           type: 'POST',
+           url: '/cashiers/create_stats/',
+           data: JSON.stringify(requestData),
+           contentType: 'application/json',
+           success: function(response) {
+               if (!response.success) {
+                   console.error('Error inserting stats:', response.message);
+               }
+           },
+           error: function(xhr, status, error) {
+               console.error('Error inserting stats:', error);
+           }
+       });
+   }
+   
+   
+     function updateGameStatus(team1,infoa,logoA, team2,infob,logoB, id) {
+       $('#winnerModal').modal('show');
+   
+       document.getElementById('teamAName').innerText = team1;
+       document.getElementById('teamBName').innerText = team2;
+       document.getElementById('teamAinfo').innerText = infoa;
+       document.getElementById('teamBinfo').innerText = infob;
+       document.getElementById('logoA').src = logoA;
+       document.getElementById('logoB').src = logoB;
+     }
+</script>
+<style>
+   .selected {
+   background-color: green !important;
+   }
+   #teamBName, #teamBinfo {
+        text-decoration: none;
     }
-
-    function insertStats(id, code, status, transaction,amount) {
-        var requestData = {
-            'id': id,
-            'code': code,
-            'type': transaction, 
-            'amount': amount, 
-        };
-
-        $.ajax({
-            type: 'POST',
-            url: '/cashiers/create_stats/',
-            data: JSON.stringify(requestData),
-            contentType: 'application/json',
-            success: function(response) {
-                if (!response.success) {
-                    console.error('Error inserting stats:', response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error inserting stats:', error);
-            }
-        });
+    .modal-backdrop.show {
+        opacity: 0.5; 
+        background-color: rgba(0, 0, 0, 0.5);
     }
-
-    
-      function updateGameStatus(team1,infoa, team2,infob, id) {
-        $('#winnerModal').modal('show');
-
-        document.getElementById('teamAName').innerText = team1;
-        document.getElementById('teamBName').innerText = team2;
-        document.getElementById('teamAinfo').innerText = infoa;
-        document.getElementById('teamBinfo').innerText = infob;
-        
-      }
-    </script>
-
-    
-
-
+    #ConfirmUpdateGamesModal .modal-backdrop.show
+    {
+        opacity: 0.5; 
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+</style>
 {% include 'modal.html' %}
 {% include 'spinner.html' %}
 {% endblock content %}
