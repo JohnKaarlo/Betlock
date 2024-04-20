@@ -497,6 +497,7 @@ def bet(request, slug):
         return
     if  amount > 0:
         Stats.objects.create(player=player, type="bet",bet=amount, gameid = game.id)
+        Bet.objects.create(bettor=request.user,game=game,team=team)
         user = User.objects.get(id=request.user.id)
         user.wallet = user.wallet - amount
         user.save()
