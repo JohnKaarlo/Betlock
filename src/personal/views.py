@@ -460,7 +460,7 @@ def add_game(request):
             if logo_B:
                 game.logo_B = logo_B
             game.save()
-        context["msg"] = "Success!"
+        context["msg"] = "Your game creation process has been successfully completed, showcasing your dedication, creativity, and skill in crafting captivating gaming experiences."
 
     return render(request, "personal/addGame.html", context)
 
