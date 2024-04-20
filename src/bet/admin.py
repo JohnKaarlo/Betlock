@@ -4,7 +4,7 @@ from bet.models import Bet
 # Register your models here.
 
 class BetAdmin(admin.ModelAdmin):
-    list_display = ('id','amount', 'team', 'date')
+    list_display = ('id', 'team', 'date')
     search_fields = ('team',)
 
     filter_horizontal = ()

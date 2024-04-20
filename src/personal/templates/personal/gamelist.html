@@ -4,6 +4,7 @@
 <style>
     #search, table {
         width: 100%;
+        color: white;
     }
     table input {
         width: 100%;
@@ -36,8 +37,8 @@
     }
     #search_button{
     background-color: #fd5001;
-    color: white;
     width: 150px;
+    color: white;
     height: 32px;
   }
   #clear_button{
@@ -50,8 +51,8 @@
 <div class="container-fluid content">
     <br>
     <div class="row" >
-        <div class="col-sm-3">
-            <input type="text" id="search" class="form-control search" placeholder="Search here" >
+        <div class="col-sm-2">
+            <input type="text" id="search" class="form-control search" placeholder="Search here">
         </div>
         <div class="col-sm-2">
             <input type="date" name="date_from" class="form-control date" style="width: 100%;">
@@ -59,12 +60,20 @@
         <div class="col-sm-2">
             <input type="date" name="date_to" class="form-control date" style="width: 100%;">
         </div>
+        <div class="col-sm-2">
+            <select name="status" class="form-control status">
+                <option value="" disabled selected>Select Status</option>
+                <option value="done">Done</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="done">Show All</option>
+            </select>
+        </div>
         <div class="col-sm-1">
-            <input type="submit" id="search_button" value="Search"  class="btn" style="height: 35px;">
+            <input type="submit" id="search_button" value="Search" class="btn"  style="height: 35px;"> 
            
         </div>
         <div class="col-sm-1">
-        <input type="submit" id="clear_button" value="Clear filter"  class="btn" style="height: 35px;">
+        <input type="submit" id="clear_button" value="Clear filter" class="btn" style="height: 35px;">
     </div>
     </div>
     <br>
@@ -84,51 +93,88 @@
     </div>
 </div>
 
+<div class="modal fade" id="winnerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top: 8%;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Game</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="#featured">
+                            <div class="card bg-primary"> 
+                                <div class="card-body">
+                                    <h5 class="card-title" id="teamAName">Featured Matches</h5>
+                                    <p class="card-text" id="teamAinfo">Discover the top matches of the season.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                  
+                    <div class="col-md-6">
+                        <a href="#featured">
+                            <div class="card bg-danger"> 
+                                <div class="card-body">
+                                    <h5 class="card-title" id="teamBName">Team</h5>
+                                    <p class="card-text" id="teamBinfo">Discover the top matches of the season.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+        
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" onclick="closeFunction()" id="CloseButton">Close</button>
+          <button class="btn" onclick="closeFunction()" id="CloseButton">Update</button>
+      </div>
+      </div>
+    </div>
+  </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var tableBody = document.getElementById('transaction-table');
         
         function fetchTransactions(dateFrom, dateTo, code) {
             console.log("click1");
-            fetch('/cashiers/get_transactions/', {
+            fetch('/game/get_games/', {
                 method: 'POST',
                 data: JSON.stringify({
-                    'date_from': dateFrom,
-                    'date_to': dateTo,
-                    'code': code
                 }),
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': '{{ csrf_token }}'  
                 },
                 body: JSON.stringify({
-                    'date_from': dateFrom,
-                    'date_to': dateTo,
-                    'code': code
                 }) 
             })
             .then(response => response.json())
             .then(data => {
                 console.log(data);
                 if (data.success) {
-                    tableBody.innerHTML = '<tr class="table-background"><th>Name</th><th>Request Type</th><th>Amount</th><th>Code</th><th>Date Requested</th><th>Date Approved</th><th></th><th></th></tr>';
+                    tableBody.innerHTML = '<tr class="table-background"><th>Team A</th><th>Team B</th><th>Date Created</th><th>Date</th><th>Series Type</th><th>Max Bet</th><th>Min Bet</th><th>Fee</th><th></th></tr>';
                     
-                    data.transactions.forEach(transaction => {
+                    data.games.forEach(game => {
                         var row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${transaction.firstname} ${transaction.lastname}</td>
-                            <td>${transaction.type}</td>
-                            <td>${transaction.amount}</td>
-                            <td>${transaction.code}</td>
-                            <td>${transaction.created_at}</td>
-                            <td>${transaction.updated_at}</td>
+                            <td>${game.team_A}</td>
+                            <td>${game.team_B}</td>
+                            <td>${game.date_created}</td>
+                            <td>${game.date}</td>
+                            <td>${game.series_type}</td>
+                            <td>${game.max_bet}</td>
+                            <td>${game.min_bet}</td>
+                            <td>${game.fee}</td>
+                            
                             <td>
-                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'completed','${transaction.type}',${transaction.amount})" style="background-color:green; display:${transaction.status === 'cancelled' ? 'none' : 'block'}" type="button" class="btn" value="${transaction.status === 'pending' ? 'Approve' : transaction.status}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
+                                <input onclick="updateGameStatus('${game.team_A}','${game.info_A}','${game.team_B}','${game.info_B}','${game.id}')" value="Update" class="btn" style="background-color:green;color:white;width:250px;">
                             </td>
-                            <td>
-                                <input onclick="updateTransactionStatus('${transaction.player_id}','${transaction.code}', 'cancelled','${transaction.type}',${transaction.amount})" style="background-color:red;  display:${transaction.status === 'completed' ? 'none' : 'block'}" type="button" class="btn" value="${transaction.status === 'pending' ? 'Cancel' : 'Cancelled'}" ${transaction.status !== 'pending' ? 'disabled' : ''}>
-                            </td>
-
                         `;
                         tableBody.appendChild(row);
                     });
@@ -223,7 +269,20 @@
             }
         });
     }
+
+    
+      function updateGameStatus(team1,infoa, team2,infob, id) {
+        $('#winnerModal').modal('show');
+
+        document.getElementById('teamAName').innerText = team1;
+        document.getElementById('teamBName').innerText = team2;
+        document.getElementById('teamAinfo').innerText = infoa;
+        document.getElementById('teamBinfo').innerText = infob;
+        
+      }
     </script>
+
+    
 
 
 {% include 'modal.html' %}

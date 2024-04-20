@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 class Bet(models.Model):
-    amount = models.FloatField()
     bettor = models.ForeignKey(
         "account.User",
         on_delete=models.CASCADE,

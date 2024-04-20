@@ -5,7 +5,8 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
 from Services.Cashiers.models import Stats, Transaction  
-from account.models import User 
+from account.models import User
+from game.models import Game 
 
 User = get_user_model()
 
@@ -44,10 +45,16 @@ def create_transaction(request):
 def get_transactions(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        print(data)
         date_from = data.get('date_from')
         date_to = data.get('date_to')
+        code = data.get('code')
         
-        if date_from and date_to:
+        if date_from and date_to and (code is None or code == ''):
+            transactions = Transaction.objects.filter(created_at__range=[date_from, date_to])
+        elif code and (date_from is None or date_to is None or date_to == ''):
+            transactions = Transaction.objects.filter(code=code)
+        elif  date_from and date_to and code:
             transactions = Transaction.objects.filter(created_at__range=[date_from, date_to])
         else:
             transactions = Transaction.objects.all()
@@ -126,5 +133,61 @@ def create_stats(request):
             return JsonResponse({'success': True, 'message': 'Stats created successfully.'})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'success': False, 'message': 'Only POST requests are allowed.'}, status=405)
+
+
+def get_undone_games(request):
+    if request.method == 'POST':
+        undone_games = Game.objects.filter(is_done=False)
+
+        game_list = []
+        for game in undone_games:
+            game_data = {
+                'team_A': game.team_A,
+                'team_B': game.team_B,
+                'info_A': game.info_A,
+                'info_B': game.info_B,
+                'logo_A': game.logo_A.url if game.logo_A else None,
+                'logo_B': game.logo_B.url if game.logo_B else None,
+                'is_local': game.is_local,
+                'is_done': game.is_done,
+                'slug': game.slug,
+                'date_created': game.date_created.strftime('%Y-%m-%d %H:%M:%S'),
+                'date': game.date.strftime('%Y-%m-%d %H:%M:%S'),
+                'organizer': game.organizer.username if game.organizer else None,
+                'winner': game.winner,
+                'series_type': game.series_type,
+                'max_bet': str(game.max_bet) if game.max_bet is not None else '0',
+                'min_bet': str(game.min_bet) if game.min_bet is not None else '0',
+                'fee': str(game.fee) if game.fee is not None else None,
+            }
+            game_list.append(game_data)
+
+        return JsonResponse({'success': True, 'games': game_list})
+    else:
+        return JsonResponse({'success': False, 'message': 'Only GET requests are allowed.'}, status=405)
+    
+def update_game_status(request):
+    if request.method == 'POST':
+        if 'id' not in request.POST or 'winner' not in request.POST:
+            return JsonResponse({'success': False, 'message': 'Slug and winner parameters are required.'}, status=400)
+
+        id = request.POST['id']
+        winner = request.POST['winner']
+
+        try:
+            game = Game.objects.get(id=id, is_done=False)
+            game.is_done = True
+            game.winner = winner
+            if winner == game.team_A:
+                game.game_winner_id = game.team_A_id
+            elif winner == game.team_B:
+                game.game_winner_id = game.team_B_id
+            game.save()
+
+            return JsonResponse({'success': True, 'message': 'Game status updated successfully.'})
+        except Game.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Game not found.'}, status=404)
     else:
         return JsonResponse({'success': False, 'message': 'Only POST requests are allowed.'}, status=405)

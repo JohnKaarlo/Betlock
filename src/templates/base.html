@@ -19,9 +19,18 @@
             </a>
             <ul class="navbar-nav mr-auto">
             {% if request.user.is_admin %}
-                <li class="nav-item">
-                    <a class="nav-link link" href="{% url 'add_game' %}">Add Game</a>
-                </li>
+
+            <li class="nav-item dropdown" id="gamesDropdown">
+                <a class="nav-link link" href="#">
+                    Games
+                </a>
+                    <div class="dropdown-menu" aria-labelledby="gamesDropdown" style="left:-98px; margin-top: 5px;">
+                        <a class="dropdown-item" href="{% url 'add_game' %}">Add Games</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{% url 'gamelist' %}">Update Games</a>
+                    </div>
+            </li>
+
             {% elif request.user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link link" href="{% url 'my_games' %}">My Games</a>
@@ -29,7 +38,13 @@
             {% endif %}
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link link" href="{% if request.user.is_admin %}/admin{% else %}/lobby{% endif %}">Lobby</a>
+                    <a class="nav-link link" href="{% if request.user.is_admin %}/admin{% else %}/lobby{% endif %}">
+                        {% if request.user.is_admin %}
+                            Cashier
+                        {% else %}
+                            Lobby
+                        {% endif %}
+                    </a>
                 </li>
                     {% if request.user.is_admin %}
                     <li class="nav-item dropdown" id="usersDropdown">
@@ -82,6 +97,16 @@
         $("#usersDropdown").toggleClass('show');
         $("#usersDropdown").find('.dropdown-menu').toggleClass('show');
     });
+
+
+    $("#gamesDropdown > .nav-link").on('click', function(event){
+        console.log("click")
+        $("#gamesDropdown").toggleClass('show');
+        $("#gamesDropdown").find('.dropdown-menu').toggleClass('show');
+    });
+
+
+    
 });
 
     </script>

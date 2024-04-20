@@ -29,10 +29,62 @@
     table input{
         width: 100%;
     }
+    #search, table {
+        width: 100%;
+    }
+    table input {
+        width: 100%;
+    }
+    .btn {
+        background-color: #fd9801;
+    }
+    .btn:hover {
+        background-color: #fd9801;
+    }
+    td {
+        padding-top: 8px;
+    }
+    tr:hover {
+        background-color: rgba(253, 152, 1, 0.5); 
+    }
+    #transaction-table th {
+        position: sticky;
+        top: 0;
+        background-color: #fd5001;
+    }
+    .date{
+        width: 65%;
+    }
+    .search{
+        width: 100%;
+    }
+    label{
+        font-size: 12px;
+    }
+    #search_button{
+    background-color: #fd5001;
+    color: white;
+    width: 250px;
+    height: 32px;
+  }
 </style>
 <div class="container-fluid content">
     <div class="container-fluid">
         <br>
+        <div class="row" >
+            <div class="col-sm-4">
+                <input type="text" id="search" class="form-control search" placeholder="Search here">
+            </div>
+            <div class="col-sm-2">
+                <input type="date" name="date_from" class="form-control date" style="width: 100%;">
+            </div>
+            <div class="col-sm-2">
+                <input type="date" name="date_to" class="form-control date" style="width: 100%;">
+            </div>
+            <div class="col-sm-1">
+                <input type="submit" id="search_button" value="Search" class="btn" style="height: 35px;">
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12">
                 {% if request.user.is_organizer %}

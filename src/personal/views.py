@@ -49,7 +49,7 @@ def login_view(request):
 def update_user_wallet(user):
     deposit_sum = Stats.objects.filter(player=user, type='Deposit').aggregate(total_deposit=Sum('pot'))['total_deposit'] or 0
     withdrawal_sum = Stats.objects.filter(player=user, type='Withdrawal').aggregate(total_withdrawal=Sum('pot'))['total_withdrawal'] or 0
-    total_pot = deposit_sum - withdrawal_sum
+    total_pot = deposit_sum - withdrawal_sum 
     user.wallet = total_pot
     user.save()
 
@@ -556,6 +556,12 @@ def withdraw_user(request):
         context["msg"] = "Your withdrawal request is pending"
     
     return render(request, "personal/withdraw.html", context)
+
+@login_required
+def gamelist_view(request):
+    if not request.user.is_admin:
+        return redirect('/gamelist')
+    return render(request, "personal/gamelist.html")
 
 @login_required
 def admin_view(request):
