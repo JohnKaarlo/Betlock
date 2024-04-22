@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
 from Services.Cashiers.models import Stats, Transaction  
 from account.models import User
+from bet.models import Bet
 from game.models import Game 
 
 User = get_user_model()
@@ -178,11 +179,30 @@ def update_game_status(request):
 
         id = data['id']
         winner = data['winner']
+        team = data['team']
 
         try:
             game = Game.objects.get(id=id, is_done=False)
             game.is_done = True
-            game.winner = winner
+           
+
+            bets_to_update = Bet.objects.filter(game_id=id, status="TBD")
+
+            if team == "teamA":
+                winner_team = "Team A"
+            elif team == "teamB":
+                winner_team = "Team B"
+            else:
+                return
+            game.winner = winner_team
+            
+            for bet in bets_to_update:
+                if bet.team == winner_team:
+                    bet.status = "Win"
+                else:
+                    bet.status = "Lose"
+                bet.save()
+
             game.save()
 
             return JsonResponse({'success': True, 'message': 'Game status updated successfully.'})

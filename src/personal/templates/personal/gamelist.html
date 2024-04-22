@@ -161,7 +161,7 @@
                 <p style="color: black;" id="message">Do you want to continue with updating the winner to <span id="winnerName"> </span> ?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" id="okayButton" class="btn" data-dismiss="modal" data-id="" data-winner="">Okay</button>
+                <button type="button" id="okayButton" class="btn" data-dismiss="modal" data-id="" data-winner="" data-team="">Okay</button>
                 <button type="button" id="cancelButton" class="btn" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -177,7 +177,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p style="color: black;" id="message">Game is updated</p>
+                <p style="color: black;" id="updatemessage">Game is updated</p>
             </div>
         </div>
     </div>
@@ -227,6 +227,7 @@
                 var okayButton = document.getElementById('okayButton');
                 okayButton.setAttribute('data-id', gameId); 
                 okayButton.setAttribute('data-winner', teamName); 
+                okayButton.setAttribute('data-team', selectedTeam); 
                 document.getElementById('winnerName').innerText = teamName;
 
                 $('#ConfirmUpdateGamesModal').modal('show');
@@ -241,7 +242,6 @@
    var tableBody = document.getElementById('transaction-table');
    
    function fetchTransactions(dateFrom, dateTo, code) {
-       console.log("click1");
        fetch('/game/get_games/', {
            method: 'POST',
            data: JSON.stringify({
@@ -387,6 +387,7 @@
     $('#okayButton').click(function() {
         var gameId = $(this).data('id');
         var winner = $(this).data('winner');
+        var team = $(this).data('team');
 
         console.log(gameId)
         console.log(winner)
@@ -396,7 +397,8 @@
             contentType: 'application/json',
             data: JSON.stringify({
                 id: gameId,
-                winner: winner
+                winner: winner,
+                team: team,
             }),
             success: function(response) {
                 $('#UpdateGamesModal').modal('show');
@@ -404,12 +406,13 @@
                     $('#UpdateGamesModal').modal('hide');
                     location.reload();
                }, 3000); 
-
-              
-                
             },
             error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+                $('#UpdateGamesModal').modal('show');
+                setTimeout(function() {
+                $('#UpdateGamesModal #updatemessage').val($('#You have to select a winning team').val());
+
+               }, 2000); 
             }
         });
     });
