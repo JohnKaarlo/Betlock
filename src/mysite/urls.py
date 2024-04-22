@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from Services.Cashiers.cashiers import create_stats, create_transaction, get_transactions, update_transaction_status, get_undone_games
+from Services.Cashiers.cashiers import create_stats, create_transaction, get_transactions, update_game_status, update_transaction_status, get_undone_games
 from personal.views import (
     gamelist_view,
     login_view,
@@ -102,6 +102,8 @@ urlpatterns = [
     path('cashiers/update_status/', update_transaction_status, name='update_transaction_status'),
     path('cashiers/create_stats/', create_stats, name='create_stats'),
     path('game/get_games/', get_undone_games, name='get_games'),
+    path('game/update_games/', update_game_status, name='updates_games'),
+    
     
 ]
 

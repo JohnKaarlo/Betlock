@@ -144,6 +144,7 @@ def get_undone_games(request):
         game_list = []
         for game in undone_games:
             game_data = {
+                'id': game.id,
                 'team_A': game.team_A,
                 'team_B': game.team_B,
                 'info_A': game.info_A,
@@ -167,23 +168,21 @@ def get_undone_games(request):
         return JsonResponse({'success': True, 'games': game_list})
     else:
         return JsonResponse({'success': False, 'message': 'Only GET requests are allowed.'}, status=405)
-    
+
+@csrf_exempt
 def update_game_status(request):
     if request.method == 'POST':
-        if 'id' not in request.POST or 'winner' not in request.POST:
-            return JsonResponse({'success': False, 'message': 'Slug and winner parameters are required.'}, status=400)
+        data = json.loads(request.body.decode('utf-8'))
+        if 'id' not in data or 'winner' not in data:
+            return JsonResponse({'success': False, 'message': 'id and winner parameters are required.'}, status=400)
 
-        id = request.POST['id']
-        winner = request.POST['winner']
+        id = data['id']
+        winner = data['winner']
 
         try:
             game = Game.objects.get(id=id, is_done=False)
             game.is_done = True
             game.winner = winner
-            if winner == game.team_A:
-                game.game_winner_id = game.team_A_id
-            elif winner == game.team_B:
-                game.game_winner_id = game.team_B_id
             game.save()
 
             return JsonResponse({'success': True, 'message': 'Game status updated successfully.'})

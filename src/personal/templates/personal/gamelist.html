@@ -109,12 +109,13 @@
                <br>
                <div class="row">
                   <div class="col-md-5" style="height: 250px;">
-                     <a onclick="selectTeam('teamA')">
+                     <a onclick="selectTeam('teamA')" data-team-id="" data-team-name="">
                         <div id="teamACard" class="card" style="max-height: 250px;">
                             <img class="card-img-top" id="logoA" alt="Card image cap" style="max-height: 150px;">
                            <div class="card-body" style="max-height: 50px;">
                               <h5 class="card-title" id="teamAName">Featured Matches</h5>
                               <p class="card-text" id="teamAinfo">Discover the top matches of the season.</p>
+                              <p id="gameId" style="display: none;"> </p>
                            </div>
                         </div>
                      </a>
@@ -129,6 +130,7 @@
                            <div class="card-body" style="max-height: 50px;">
                               <h5 class="card-title" id="teamBName">Team</h5>
                               <p class="card-text" id="teamBinfo">Discover the top matches of the season.</p>
+                              <p id="gameId" style="display: none;"> </p>
                            </div>
                         </div>
                      </a>
@@ -156,11 +158,26 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p style="color: black;" id="message">Do you want to continue with updating the winners?</p>
+                <p style="color: black;" id="message">Do you want to continue with updating the winner to <span id="winnerName"> </span> ?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" id="okayButton" class="btn" data-dismiss="modal">Okay</button>
-                <button type="button" id="okayButton" class="btn" data-dismiss="modal">Cancel</button>
+                <button type="button" id="okayButton" class="btn" data-dismiss="modal" data-id="" data-winner="">Okay</button>
+                <button type="button" id="cancelButton" class="btn" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="UpdateGamesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 9999999;margin-top: 5%;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"> 
+            <div class="modal-header" style="background-color: #fd5001;">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: black;text-align: center;">Winner</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="color: black;" id="message">Game is updated</p>
             </div>
         </div>
     </div>
@@ -181,11 +198,6 @@
     });
 </script>
 <script>
-    
-   function updateFunction()
-   {
-    $('#ConfirmUpdateGamesModal').modal('show');
-   }
    var selectedTeam = '';
    function selectTeam(team) {
        if (selectedTeam === team) {
@@ -199,9 +211,27 @@
            selectedTeam = team;
        }
    
-       updateButton.onclick = function() {
+       document.getElementById('UpdateButton').onclick = function() {
            if (selectedTeam !== '') {
-               console.log('Selected Team: ' + document.getElementById(selectedTeam + 'Name').innerText);
+
+                var teamName = ''
+                var teamInfo = ''
+                var gameId = document.getElementById('gameId').innerText;
+                console.log("selectTeam:", selectedTeam);
+                if(selectedTeam === 'teamB') {
+                    teamName = document.getElementById('teamBName').innerText;
+                } else {
+                    teamName = document.getElementById('teamAName').innerText;
+                }
+
+                var okayButton = document.getElementById('okayButton');
+                okayButton.setAttribute('data-id', gameId); 
+                okayButton.setAttribute('data-winner', teamName); 
+                document.getElementById('winnerName').innerText = teamName;
+
+                $('#ConfirmUpdateGamesModal').modal('show');
+
+              
            } else {
                console.log('Please select a team first.');
            }
@@ -243,7 +273,7 @@
                        
                        
                        <td>
-                           <input onclick="updateGameStatus('${game.team_A}','${game.info_A}','${game.logo_A}','${game.team_B}','${game.info_B}','${game.logo_B}','${game.id}')" value="Update" class="btn" style="background-color:green;color:white;width:250px;">
+                           <input onclick="updateGameStatus(${game.id},'${game.team_A}','${game.info_A}','${game.logo_A}','${game.team_B}','${game.info_B}','${game.logo_B}','${game.id}')" value="Update" class="btn" style="background-color:green;color:white;width:250px;">
                        </td>
                    `;
                    tableBody.appendChild(row);
@@ -266,11 +296,11 @@
        setTimeout(function() {
                    $('#spinner_modal').modal('hide');
                }, 2000); 
-       var dateFrom = document.querySelector('input[name="date_from"]').value;
-       var dateTo = document.querySelector('input[name="date_to"]').value;
-       var code = document.querySelector('#search').value;
-       console.log(dateFrom, dateTo, code)
-       fetchTransactions(dateFrom, dateTo, code);
+                var dateFrom = document.querySelector('input[name="date_from"]').value;
+                var dateTo = document.querySelector('input[name="date_to"]').value;
+                var code = document.querySelector('#search').value;
+                console.log(dateFrom, dateTo, code)
+                fetchTransactions(dateFrom, dateTo, code);
      
    });
    
@@ -327,6 +357,7 @@
            contentType: 'application/json',
            success: function(response) {
                if (!response.success) {
+                
                    console.error('Error inserting stats:', response.message);
                }
            },
@@ -337,20 +368,61 @@
    }
    
    
-     function updateGameStatus(team1,infoa,logoA, team2,infob,logoB, id) {
+     function updateGameStatus(team1id,team1,infoa,logoA, team2,infob,logoB, id) {
        $('#winnerModal').modal('show');
    
        document.getElementById('teamAName').innerText = team1;
        document.getElementById('teamBName').innerText = team2;
        document.getElementById('teamAinfo').innerText = infoa;
        document.getElementById('teamBinfo').innerText = infob;
+       document.getElementById('gameId').innerText = team1id;
+       document.getElementById('teamBinfo').innerText = team2;
        document.getElementById('logoA').src = logoA;
        document.getElementById('logoB').src = logoB;
+
      }
+</script>
+<script>
+    $(document).ready(function() {
+    $('#okayButton').click(function() {
+        var gameId = $(this).data('id');
+        var winner = $(this).data('winner');
+
+        console.log(gameId)
+        console.log(winner)
+        $.ajax({
+            type: 'POST',
+            url: '/game/update_games/',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                id: gameId,
+                winner: winner
+            }),
+            success: function(response) {
+                $('#UpdateGamesModal').modal('show');
+                setTimeout(function() {
+                    $('#UpdateGamesModal').modal('hide');
+                    location.reload();
+               }, 3000); 
+
+              
+                
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+
+    $('#cancelButton').click(function() {
+        $('#ConfirmUpdateGamesModal').modal('hide');
+    });
+});
+
 </script>
 <style>
    .selected {
-   background-color: green !important;
+   background-color: orangered !important;
    }
    #teamBName, #teamBinfo {
         text-decoration: none;
