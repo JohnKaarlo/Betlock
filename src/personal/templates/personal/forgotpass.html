@@ -6,6 +6,9 @@
         color: black;
         background-color: #fd9801;
     }
+    form .btn{
+        width: 100%;
+    }
     .btn:hover{
         background-color: #fd9801;
     }
@@ -38,8 +41,10 @@
             </div>
             <div class="row" style="margin-top: 8px;">
                 <div class="col-sm-3"></div>
-                <div class="col-sm-4 text-start">   
+                <div class="col-sm-3 text-start">   
                     <input class="btn" type="submit" value="Next">
+                </div>
+                <div class="col-sm-6">
                     <p class="error">{{ msg }}</p>
                 </div>
             </div>

@@ -133,3 +133,7 @@ hr{
 #submit{
     background-color: gray;
 }
+.section-separator {
+    border-bottom: 1px solid #ccc; 
+    margin: 20px 0; 
+}

@@ -2,10 +2,6 @@
 
 {% block content %}
 <style>
-    .content a{
-        color: black;
-        display: inline;
-    }
     .btn{
         border-radius: 8px;
         background-color: #fd9801;
@@ -13,44 +9,33 @@
     .btn:hover{
         background-color: #fd9801;
     }
-    .login-form{
-        border-radius: 15px;
-        height: 266px;
-    }
-    hr{
-        height: 10px;
-        border: 0;
-        box-shadow: 0 10px 10px -10px black inset;
-        margin: 0;
-    }
-    .ml12{
-        margin-left: 12px;
-    }
     .row{
         padding-bottom: 16px;
-    }
-    .submit{
-        margin-left: 130px;
     }
     .border{
         height: 350px;
         width: 650px;
-        padding: 60px;
+        padding: 0 48px;
+    }
+    input, .submit{
+        width: 100%;
     }
 </style>
 <div class="container-fluid content">
     <div class="container">
         <br>
-        <a class="btn" href="/profile">Back</a>
+        
         <br>
         <br>
         <div class="container border">
-            <h2 class="white-text ml12 ">Update Profile</h2>
-            <hr>
-            <form id="signup" method="post" action="/update_user">
+            <br>
+            <div class="row text-center">
+                <h2>Update Profile</h2>
+            </div>
+            <form id="signup" method="post" action="/update">
             {% csrf_token %}
                 <div class="row">
-                    <div class="col-sm-3 text-end">
+                    <div class="col-sm-3">
                         <label for="username" >Username:</label>
                     </div>
                     <div class="col-sm-9">
@@ -59,12 +44,10 @@
                         {% else %}
                         <input type="text" id="username" name="username" value="{{ request.user.username }}" required>
                         {% endif %}
-                        <label class="success">{{ msg_user }}</label>
-                        <label class="error">{{ msg_user_warn }}</label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3 text-end">
+                    <div class="col-sm-3">
                         <label for="email">Email:</label>
                     </div>
                     <div class="col-sm-9">
@@ -73,12 +56,10 @@
                         {% else %}
                         <input type="email" id="email" name="email" value="{{ request.user.email }}" required>
                         {% endif %}
-                        <label class="success">{{ msg_email }}</label>
-                        <label class="error">{{ msg_email_warn }}</label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3 text-end">
+                    <div class="col-sm-3">
                         <label for="mobileNumber">Mobile:</label>
                     </div>
                     <div class="col-sm-9">
@@ -87,16 +68,20 @@
                         {% else %}
                         <input type="number" id="mobileNumber" name="mobileNumber" value="{{ request.user.mobileNumber }}" required>
                         {% endif %}
-                        <label class="success">{{ msg_num }}</label>
-                        <label class="error">{{ msg_num_warn }}</label>
                     </div>
                 </div>
-                <hr>
-                <button class="btn submit" type="submit">Update</button>
-                <label class="success">{{ msg }}</label>
+                <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-3">
+                        <button class="btn submit" type="submit">Update</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn submit" onclick="location.href = '/profile';" type="button">Back</button>
+                    </div>
+                </div>
             </form>
-        </div>
-                
+            <label class="success">{{ msg }}</label>
+        </div>        
     </div>
 </div>
 {% endblock content %}

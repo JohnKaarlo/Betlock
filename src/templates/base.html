@@ -18,25 +18,24 @@
                 <img src="/static/img/logo.png" alt="Logo" height="30px" width="30px" />BETLOCK
             </a>
             <ul class="navbar-nav mr-auto">
-            {% if request.user.is_admin %}
-
-            <li class="nav-item dropdown" id="gamesDropdown">
-                <a class="nav-link link" href="#">
-                    Games
-                </a>
+                {% if request.user.is_organizer %}
+                <li class="nav-item dropdown" id="gamesDropdown">
+                    <a class="nav-link link" href="#">
+                        Games
+                    </a>
                     <div class="dropdown-menu" aria-labelledby="gamesDropdown" style="left:-98px; margin-top: 5px;">
                         <a class="dropdown-item" href="{% url 'add_game' %}">Add Games</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{% url 'gamelist' %}">Update Games</a>
                     </div>
-            </li>
-
-            {% elif request.user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link link" href="{% url 'my_games' %}">My Games</a>
                 </li>
-            {% endif %}
-            {% if request.user.is_authenticated %}
+                {% elif request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link link" id="mygames" href="{% url 'my_games' %}">My Games</a>
+                </li>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                {% if request.user.is_admin or not request.user.is_organizer %}
                 <li class="nav-item">
                     <a class="nav-link link" href="{% if request.user.is_admin %}/admin{% else %}/lobby{% endif %}">
                         {% if request.user.is_admin %}
@@ -46,21 +45,21 @@
                         {% endif %}
                     </a>
                 </li>
-                    {% if request.user.is_admin %}
-                    <li class="nav-item dropdown" id="usersDropdown">
-                        <a class="nav-link link" href="#">
-                            Users
-                        </a>
-                            <div class="dropdown-menu" aria-labelledby="usersDropdown" style="left:-98px; margin-top: 5px;">
-                                <a class="dropdown-item" href="{% url 'organizer/signup' %}">Organizer</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'admin/signup' %}">Admin</a>
-                            </div>
-                    </li>
-                    
-                    {% else %}
-                    <a class="nav-link link" href="/wallet">Balance: P{{ request.user.wallet }}</a>
-                    {% endif %}
+                {% endif %}
+                {% if request.user.is_admin %}
+                <li class="nav-item dropdown" id="usersDropdown">
+                    <a class="nav-link link" href="#">
+                        Users
+                    </a>
+                        <div class="dropdown-menu" aria-labelledby="usersDropdown" style="left:-98px; margin-top: 5px;">
+                            <a class="dropdown-item" href="{% url 'organizer/signup' %}">Organizer</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'admin/signup' %}">Admin</a>
+                        </div>
+                </li>
+                {% else %}
+                <a class="nav-link link" href="/wallet">Balance: P{{ request.user.wallet }}</a>
+                {% endif %}
                 <li class="nav-item dropdown" id="profileDropdown">
                     <a class="nav-link" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 50 50" version="1.1">
@@ -77,7 +76,7 @@
                         <a class="dropdown-item" href="/logout">Log out</a>
                     </div>
                 </li>
-            {% endif %}
+                {% endif %}
             </ul>
         </div>    
     </nav>

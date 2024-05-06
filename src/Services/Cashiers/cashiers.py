@@ -140,7 +140,7 @@ def create_stats(request):
 
 def get_undone_games(request):
     if request.method == 'POST':
-        undone_games = Game.objects.filter(is_done=False)
+        undone_games = Game.objects.filter(is_done=False, organizer=request.user)
 
         game_list = []
         for game in undone_games:

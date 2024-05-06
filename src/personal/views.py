@@ -43,7 +43,11 @@ def login_view(request):
             context['str'] = "Invalid credentials!"
             return render(request, "personal/login.html", context)
     else:
-        return render(request, "personal/login.html", {})
+        try:
+            del request.session['otp']
+        except KeyError:
+            pass
+        return render(request, "personal/login.html", context)
     
 @csrf_exempt
 def update_user_wallet(user):
@@ -56,7 +60,7 @@ def update_user_wallet(user):
 def signup_view(request):
     context = {}
     if request.user.is_authenticated:
-        return redirect("/blog")
+        return redirect("/lobby")
     elif request.POST:
         username = request.POST['username']
         password = request.POST['password']
@@ -68,18 +72,33 @@ def signup_view(request):
         address = request.POST['address']
         birthdate = request.POST['birthdate']
         isOrganizer = False
+        # check is username exist
         if User.objects.filter(username=username).exists() == True:
             context["msg"] = "Username already taken!"
             return render(request,"personal/signup.html", context)
-
+        # email validation
         if User.objects.filter(email=email).exists() == True:
             context["msg"] = "Email is already taken!"
             return render(request,"personal/signup.html", context)
-        
+        elif not re.search("[a-zA-Z_]", email[0]):
+            context["msg"] = "Invalid email"
+            return render(request,"personal/signup.html", context)
+        # mobile number validation
         if User.objects.filter(mobileNumber=mobileNumber).exists() == True:
             context["msg"] = "Number is already taken!"
             return render(request,"personal/signup.html", context)
-        
+        elif not len(mobileNumber) == 11:
+            context["msg"] = "Invalid mobile number!"
+            return render(request,"personal/signup.html", context)
+        else:
+            if not mobileNumber[0] == '0' or not mobileNumber[1] == '9':
+                context["msg"] = "Invalid mobile number!"
+                return render(request,"personal/signup.html", context)
+            for x in mobileNumber:
+                if not re.search("[0-9]", x):
+                    context["msg"] = "Invalid mobile number!"
+                    return render(request,"personal/signup.html", context)
+        # username and password validation
         if len(username) >= 6:
             if re.search("[a-zA-Z_]", username[0]):
                 for x in username:
@@ -90,10 +109,25 @@ def signup_view(request):
                     validate_password(password, user=None, password_validators=None)
                 except ValidationError:
                     context["msg"] = "Invalid password"
-                    context["error"] = 1
                     return render(request, "personal/signup.html", context)
                 else:
                     if password == password2:
+                        # Name validation
+                        if not re.search("[a-zA-Z_]", firstname[0]):
+                            context["msg"] = "Invalid firstname"
+                            return render(request,"personal/signup.html", context)
+                        for x in firstname:
+                            if not re.search("[\w]", x):
+                                context["msg"] = "Invalid firstname!"
+                                return render(request,"personal/signup.html", context)
+                        if not re.search("[a-zA-Z_]", lastname[0]):
+                            context["msg"] = "Invalid lastname"
+                            return render(request,"personal/signup.html", context)
+                        for x in lastname:
+                            if not re.search("[\w]", x):
+                                context["msg"] = "Invalid lastname!"
+                                return render(request,"personal/signup.html", context)
+                        # save user
                         password = make_password(password)
                         user = User(username=username,password=password,email=email,mobileNumber=mobileNumber,is_organizer=isOrganizer,address=address,birthdate=birthdate, lastname = lastname, firstname = firstname)
                         user.save()
@@ -110,11 +144,15 @@ def signup_view(request):
             context["msg"] = "Invalid username!"
             return render(request,"personal/signup.html", context)
     else:
+        try:
+            del request.session['otp']
+        except KeyError:
+            pass
         return render(request, "personal/signup.html", context)
 
 def forget_view(request):
     if request.user.is_authenticated:
-        return render(request, "personal/lobby.html")
+        return redirect('/lobby')
     elif request.POST:
         email = request.POST['email']
         request.session["email"] = email
@@ -132,13 +170,18 @@ def forget_view(request):
         else:
             context["msg"] = "Email is not in use!"
             return render(request, "personal/forgotpass.html", context)
-    return render(request, "personal/forgotpass.html")
+    else:
+        try:
+            del request.session['otp']
+        except KeyError:
+            pass
+        return render(request, "personal/forgotpass.html")
 
 def forget_otp(request):
     context = {}
     otp = request.session.get("otp", "none")
     if request.user.is_authenticated:
-        return render(request, "personal/lobby.html")
+        return redirect('/lobby')
     elif request.POST:
         val = request.POST["otp"]
         if val == otp:
@@ -154,10 +197,15 @@ def forget_otp(request):
 
 def forget_set_pass(request):
     if request.user.is_authenticated:
-        return render(request, "personal/lobby.html")
+        return redirect('/lobby')
     elif not request.POST:
-        return render(request, "personal/login.html")
+        return redirect('/')
     
+    try:
+        del request.session['otp']
+    except KeyError:
+        pass
+
     context = {}
     user = User.objects.get(email=request.session["email"])
 
@@ -183,23 +231,9 @@ def logout_user(request):
 
 @login_required()
 def wallet_view(request):
-    print(request.headers)
+    if request.user.is_admin:
+        return redirect('/admin')
     return render(request, "personal/wallet.html", {})
-
-@login_required()
-def withdraw(request):
-    print(request.headers)
-    return render(request, "personal/withdraw.html", {})
-
-@login_required()
-def deposit(request):
-    print(request.headers)
-    return render(request, "personal/deposit.html", {})
-
-@login_required()
-def send_view(request):
-    print(request.headers)
-    return render(request, "personal/send.html", {})
 
 @login_required()
 def send(request):
@@ -229,6 +263,10 @@ def send(request):
 
 @login_required()
 def lobby_view(request):
+    if request.user.is_admin:
+        return redirect('/admin')
+    elif request.user.is_organizer:
+        return redirect('/profile')
     context = {}
     games = Game.objects.all().filter(is_local=False,is_done=False).order_by("date")
     local = Game.objects.all().filter(is_local=True,is_done=False).order_by("date")
@@ -243,52 +281,51 @@ def lobby_view(request):
 
 @login_required()
 def update_view(request):
-    return render(request, "personal/update.html")
+    if request.POST:
+        context = {}
+        username = request.POST["username"]
+        email = request.POST["email"]
+        mobileNumber = request.POST["mobileNumber"]
+        usercheck = User.objects.filter(username=username).exists()
+        emailcheck = User.objects.filter(email=email).exists()
+        numbercheck = User.objects.filter(mobileNumber=mobileNumber).exists()
+        id = request.user.id
+        user = User.objects.get(id=id)
 
-@login_required()
-def update_user(request):
-    context = {}
-    username = request.POST["username"]
-    email = request.POST["email"]
-    mobileNumber = request.POST["mobileNumber"]
-    usercheck = User.objects.filter(username=username).exists()
-    emailcheck = User.objects.filter(email=email).exists()
-    numbercheck = User.objects.filter(mobileNumber=mobileNumber).exists()
-    id = request.user.id
-    user = User.objects.get(id=id)
+        if usercheck:
+            if username != request.user.username:
+                context["msg_user_warn"] = "Username is already taken!"
+        else:
+            user.username = username
+            user.save()
+            context["username"] = username
+            context["msg_user"] = "Changed!"
+            context["msg"] = "Changes has been applied successfully!"
+        
+        if emailcheck:
+            if email != request.user.email:
+                context["msg_email_warn"] = "Email is already taken!"
+        else:
+            user.email = email
+            user.save()
+            context["email"] = email
+            context["msg_email"] = "Changed!"
+            context["msg"] = "Changes has been applied successfully!"
 
-    if usercheck:
-        if username != request.user.username:
-            context["msg_user_warn"] = "Username is already taken!"
+        if numbercheck:
+            if mobileNumber != request.user.mobileNumber:
+                context["msg_num_warn"] = "Number is already taken!"
+        else:
+            user.mobileNumber = mobileNumber
+            user.save()
+            context["mobileNumber"] = mobileNumber
+            context["msg_num"] = "Changed!"
+            context["msg"] = "Changes has been applied successfully!"
+
+        return render(request, "personal/update.html", context)
     else:
-        user.username = username
-        user.save()
-        context["username"] = username
-        context["msg_user"] = "Changed!"
-        context["msg"] = "Changes has been applied successfully!"
+        return render(request, "personal/update.html")
     
-    if emailcheck:
-        if email != request.user.email:
-            context["msg_email_warn"] = "Email is already taken!"
-    else:
-        user.email = email
-        user.save()
-        context["email"] = email
-        context["msg_email"] = "Changed!"
-        context["msg"] = "Changes has been applied successfully!"
-
-    if numbercheck:
-        if mobileNumber != request.user.mobileNumber:
-            context["msg_num_warn"] = "Number is already taken!"
-    else:
-        user.mobileNumber = mobileNumber
-        user.save()
-        context["mobileNumber"] = mobileNumber
-        context["msg_num"] = "Changed!"
-        context["msg"] = "Changes has been applied successfully!"
-
-    return render(request, "personal/update.html", context)
-
 @login_required()
 def update_password_view(request):
     return render(request, "personal/updatePassword.html")
@@ -426,7 +463,7 @@ def winner(request, slug):
 
 @login_required()
 def add_game(request):
-    if not request.user.is_admin:
+    if not request.user.is_organizer:
         return redirect("/lobby")
     if not request.POST:
         return render(request, "personal/addGame.html")
@@ -501,7 +538,7 @@ def bet(request, slug):
         user = User.objects.get(id=request.user.id)
         user.wallet = user.wallet - amount
         user.save()
-        context["msg"] = f"You have successfully bet on the {team} team, securing your victory and potential rewards"
+        context["msg"] = "You have successfully bet on the {team} team, securing your victory and potential rewards"
     else:
         context["msg"] = "Unfortunately, your bet did not succeed this time. Better luck next time"
 
@@ -560,14 +597,14 @@ def withdraw_user(request):
 
 @login_required
 def gamelist_view(request):
-    if not request.user.is_admin:
+    if not request.user.is_organizer:
         return redirect('/gamelist')
     return render(request, "personal/gamelist.html")
 
 @login_required
 def admin_view(request):
     if not request.user.is_admin:
-        return redirect('/blog')
+        return redirect('/lobby')
     return render(request, "personal/admin.html")
 
 @login_required
