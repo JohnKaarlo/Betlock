@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from Services.Cashiers.cashiers import create_stats, create_transaction, get_transactions, update_game_status, update_transaction_status, get_undone_games
+from Services.Cashiers.cashiers import create_stats, create_transaction, get_bet, get_transactions, update_game_status, update_transaction_status, get_undone_games
 from personal.views import (
     gamelist_view,
     login_view,
@@ -49,6 +49,9 @@ from personal.views import (
     organizer_signup,
     admin_signup,
     my_games,
+    my_betsledger,
+    my_withdrawalledger,
+    my_depositledger,
 )
 
 from payment.views import (
@@ -96,7 +99,10 @@ urlpatterns = [
     path('cashiers/create_stats/', create_stats, name='create_stats'),
     path('game/get_games/', get_undone_games, name='get_games'),
     path('game/update_games/', update_game_status, name='updates_games'),
-    
+    path('ledger/mybets', my_betsledger, name="ledger/mybets"),
+    path('ledger/mywithdrawal', my_withdrawalledger, name="ledger/mywithdrawal"),
+    path('ledger/mydeposit', my_depositledger, name="ledger/mydeposit"),
+    path('cashiers/get_bets/', get_bet, name='get_bets'),
     
 ]
 

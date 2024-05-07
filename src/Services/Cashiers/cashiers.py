@@ -210,3 +210,46 @@ def update_game_status(request):
             return JsonResponse({'success': False, 'message': 'Game not found.'}, status=404)
     else:
         return JsonResponse({'success': False, 'message': 'Only POST requests are allowed.'}, status=405)
+    
+
+def get_bet(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        date_from = data.get('date_from')
+        date_to = data.get('date_to')
+        player_id = request.user.id
+        
+        if date_from and date_to:
+            stats = Stats.objects.filter(created_at__range=[date_from, date_to], player_id=player_id)
+        elif date_from:
+            stats = Stats.objects.filter(created_at__gte=date_from, player_id=player_id)
+        elif date_to:
+            stats = Stats.objects.filter(created_at__lte=date_to, player_id=player_id)
+        else:
+            stats = Stats.objects.filter(player_id=player_id)
+        
+        bet_list = []
+        for stat in stats:
+            try:
+                bet = Bet.objects.select_related('game').get(game_id=stat.gameid, bettor_id=player_id)
+            except Bet.DoesNotExist:
+                bet = None
+            
+            if bet:
+                bet_data = {
+                    'player_id': player_id,
+                    'status': 00,
+                    'amount': stat.bet,
+                    'updated_at': stat.updated_at.strftime('%Y-%m-%d %H:%M:%S') if stat.updated_at else None,
+                    'created_at': stat.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                    'currency': 'PHP',
+                    'Status': bet.status,
+                    'Team': bet.team,
+                    'game_status': bet.status if bet.game else None, 
+                    'game_team': bet.team if bet.game else None,  
+                }
+                bet_list.append(bet_data)
+        
+        return JsonResponse({'success': True, 'transactions': bet_list})
+    else:
+        return JsonResponse({'success': False, 'message': 'Only POST requests are allowed.'}, status=405)

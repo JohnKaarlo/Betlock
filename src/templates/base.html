@@ -33,6 +33,18 @@
                 <li class="nav-item">
                     <a class="nav-link link" id="mygames" href="{% url 'my_games' %}">My Games</a>
                 </li>
+                <li class="nav-item dropdown" id="ledgerDropdown">
+                    <a class="nav-link link" href="#">
+                        Ledger
+                    </a>
+                        <div class="dropdown-menu" aria-labelledby="ledgerDropdown" style="left:-98px; margin-top: 5px;">
+                            <a class="dropdown-item" href="{% url 'ledger/mybets' %}">My Bets</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'ledger/mywithdrawal' %}">My Withdrawal</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'ledger/mydeposit' %}">My Deposit</a>
+                        </div>
+                </li>
                 {% endif %}
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_admin or not request.user.is_organizer %}
@@ -87,6 +99,11 @@
     <script>
         $(document).ready(function(){
     $("#profileDropdown").on('click', function(event){
+        $(this).toggleClass('show');
+        $(this).find('.dropdown-menu').toggleClass('show');
+    });
+
+    $("#ledgerDropdown").on('click', function(event){
         $(this).toggleClass('show');
         $(this).find('.dropdown-menu').toggleClass('show');
     });

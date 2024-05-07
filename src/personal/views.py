@@ -664,3 +664,15 @@ def my_games(request):
         context["bets"] = merged_data
 
     return render(request, "personal/mygames.html", context)
+
+@login_required
+def my_betsledger(request):
+    return render(request, "ledger/mybets.html")
+
+@login_required
+def my_withdrawalledger(request):
+    return render(request, "ledger/mywithdrawal.html")
+
+@login_required
+def my_depositledger(request):
+    return render(request, "ledger/mydeposit.html")

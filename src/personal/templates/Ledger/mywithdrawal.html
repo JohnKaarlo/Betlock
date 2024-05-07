@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    #search, table {
+        width: 100%;
+    }
+    table input {
+        width: 100%;
+    }
+    .btn {
+        background-color: #fd9801;
+    }
+    .btn:hover {
+        background-color: #fd9801;
+    }
+    td {
+        padding-top: 8px;
+    }
+    tr:hover {
+        background-color: rgba(253, 152, 1, 0.5); 
+    }
+    #transaction-table th {
+        position: sticky;
+        top: 0;
+        background-color: #fd5001;
+    }
+    .date{
+        width: 65%;
+    }
+    .search{
+        width: 100%;
+    }
+    label{
+        font-size: 12px;
+    }
+    #search_button{
+    background-color: #fd5001;
+    color: white;
+    width: 150px;
+    height: 32px;
+  }
+  #clear_button{
+    background-color: #fd5001;
+    color: white;
+    width: 150px;
+    height: 32px;
+  }
+</style>
+<div class="container-fluid content">
+    <br>
+    <div class="row" >
+        <div class="col-sm-3">
+            <input type="text" id="search" class="form-control search" placeholder="Search here" >
+        </div>
+        <div class="col-sm-2">
+            <input type="date" name="date_from" class="form-control date" style="width: 100%;">
+        </div>
+        <div class="col-sm-2">
+            <input type="date" name="date_to" class="form-control date" style="width: 100%;">
+        </div>
+        <div class="col-sm-1">
+            <input type="submit" id="search_button" value="Search"  class="btn" style="height: 35px;">
+           
+        </div>
+        <div class="col-sm-1">
+        <input type="submit" id="clear_button" value="Clear filter"  class="btn" style="height: 35px;">
+    </div>
+    </div>
+    <br>
+    <div style=" height: 80vh;
+    overflow: auto;">
+        <table class="text-center" id="transaction-table">
+            <tr class="table-background">
+                <th>User ID</th>
+                <th>Request Type</th>
+                <th>Amount</th>
+                <th>Date Requested</th>
+                <th>Date Approved</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tableBody = document.getElementById('transaction-table');
+        
+        function fetchTransactions(dateFrom, dateTo, code) {
+            console.log("click1");
+            fetch('/cashiers/get_transactions/', {
+                method: 'POST',
+                data: JSON.stringify({
+                    'date_from': dateFrom,
+                    'date_to': dateTo,
+                    'code': code,
+                    'type': 'Withdrawal'
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'  
+                },
+                body: JSON.stringify({
+                    'date_from': dateFrom,
+                    'date_to': dateTo,
+                    'code': code
+                }) 
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    tableBody.innerHTML = '<tr class="table-background"><th>Request Type</th><th>Amount</th><th>Code</th><th>Date Requested</th><th>Date Approved</th></tr>';
+                    
+                    data.transactions.forEach(transaction => {
+                        if (transaction.type === 'Withdrawal') {
+                        var row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${transaction.type}</td>
+                            <td>${transaction.amount}</td>
+                            <td>${transaction.code}</td>
+                            <td>${transaction.created_at}</td>
+                            <td>${transaction.updated_at}</td>
+
+                        `;
+                        tableBody.appendChild(row);
+                        }
+                    });
+                } else {
+                    console.log("click2");
+                    // Handle error or display a message
+                    console.error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        fetchTransactions();
+
+        document.getElementById('search_button').addEventListener('click', function() {
+
+            setTimeout(function() {
+                        $('#spinner_modal').modal('hide');
+                    }, 2000); 
+            var dateFrom = document.querySelector('input[name="date_from"]').value;
+            var dateTo = document.querySelector('input[name="date_to"]').value;
+            var code = document.querySelector('#search').value;
+            console.log(dateFrom, dateTo, code)
+            fetchTransactions(dateFrom, dateTo, code);
+          
+        });
+
+        document.getElementById('clear_button').addEventListener('click', function() {
+            location.reload();
+        });
+
+        clear_button
+    });
+</script>
+
+
+<script>
+      
+    
+    function updateTransactionStatus(id, code, status, transaction, amount) {
+        var status = status === 'completed' ? 'completed' : 'cancelled';
+
+        var requestData = {
+            'id': id,
+            'status': status,
+            'code': code,
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/cashiers/update_status/',
+            data: JSON.stringify(requestData),
+            contentType: 'application/json',
+            success: function(response) {
+                if (response.success) {
+                    if (status === 'completed') {
+                        insertStats(id, code, status, transaction,amount);
+                    }
+                    $('#globalModal').modal('show');
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            }
+        });
+    }
+
+    function insertStats(id, code, status, transaction,amount) {
+        var requestData = {
+            'id': id,
+            'code': code,
+            'type': transaction, 
+            'amount': amount, 
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/cashiers/create_stats/',
+            data: JSON.stringify(requestData),
+            contentType: 'application/json',
+            success: function(response) {
+                if (!response.success) {
+                    console.error('Error inserting stats:', response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error inserting stats:', error);
+            }
+        });
+    }
+    </script>
+
+
+{% include 'modal.html' %}
+{% include 'spinner.html' %}
+{% endblock content %}
