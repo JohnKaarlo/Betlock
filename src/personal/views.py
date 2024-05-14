@@ -1,7 +1,9 @@
+import decimal
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate,get_user, login, logout, update_session_auth_hash
 from Services.Cashiers.models import Stats
 from account.models import User
+from bet import models
 from game.models import Game
 from bet.models import Bet
 from blog.models import Blog
@@ -19,7 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models.functions import Cast
 from django.db.models.functions import Trunc
 from django.db.models import DateTimeField
-from django.db.models import F, ExpressionWrapper, DecimalField
+from django.db import connection
 
 # Create your views here.
 def login_view(request):
@@ -51,11 +53,32 @@ def login_view(request):
     
 @csrf_exempt
 def update_user_wallet(user):
+
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT SUM(s.bet) as winnings
+        FROM betlock.stats s
+        INNER JOIN betlock.bet_bet b ON s.gameid = b.game_id
+        WHERE b.status = 'Win' AND s.game_stat = '' AND s.type = 'bet' AND s.player_id = %s
+    """, [user.id])
+
+    winnings_sum = cursor.fetchone()
+    if winnings_sum is not None:
+        winnings_sum = decimal.Decimal(winnings_sum[0]) * decimal.Decimal('0.9') 
+    else:
+        winnings_sum = 0
+
+
     deposit_sum = Stats.objects.filter(player=user, type='Deposit').aggregate(total_deposit=Sum('pot'))['total_deposit'] or 0
     withdrawal_sum = Stats.objects.filter(player=user, type='Withdrawal').aggregate(total_withdrawal=Sum('pot'))['total_withdrawal'] or 0
-    total_pot = deposit_sum - withdrawal_sum 
+   
+    total_pot = deposit_sum - withdrawal_sum + winnings_sum
     user.wallet = total_pot
     user.save()
+    
+    if winnings_sum > 0:
+        Stats.objects.filter(player=user, type='bet', game_stat='').update(game_stat='paid')
+
 
 def signup_view(request):
     context = {}
