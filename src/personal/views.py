@@ -64,7 +64,7 @@ def update_user_wallet(user):
     """, [user.id])
 
     winnings_sum = cursor.fetchone()
-    if winnings_sum is not None:
+    if winnings_sum and winnings_sum[0] is not None:
         winnings_sum = decimal.Decimal(winnings_sum[0]) * decimal.Decimal('0.9') 
     else:
         winnings_sum = 0
