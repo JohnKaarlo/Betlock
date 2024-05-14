@@ -55,7 +55,7 @@
                         <h1 class="white-text">Organizer Registration</h1>
                     </div>
                 </div>
-                <form id="signup" method="post" action="/signup">
+                <form id="signup" method="post" action="/organizer_signup ">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-sm-3">
@@ -116,6 +116,8 @@
                                 <script>
                                     $(document).ready(function(){
                                         $('#myModal #message').text('{{ msg }}');
+                                        $('#myModal #username').text('{{ username }}');
+                                        $('#myModal #password').text('{{ password }}');
                                         $('#myModal').modal('show');
                                     });
                                 </script>
@@ -134,6 +136,8 @@
                                 </div>
                                 <div class="modal-body">
                                     <p style="color: black;" id="message">Modal Message Here</p>
+                                    <p style="color: black;"><strong>Username:</strong> <span id="username">Username Here</span></p>
+                                    <p style="color: black;"><strong>Password:</strong> <span id="password">Password Here</span></p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" id="okayButton" class="btn" data-dismiss="modal">Okay</button>
@@ -159,7 +163,7 @@
 
         $('#okayButton').click(function(){
             {% if msg and "success" in msg %}
-                window.location.href = '/profile';
+                window.location.href = '/admin';
             {% else %}
                 $('#myModal').modal('hide');
             {% endif %}

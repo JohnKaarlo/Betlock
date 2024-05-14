@@ -1,3 +1,4 @@
+import datetime
 import decimal
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate,get_user, login, logout, update_session_auth_hash
@@ -628,19 +629,203 @@ def gamelist_view(request):
 def admin_view(request):
     if not request.user.is_admin:
         return redirect('/lobby')
+        
     return render(request, "personal/admin.html")
+
+def generate_usernameAndpassword(last_name):
+    today = datetime.datetime.now()
+    date_str = today.strftime('%m%d%Y')
+    password = f"{last_name}{date_str}"
+    return password
 
 @login_required
 def organizer_signup(request):
-    if not request.user.is_admin:
-        return redirect('/lobby')
-    return render(request, "personal/organizer_signup.html", {})
+    context = {}
+    if request.POST:
+        lastname = request.POST.get('lastname')
+        firstname = request.POST.get('firstname')
+        email = request.POST.get('email')
+        mobileNumber = request.POST.get('mobileNumber')
+        address = request.POST.get('address')
+        birthdate = request.POST.get('address')
+        username =  generate_usernameAndpassword(lastname)
+        password = generate_usernameAndpassword(lastname)
+        password2 = generate_usernameAndpassword(lastname)
+        isOrganizer = True
+        # check is username exist
+        if User.objects.filter(username=username).exists() == True:
+            context["msg"] = "Username already taken!"
+            return render(request, "personal/organizer_signup.html", context)
+        # email validation
+        if User.objects.filter(email=email).exists() == True:
+            context["msg"] = "Email is already taken!"
+            return render(request, "personal/organizer_signup.html", context)
+        elif not re.search("[a-zA-Z_]", email[0]):
+            context["msg"] = "Invalid email"
+            return render(request, "personal/organizer_signup.html", context)
+        # mobile number validation
+        if User.objects.filter(mobileNumber=mobileNumber).exists() == True:
+            context["msg"] = "Number is already taken!"
+            return render(request, "personal/organizer_signup.html", context)
+        elif not len(mobileNumber) == 11:
+            context["msg"] = "Invalid mobile number!"
+            return render(request, "personal/organizer_signup.html", context)
+        else:
+            if not mobileNumber[0] == '0' or not mobileNumber[1] == '9':
+                context["msg"] = "Invalid mobile number!"
+                return render(request, "personal/organizer_signup.html", context)
+            for x in mobileNumber:
+                if not re.search("[0-9]", x):
+                    context["msg"] = "Invalid mobile number!"
+                    return render(request, "personal/organizer_signup.html", context)
+        # username and password validation
+        if len(username) >= 6:
+            if re.search("[a-zA-Z_]", username[0]):
+                for x in username:
+                    if not re.search("[\w]", x):
+                        context["msg"] = "Invalid username!"
+                        return render(request, "personal/organizer_signup.html", context)
+                try:
+                    validate_password(password, user=None, password_validators=None)
+                except ValidationError:
+                    context["msg"] = "Invalid password"
+                    return render(request, "personal/organizer_signup.html", context)
+                else:
+                    if password == password2:
+                        # Name validation
+                        if not re.search("[a-zA-Z_]", firstname[0]):
+                            context["msg"] = "Invalid firstname"
+                            return render(request, "personal/organizer_signup.html", context)
+                        for x in firstname:
+                            if not re.search("[\w]", x):
+                                context["msg"] = "Invalid firstname!"
+                                return render(request, "personal/organizer_signup.html", context)
+                        if not re.search("[a-zA-Z_]", lastname[0]):
+                            context["msg"] = "Invalid lastname"
+                            return render(request, "personal/organizer_signup.html", context)
+                        for x in lastname:
+                            if not re.search("[\w]", x):
+                                context["msg"] = "Invalid lastname!"
+                                return render(request, "personal/organizer_signup.html", context)
+                        # save user
+                        password = make_password(password)
+                        user = User(username=username,password=password,email=email,mobileNumber=mobileNumber,is_organizer=isOrganizer,address=address,birthdate=birthdate, lastname = lastname, firstname = firstname)
+                        user.save()
+                        login(request,user)
+                        context["msg"] = firstname +" "+ lastname+ " "+ "User added successfully"
+                        context["password"] = password2
+                        context["username"] = username
+                        return render(request, "personal/organizer_signup.html", context)
+                    else:
+                        context["msg"] = "Recheck password!"
+                        return render(request, "personal/organizer_signup.html", context)
+            else:
+                context["msg"] = "Invalid username!"
+                return render(request, "personal/organizer_signup.html", context)
+        else:
+            context["msg"] = "Invalid username!"
+            return render(request, "personal/organizer_signup.html", context)
+    else:
+        try:
+            del request.session['otp']
+        except KeyError:
+            pass
+        return render(request, "personal/organizer_signup.html", context)
 
 @login_required
 def admin_signup(request):
-    if not request.user.is_admin:
-        return redirect('/lobby')
-    return render(request, "personal/admin_signup.html", {})
+    context = {}
+    if request.POST:
+        lastname = request.POST.get('lastname')
+        firstname = request.POST.get('firstname')
+        email = request.POST.get('email')
+        mobileNumber = request.POST.get('mobileNumber')
+        address = request.POST.get('address')
+        birthdate = request.POST.get('address')
+        username =  generate_usernameAndpassword(lastname)
+        password = generate_usernameAndpassword(lastname)
+        password2 = generate_usernameAndpassword(lastname)
+        isOrganizer = False
+        isAdmin = True
+        # check is username exist
+        if User.objects.filter(username=username).exists() == True:
+            context["msg"] = "Username already taken!"
+            return render(request, "personal/admin_signup.html", context)
+        # email validation
+        if User.objects.filter(email=email).exists() == True:
+            context["msg"] = "Email is already taken!"
+            return render(request, "personal/admin_signup.html", context)
+        elif not re.search("[a-zA-Z_]", email[0]):
+            context["msg"] = "Invalid email"
+            return render(request, "personal/admin_signup.html", context)
+        # mobile number validation
+        if User.objects.filter(mobileNumber=mobileNumber).exists() == True:
+            context["msg"] = "Number is already taken!"
+            return render(request, "personal/admin_signup.html", context)
+        elif not len(mobileNumber) == 11:
+            context["msg"] = "Invalid mobile number!"
+            return render(request, "personal/admin_signup.html", context)
+        else:
+            if not mobileNumber[0] == '0' or not mobileNumber[1] == '9':
+                context["msg"] = "Invalid mobile number!"
+                return render(request, "personal/admin_signup.html", context)
+            for x in mobileNumber:
+                if not re.search("[0-9]", x):
+                    context["msg"] = "Invalid mobile number!"
+                    return render(request, "personal/admin_signup.html", context)
+        # username and password validation
+        if len(username) >= 6:
+            if re.search("[a-zA-Z_]", username[0]):
+                for x in username:
+                    if not re.search("[\w]", x):
+                        context["msg"] = "Invalid username!"
+                        return render(request, "personal/admin_signup.html", context)
+                try:
+                    validate_password(password, user=None, password_validators=None)
+                except ValidationError:
+                    context["msg"] = "Invalid password"
+                    return render(request, "personal/admin_signup.html", context)
+                else:
+                    if password == password2:
+                        # Name validation
+                        if not re.search("[a-zA-Z_]", firstname[0]):
+                            context["msg"] = "Invalid firstname"
+                            return render(request, "personal/admin_signup.html", context)
+                        for x in firstname:
+                            if not re.search("[\w]", x):
+                                context["msg"] = "Invalid firstname!"
+                                return render(request, "personal/admin_signup.html", context)
+                        if not re.search("[a-zA-Z_]", lastname[0]):
+                            context["msg"] = "Invalid lastname"
+                            return render(request, "personal/admin_signup.html", context)
+                        for x in lastname:
+                            if not re.search("[\w]", x):
+                                context["msg"] = "Invalid lastname!"
+                                return render(request, "personal/admin_signup.html", context)
+                        # save user
+                        password = make_password(password)
+                        user = User(username=username,password=password,email=email,mobileNumber=mobileNumber,is_organizer=isOrganizer,is_admin=isAdmin,address=address,birthdate=birthdate, lastname = lastname, firstname = firstname)
+                        user.save()
+                        login(request,user)
+                        context["msg"] = firstname +" "+ lastname+ " "+ "User added successfully"
+                        context["password"] = password2
+                        context["username"] = username
+                        return render(request, "personal/admin_signup.html", context)
+                    else:
+                        context["msg"] = "Recheck password!"
+                        return render(request, "personal/admin_signup.html", context)
+            else:
+                context["msg"] = "Invalid username!"
+                return render(request, "personal/admin_signup.html", context)
+        else:
+            context["msg"] = "Invalid username!"
+            return render(request, "personal/admin_signup.html", context)
+    else:
+        try:
+            del request.session['otp']
+        except KeyError:
+            pass
+        return render(request, "personal/admin_signup.html", context)
 
 @login_required
 def my_games(request):
